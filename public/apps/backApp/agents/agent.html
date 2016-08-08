@@ -1,0 +1,66 @@
+<div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Легенда</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><b>КК</b> — количество компаний</h5>
+                    <h5><b>КП</b> — количество проводок</h5>
+                    <h5><b>КЗП</b> — количество завершённых проводок</h5>
+                </div>
+                <div class="col-md-6">
+                    <h5><b>КНП</b> — количество незавершённых проводок</h5>
+                    <h5><b>ДКПО</b> — долг контрагента перед оператором</h5>
+                    <h5><b>ДОПК</b> — долг оператора перед контрагентом</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+
+        <div class="panel-body">
+
+            <a  ui-sref="agent-create" type="button" class="btn btn-primary "><span class="glyphicon glyphicon-plus"></span> Добавить контрагента</a>
+            <div class="clearfix"></div>
+            <div class="bs-example" data-example-id="hoverable-table">
+
+                <table st-table="env.agents" class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Контрагент</th>
+                        <th>КК</th>
+                        <th>КП</th>
+                        <th>КЗП</th>
+                        <th>КНП</th>
+                        <th>ДГПО</th>
+                        <th>ДОПК</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="agent in env.agents" ui-sref="agent-profile({id: agent.id})" style="cursor: pointer">
+                        <td>{{agent.name}}</td>
+                        <td>{{agent.companies.length}}</td>
+                        <td>{{agent.number_of_payments || 0}}</td>
+                        <td>{{agent.number_of_complete_payments || 0}}</td>
+                        <td>{{agent.number_of_uncomplete_payments || 0}}</td>
+                        <td>
+                            <div ng-repeat="(cur, debt) in agent.debt">
+                                {{debt.operator|currency:cur}}
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-repeat="(cur, debt) in agent.debt">
+                                {{debt.agent|currency:cur}}
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

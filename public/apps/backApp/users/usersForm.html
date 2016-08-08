@@ -1,0 +1,126 @@
+<header-menu></header-menu>
+
+<div class="container-fluid" style="margin-top:70px">
+    <div class="col-md-2">
+        <left-menu></left-menu>
+    </div>
+    <div class="col-md-10">
+        <div class="progress" ng-show="env.loading==true">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            </div>
+        </div>
+
+        <div ng-show="env.loading==false">
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ env.id!=undefined ? ('Изменить пользователя')  : ('Создать пользователя') }}
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <form name="userForm">
+                            <div class="alert alert-danger" role="alert" ng-show="env.error">
+                                <a href="#" class="alert-link">{{ env.error }}</a>
+                            </div>
+                            <div class="alert alert-success" role="alert" ng-show="env.msg">
+                                <a href="#" class="alert-link">{{ env.msg }}</a>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label >E-Mail</label>
+                                <input type="email" ng-model="env.model.email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label >Имя</label>
+                                <input type="text" ng-model="env.model.name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label >Группа</label>
+                                <select required ng-model="env.model.group_id" class="form-control">
+                                    <option value="1">Администратор</option>
+                                    <option value="2">Пользователь</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label >Пароль</label>
+                                <input type="text" ng-model="env.model.password" class="form-control" ng-required="!env.id">
+                            </div>
+                            <div class="form-group">
+                                <label >Повтор пароля</label>
+                                <input type="text" ng-model="env.model.re_password" class="form-control" ng-required="!env.id">
+                            </div>
+                            <div class="form-group">
+                                <label>Права доступа</label>
+                                <ul>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"  ng-model="env.model.access.config"> Управление настройками
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"  ng-model="env.model.access.users"> Управление пользователями
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"  ng-model="env.model.access.agent"> Управление контрагентами
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"  ng-model="env.model.access.company"> Управление компаниями
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"  ng-model="env.model.access.articles"> Управление статьями
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" ng-model="env.model.access.editPayments"> Управление проводками
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" ng-model="env.model.access.payments"> Просмотр проводок
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" ng-model="env.model.access.log"> Лог событий
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button type="button" ng-disabled="userForm.$invalid || env.user.waiting==true"
+                                    ng-click="save( env.model )" class="btn btn-default" >Сохранить
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</div>
+</div>

@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "is_group": true,
+    "name": "bla",
+    "author": 1,
+    "is_admin" :[
+      1,2
+    ],
+    "avatar": null,
+    "created_at": "00000",
+    "members": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "last_post": 1,
+    "is_deleted": false,
+    "sound_off":[1,2]
+  }
+]

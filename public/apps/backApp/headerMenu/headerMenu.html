@@ -1,0 +1,27 @@
+<div class="navbar navbar-default container-fluid navbar-fixed-top" role="navigation">
+    <div role="navigation" style="margin-bottom:0px">
+        <div class="navbar-header">
+            <a ui-sref="dashboard"><span class="navbar-brand"><span class="fa fa-sun-o"></span> FinBit </span></a>
+        </div>
+
+        <div class="navbar-collapse collapse" style="height: 1px;">
+
+            <ul class="nav navbar-nav navbar-right" ng-show="env.user!=null">
+                <li ng-show="env.user.hasAccess('users')"><a ui-sref="users" >Пользователи</a></li>
+                <li ng-show="env.user.hasAccess('config')"><a ui-sref="config" >Настройки</a></li>
+                <li class="dropdown hidden-xs" style="cursor: pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-user padding-right-small"
+                              style="position:relative;top: 3px;"></span> {{ env.user.name }} - {{ env.user.email }}<i
+                            class="fa fa-caret-down"></i>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li><a style="cursor: pointer" tabindex="-1" ng-click="logout()" >Выход</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

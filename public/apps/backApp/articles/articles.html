@@ -1,0 +1,41 @@
+<div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Статьи
+
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <button ng-click="add()" type="button" class="btn btn-primary"><span
+                            class="glyphicon glyphicon-plus"></span> Добавить статью
+                    </button>
+                </div>
+            </div>
+            <div class="row" ng-repeat="article in env.articles" style="margin:10px">
+                <div class="col-md-3">
+                    <input type="text" class="form-control" ng-model="article.value">
+                </div>
+                <div class="col-md-2">
+                             <span class="input-group-btn">
+                                 <button
+                                         ng-disabled="!article.value || article.waiting == true"
+                                         ng-click="save(article);"
+                                         class="btn btn-success" style="width:120px" type="button">
+                                     <span class="glyphicon glyphicon-save"></span>
+                                     Сохранить
+                                 </button>
+                          <button
+                                  ng-disabled="article.waiting == true"
+                                  ng-click="delete(article, $index)" style="width:120px" class="btn btn-danger"
+                                  type="button">
+                              <span class="glyphicon glyphicon-remove"></span>
+                              Удалить
+                          </button>
+
+                        </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,70 @@
+[
+  {
+    "id": 1,
+    "login":"nifus",
+    "name":"Alexander",
+    "password":"nifus",
+    "avatar":"katy.jpg",
+    "is_deleted":false,
+    "can_mass_messages":true,
+    "can_upload_files":true,
+    "user_list":[
+      1,2,3,4,5
+    ]
+  },
+  {
+    "id": 2,
+    "login":"alex",
+    "name":"Alex Fr",
+
+    "password":"alex",
+    "avatar":"jose.jpg",
+    "is_deleted":false,
+    "can_mass_mesages":true,
+    "can_upload_files":true,
+    "user_list":[
+      1,2,3,4,5
+    ]
+  },
+  {
+    "id": 3,
+    "login":"jose",
+    "name":"Jose Fd",
+
+    "password":"jose",
+    "avatar":"jose.jpg",
+    "is_deleted":false,
+    "can_mass_mesages":true,
+    "can_upload_files":true,
+    "user_list":[
+      1,2,3,4,5
+    ]
+  },
+  {
+    "id": 4,
+    "login":"mariana",
+    "name":"Mariana F",
+
+    "password":"mariana",
+    "avatar":"mariana.jpg",
+    "is_deleted":false,
+    "can_mass_mesages":true,
+    "can_upload_files":true,
+    "user_list":[
+      1,2,3,4,5
+    ]
+  },
+  {
+    "id": 5,
+    "login":"rodulfo",
+    "name":"Rodulfo G",
+    "password":"rodulfo",
+    "avatar":"rodulfo.jpg",
+    "is_deleted":false,
+    "can_mass_mesages":true,
+    "can_upload_files":true,
+    "user_list":[
+      1,2,3,4,5
+    ]
+  }
+]

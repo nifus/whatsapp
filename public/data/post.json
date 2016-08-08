@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "chat_id": 1,
+    "author": 1,
+    "message": "тестовое",
+    "is_sent": true,
+    "is_read": true,
+    "type": "text",
+    "is_system": false,
+    "datetime": "0000000000"
+  },
+  {
+    "id": 2,
+    "chat_id": 1,
+    "author": 1,
+    "message": "тестовое 2",
+    "is_sent": true,
+    "is_read": true,
+    "type": "text",
+    "datetime": "0000000000"
+  }
+]

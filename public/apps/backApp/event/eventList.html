@@ -1,0 +1,49 @@
+<header-menu></header-menu>
+
+<div class="container-fluid" style="margin-top:70px">
+
+    <div class="progress" ng-show="env.loading==true">
+        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+        </div>
+    </div>
+
+
+    <div class="col-sm-12" ng-show="env.loading==false">
+        <ol class="breadcrumb">
+            <li><a href="#" ui-sref="dashboard" translate>Dashboard</a></li>
+            <li class="active" translate>Events</li>
+        </ol>
+        <div class="panel panel-default" ng-show="env.user.haveReadAccess('events')">
+            <div class="panel-heading" >{{ 'Events'|translate }} </div>
+            <div class="panel-body">
+                <!--<div class="form-inline">
+                    <div class="form-group">
+                        <label translate>Name</label>
+                        <input data-ng-model="env.filters.name" type="text" class="form-control">
+                    </div>
+                </div>-->
+
+                <table class="table table-striped" at-table at-paginated at-list="env.events"
+                       at-config="env.tableConfig">
+                    <thead></thead>
+                    <tbody>
+                    <tr>
+                        <td at-implicit  at-attribute="user.email" at-title="{{'User'|translate}}"
+                            width="150"></td>
+                        <td at-implicit  at-attribute="message" at-title="{{'Message'|translate}}"></td>
+                        <td at-implicit  at-attribute="type_action" at-title="{{'Type'|translate}}"></td>
+                        <td  at-title="{{'Data'|translate}}">
+                            <pre>{{ item.related_json|json}}</pre>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <at-pagination at-list="env.users" at-config="env.tableConfig"></at-pagination>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
