@@ -1,5 +1,23 @@
 <html>
 <head>
+    <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap-theme.min.css">
+
+
+    <link rel="stylesheet" href="components/alertify.js/themes/alertify.bootstrap.css" />
+    <link rel="stylesheet" href="components/alertify.js/themes/alertify.core.css" />
+    <link rel="stylesheet" href="components/alertify.js/themes/alertify.default.css" />
+    <link rel="stylesheet" href="css/style.css">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="image/favicon.png" type="image/png">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
+    <script src="components/jquery/dist/jquery.min.js"></script>
+    <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <style>
         body, html{
@@ -10,20 +28,70 @@
             padding:0px
         }
         #main{
-            margin:20px;
+            margin-left:auto;
+            margin-right:auto;
+            margin-top:20px;
             background-color: #ffffff;border:1px solid darkgrey;
-            min-width: 80%;
+            width: 80%;
             min-height: 100%;
             position: relative;
 
         }
+
     </style>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="image/favicon.png" type="image/png">
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
+
 </head>
 
-<body>
-    <div id="main">
+<body ng-app="chatApp" ng-controller="mainController" >
+
+    <div  id="main" ui-view>
 
     </div>
+
+
+    <script src="components/angular/angular.js"></script>
+    <script src="components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="components/moment/min/moment-with-locales.min.js"></script>
+    <script src="components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="components/satellizer/dist/satellizer.min.js"></script>
+    <script src="components/angular-base64-upload/src/angular-base64-upload.js"></script>
+    <script src="components/alertify.js/lib/alertify.min.js"></script>
+
+    <script src="apps/core/core.js"></script>
+    <script src="apps/core/cacheService.js"></script>
+
+    <script src="apps/core/chat/chatFactory.js"></script>
+    <script src="apps/core/chat/chatService.js"></script>
+
+    <script src="apps/core/post/postFactory.js"></script>
+    <script src="apps/core/post/postService.js"></script>
+
+    <script src="apps/core/user/userFactory.js"></script>
+    <script src="apps/core/user/userService.js"></script>
+    <script src="apps/core/config/configFactory.js"></script>
+
+
+    <script src="apps/chatApp/chatApp.js"></script>
+    <script src="apps/chatApp/mainController.js"></script>
+    <script src="apps/chatApp/signIn/signInController.js"></script>
+
+    <script src="apps/chatApp/chat/chatController.js"></script>
+    <script src="apps/chatApp/leftSide/contacts/contacts.js"></script>
+    <script src="apps/chatApp/leftSide/profile/profile.js"></script>
+    <script src="apps/chatApp/leftSide/left.js"></script>
+
+    <script src="apps/chatApp/users/userListController.js"></script>
+    <script src="apps/chatApp/users/userFormController.js"></script>
+
+
+    <script src="apps/directives/upload/upload.js"></script>
 
 </body>
 </html>
