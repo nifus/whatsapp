@@ -1,0 +1,103 @@
+<div style="margin: 30px">
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {{ env.id!=undefined ? ('Изменить пользователя') : ('Создать пользователя') }}
+        </div>
+        <div class="panel-body">
+            <div>
+                <form name="userForm">
+                    <div class="alert alert-danger" role="alert" ng-show="env.error">
+                        <a href="#" class="alert-link">{{ env.error }}</a>
+                    </div>
+                    <div class="alert alert-success" role="alert" ng-show="env.msg">
+                        <a href="#" class="alert-link">{{ env.msg }}</a>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Login *</label>
+                        <input type="text" ng-model="env.model.login" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>NickName</label>
+                        <input type="text" ng-model="env.model.name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Группа *</label>
+                        <select required ng-model="env.model.group_id" class="form-control">
+                            <option value="1">Администратор</option>
+                            <option value="2">Пользователь</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Пароль *</label>
+                        <input type="text" ng-model="env.model.password" class="form-control" ng-required="!env.id">
+                    </div>
+                    <div class="form-group">
+                        <label>Повтор пароля *</label>
+                        <input type="text" ng-model="env.model.re_password" class="form-control" ng-required="!env.id">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Логины пользователей через запятую</label>
+                        <input type="text" ng-model="env.model.Users" class="form-control">
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="env.model.can_upload_files" ng-true-value="'1'"> Разрешить отправлять файлы
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="env.model.history" ng-true-value="'1'"> Помнить историю
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="env.model.can_mass_messages" ng-true-value="'1'"> Разрешить массовую рассылку
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="env.model.can_edit_myself" ng-true-value="'1'"> Разрешить правки
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Аватар</label>
+
+                        <upload ng-model="env.model.avatar" >
+                            <button type="button" class="btn btn-default">Загрузить</button>
+                        </upload>
+                       <!-- <input type="text" ng-model="env.model.avatar" class="form-control">-->
+                    </div>
+
+
+                    <button type="button" ng-disabled="userForm.$invalid || env.user.waiting==true"
+                            ng-click="save( env.model )" class="btn btn-default">Сохранить
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

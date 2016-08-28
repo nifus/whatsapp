@@ -20,9 +20,9 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->string("avatar");
-            $table->tinyInteger("is_deleted")->default(0);
-            $table->tinyInteger("can_mass_messages")->default(0);
-            $table->tinyInteger("can_upload_files")->default(0);
+            $table->string("is_deleted",1)->default(0);
+            $table->string("can_mass_messages",1)->default(0);
+            $table->string("can_upload_files",1)->default(0);
         });
 
         Schema::create('users_contacts', function (Blueprint $table) {

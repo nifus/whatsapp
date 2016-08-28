@@ -4,69 +4,29 @@
 
     angular.module('core')
         .factory('postFactory', postFactory);
-    postFactory.$inject = ['postService', '$http',  'cacheService','$q'];
+    postFactory.$inject = ['postService', '$http'];
 
-    function postFactory(postService, $http, cacheService, $q) {
+    function postFactory(postService, $http) {
 
         return {
-           // getAll:getAll,
-            getById:getById,
-           // getByChatId:getByChatId
+            getPosts: getPosts,
         };
 
 
-        function getById(id){
-            var cache  = cacheService(
-                function(){
-                    $http.get(window.SERVER+'/public/data/post.json').success( function(response){
-                        var result= null;
-                        var promises = [];
-                        for(var i in response){
-                            if ( response[i].id==id){
-                                promises.push(postService(response[i]).then(function(obj){
-                                    result = ( obj );
-                                }))
-                            }
+        function getPosts(id) {
 
-                        }
-                        $q.all(promises).then(function(){
-                            cache.end( result );
-                        })
+            return $http.put( '/chats/'+id,{start:0,count:0}).success(function (response) {
+                var result = [];
+                for (var i in response.data.posts) {
+                    result.push( new postService(response.data.posts[i]) );
+                }
 
-                    }).error( function(response){
-                        cache.end( null );
-                    })
-                }, 'post_get_all_posts', 20
-            );
-            return cache.promise;
+                return result;
+            })
+
+
         }
 
-        /**
-         * Get postService with current post
-         * @returns promise
-         */
-        /*function getAll(){
-            var cache  = cacheService(
-                function(){
-                    $http.get(window.SERVER+'/public/data/posts.json').success( function(response){
-                        var result= [];
-                        var promises = [];
-                        for(var i in response){
-                            promises.push(postService(response[i]).then(function(obj){
-                                result.push( obj );
-                            }))
-                        }
-                        $q.all(promises).then(function(){
-                            cache.end( result );
-                        })
-
-                    }).error( function(response){
-                        cache.end( null );
-                    })
-                }, 'post_get_all_posts', 20
-            );
-            return cache.promise;
-        }*/
 
 
     }

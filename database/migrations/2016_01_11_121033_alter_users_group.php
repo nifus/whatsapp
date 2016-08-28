@@ -13,7 +13,7 @@ class AlterUsersGroup extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->smallInteger('group_id');
+            $table->string('group_id', 1);
         });
     }
 

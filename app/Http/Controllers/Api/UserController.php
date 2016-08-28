@@ -21,6 +21,42 @@ class UserController extends Controller
         $this->middleware('jwt.auth', ['except' => ['getAuthUser', 'authenticate']]);
     }
 
+    public function getContacts(){
+        try{
+            $user = JWTAuth::parseToken()->authenticate();
+            if ( is_null($user) ){
+                throw new \Exception('no user');
+            }
+            if ( $user->is_delete=='1' ){
+                JWTAuth::invalidate(JWTAuth::getToken());
+                throw new \Exception('no user');
+            }
+            $contacts = $user->Contacts;
+            return response()->json($contacts->toArray()  );
+        }catch( \Exception $e ){
+            return response()->json( null );
+        }
+    }
+
+    public function getChats(){
+        try{
+            $user = JWTAuth::parseToken()->authenticate();
+            if ( is_null($user) ){
+                throw new \Exception('no user');
+            }
+            if ( $user->is_delete=='1' ){
+                JWTAuth::invalidate(JWTAuth::getToken());
+                throw new \Exception('no user');
+            }
+            $chats = $user->Chats;
+            return response()->json($chats->toArray()  );
+        }catch( \Exception $e ){
+            return response()->json( null );
+        }
+    }
+
+
+
 
     public function getAuth()
     {
@@ -47,14 +83,20 @@ class UserController extends Controller
 
 
     public function getById($id){
-        $users = User::find($id);
-        return response()->json($users->toArray() );
+        $user = User::find($id);
+        $result = $user->toArray();
+        $result['Users'] = $user->Users;
+        return response()->json($result );
     }
 
     public function store( Request $request ){
         $data = $request->all();
         try{
-            User::createNewActivatedUser($data);
+            $user = User::createNewActivatedUser($data);
+            if ( !empty($data['Users'])){
+                $user->sinxContacts($data['Users']);
+            }
+
             return response()->json(['success'=>true]);
         }catch( \Exception $e ){
             return response()->json(['success'=>false, 'error'=>$e->getMessage()]);
@@ -118,25 +160,27 @@ class UserController extends Controller
      */
     public function authenticate(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('login', 'password');
 
         try {
-            $user = User::getUserByEmail($credentials['email']);
+            $user = User::getUserByLogin($credentials['login']);
             if ( is_null($user) ){
                 throw new JWTException( 'Пользователь не найден' );
             }
+            $token = JWTAuth::fromUser($user);
 
-            if (! $token = JWTAuth::attempt($credentials)) {
+            //if (! $token = JWTAuth::attempt($credentials)) {
 
-                event( new SignInErrorEvent($credentials['email'], 'Пользователь не найден' ) );
-
-                return response()->json(['error' => trans('app.signIn.invalid_credentials')], 401);
-            }
+            //    event( new SignInErrorEvent($credentials['email'], 'Пользователь не найден' ) );
+               // return response()->json(['error' => trans('app.signIn.invalid_credentials')], 401);
+            //}
         } catch (JWTException $e) {
-            event( new SignInErrorEvent($credentials['email'],$e->getMessage()) );
+          //  event( new SignInErrorEvent($credentials['email'],$e->getMessage()) );
             return response()->json(['error' => $e->getMessage()], 500);
         }
-        event( new SignInSuccessEvent($credentials['email']) );
+        //event( new SignInSuccessEvent($credentials['email']) );
+        $user->updateLastLogin();
+
         return response()->json(compact('token'));
     }
 

@@ -1,0 +1,92 @@
+<div class="row" id="wrap">
+
+    <div class="col-md-3 left">
+        <left user="user" chat="env.chat"></left>
+    </div>
+    <div ng-class="{'col-md-9' : env.show_add_info==false, 'col-md-6' : env.show_add_info==true}">
+        <div class="row">
+            <div class="col-md-12" style="background-color: #eee;padding:3px;height:50px">
+                <a href="" style="font-size: 18px">
+                    <img ng-src="/image/default.jpg" class="img-circle link" style="margin-right:30px">
+
+                    Коля светличный</a>
+
+                <ul class="nav navbar-nav navbar-right" style="padding-right:20px;">
+
+                    <li>
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false" style="height:40px">
+
+                            <span class=" glyphicon glyphicon-open" aria-hidden="true"></span>
+
+
+                        </a>
+
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false" style="height:40px">
+
+                            <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a ng-click="env.show_add_info=true">Информация о контакте</a></li>
+                            <li><a ng-click="openProfile()" class="link">Без звука</a></li>
+                            <li><a ng-click="openProfile()" class="link">Очистить чат</a></li>
+                            <li><a ng-click="openProfile()" class="link">Удалить чат</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-12 left" style="text-align: left">
+                    <pre style="white-space:pre-wrap; width:500px;background-color:white;border-radius: 2%;margin:10px">
+— Пааап, смотри! Дядя тетю жарит!
+— Сын, отойди от окна! Дай людям нормально потрах... Бл@ть он её действительно жарит звони в полицию!!! Быстро!
+                    </pre>
+            </div>
+            <div class="col-md-8 left" style="text-align: center">
+                    <pre style="white-space:pre-wrap; width:500px;background-color:darkseagreen;border-radius: 2%;margin:10px">
+                        Заголовок
+                    </pre>
+            </div>
+            <div class="col-md-12 right">3</div>
+        </div>
+    </div>
+    <div class="col-md-3" style="border-right: 1px solid darkgrey;border-left: 1px solid darkgrey;padding:0px;height:700px" ng-show="env.show_add_info" >
+
+            <div class="col-md-12" style="background-color: #eee;padding:3px;height:50px">
+
+
+                <ul class="nav navbar-nav " >
+                    <li>
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false" style="height:40px">
+                            <span class=" glyphicon glyphicon-open" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false" style="height:40px">
+
+                            <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a ng-click="env.show_add_info=true">Информация о контакте</a></li>
+                            <li><a ng-click="openProfile()" class="link">Без звука</a></li>
+                            <li><a ng-click="openProfile()" class="link">Очистить чат</a></li>
+                            <li><a ng-click="openProfile()" class="link">Удалить чат</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+
+        </div>
+    </div>
+</div>

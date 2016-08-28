@@ -1,0 +1,22 @@
+<div class="container" style="margin-top:70px">
+    <div class="col-sm-4 col-sm-offset-4" ng-controller="signInController">
+        <div class="well">
+            <h3>Авторизация</h3>
+
+            <form name="loginForm">
+                <div class="alert alert-danger" role="alert" ng-show="env.error">{{env.error}}</div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Login" ng-model="model.login" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="*****" ng-model="model.password"
+                           required>
+                </div>
+                <button class="btn btn-primary" ng-click="signIn(model.login, model.password)" ng-disabled="loginForm.$invalid || env.waiting==true">
+                    Отправить
+                </button>
+            </form>
+            <br>
+        </div>
+    </div>
+</div>

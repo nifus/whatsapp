@@ -1,0 +1,41 @@
+<div style="margin: 30px">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Пользователи
+        </div>
+        <div class="panel-body">
+            <a class="btn btn-success" ui-sref="users-create" href="#" role="button"><span
+                    class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить нового пользователя</a>
+
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Последняя активность</th>
+                    <th>NickName</th>
+                    <th>Login</th>
+                    <th>Профиль</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="user in env.users | filter:is_deleted:0">
+                    <td>{{user.LastActionString}}</td>
+                    <td>{{user.name || user.login}}</td>
+                    <td>{{user.login}}</td>
+
+                    <td>
+                        <div class="btn-group" role="group" aria-label="...">
+                            <a class="btn btn-danger" style="width:163px" ui-sref="users-edit({id:user.id})" href="#"
+                               role="button"><span
+                                    class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Смотреть</a>
+
+
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

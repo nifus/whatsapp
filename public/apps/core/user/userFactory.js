@@ -4,24 +4,29 @@
 
     angular.module('core')
         .factory('userFactory', userFactory);
-    userFactory.$inject = ['userService', '$http', '$rootScope',  'cacheService', '$q'];
+    userFactory.$inject = ['userService', '$http', '$auth', '$rootScope',  'cacheService'];
 
-    function userFactory(userService, $http, $rootScope, cacheService, $q) {
+    function userFactory(userService, $http, $auth, $rootScope, cacheService) {
 
         return {
-           // refresh: refresh,
-           // isAuthenticated: isAuthenticated,
-           // login: login,
-           // logout: logout,
-           // register: register,
-            getCurUsr: getCurUsr,
-            getAll:getAll,
+            refresh: refresh,
+            isAuthenticated: isAuthenticated,
+            login: login,
+            logout: logout,
+            register: register,
             getAuthUser: getAuthUser,
-          //  getSuppliers: getSuppliers,
-           // getLanguages:getLanguages,
-           getById:getById,
-            //store:store
+            getAll:getAll,
+            getById:getById,
+            store:store
         };
+
+        function refresh(){
+            return $http.get(window.SERVER+'/backend/user/update-token').then( function(response){
+                $auth.setToken(response.data.token)
+            })
+        }
+
+
 
         /**
          * Get UserService with current user
@@ -40,54 +45,38 @@
             return cache.promise;
         }
 
-
-        function refresh(){
-            return $http.get(window.SERVER+'/backend/user/update-token').then( function(response){
-                $auth.setToken(response.data.token)
-            })
-        }
-
-
-
-        /**
-         * Get UserService with current user
-         * @returns promise
-         */
         function getAll(){
             var cache  = cacheService(
-                function(){
-                    $http.get(window.SERVER+'/public/data/users.json').success( function(response){
-                        var result= [];
-                        for(var i in response){
-                            result.push( userService(response[i]) );
-                        }
-                        cache.end( result );
-                    }).error( function(response){
-                        cache.end( null );
-                    })
-                }, 'user_get_all_users', 20
+               function(){
+                   $http.get(window.SERVER+'/backend/user/get-all').success(function (answer) {
+                       var users = [];
+                       var i;
+                       for( i in answer ){
+                           users.push( userService(answer[i]) );
+                       }
+                       cache.end( users );
+                   }).error(function (data, code) {
+                       cache.end({success: false, error: data.error});
+                   })
+               }, 'user_getAllUsers', 10
             );
             return cache.promise;
         }
 
+
+
         function getById(id){
-
-            return $q(function(resolve){
-                getAll().then( function(result){
-                    for(var i in result){
-                        if ( result[i].id==id){
-                            resolve(result[i])
-                        }
-                    }
-                })
-            })
-
+            var cache  = cacheService(
+                function(){
+                    $http.get(window.SERVER+'/backend/user/'+id).success(function (response) {
+                        cache.end( userService(response) );
+                    }).error( function(response){
+                        cache.end( null );
+                    })
+                }, 'user_getById'
+            );
+            return cache.promise;
         }
-
-        function getCurUsr() {
-            return getById(1);
-        }
-
 
         function register(data, callback) {
             $auth.signup(data).then(function (response) {
@@ -126,7 +115,7 @@
         }
 
         function store(data) {
-            return $http.put(window.SERVER+'/backend/user', data).then( function(response){
+            return $http.post(window.SERVER+'/backend/user', data).then( function(response){
                 return response.data;
             })
         }
