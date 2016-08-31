@@ -15,8 +15,8 @@ class AlterUserLastLogin extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dateTime('last_login')->nullable();
             $table->dateTime('last_action')->nullable();
-            $table->strign('history',1)->default(0);
-            $table->strign('can_edit_myself',1)->default(0);
+            $table->string('history',1)->default(0);
+            $table->string('can_edit_myself',1)->default(0);
             $table->string('login');
         });
     }
