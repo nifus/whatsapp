@@ -56,7 +56,7 @@ class User extends Authenticatable
 
     public function Chats()
     {
-        return $this->hasMany('App\Chat', 'author', 'id')->with('Members');
+        return $this->hasMany('App\Chat', 'author', 'id')->where('is_deleted',0)->with('Members');
     }
 
 

@@ -57,11 +57,24 @@
         };
 
         $scope.clearChat = function (chat) {
-
+            chat.clearChat().then(function(response){
+                if (response.success == false) {
+                    alertify.error(response.error);
+                } else {
+                    alertify.success('Чат очищен');
+                }
+            })
         };
 
         $scope.deleteChat = function (chat) {
-
+            chat.deleteChat().then(function(response){
+                if (response.success == false) {
+                    alertify.error(response.error);
+                } else {
+                    alertify.success('Чат удален');
+                    $scope.env.chat = null;
+                }
+            })
         }
         hotkeys.add({
             combo: 'enter',

@@ -30,6 +30,8 @@ Route::get('signout', ['as' => 'signout', 'uses' => 'User\SignOutController@inde
         Route::put('/{id}', 'Api\ChatController@loadChat');
         Route::post('/{id}/add-post', 'Api\ChatController@addPost');
         Route::post('/{id}/sound', 'Api\ChatController@sound');
+        Route::post('/{id}/clear', 'Api\ChatController@clear');
+        Route::delete('/{id}', 'Api\ChatController@remove');
 
     });
 

@@ -20,6 +20,20 @@
                 return postFactory.addPost(message, Object.id);
             };
 
+            Object.clearChat = function(){
+                return $http.post( '/chats/'+Object.id+'/clear',{}).then(function (response) {
+                    if (response.data.success==true){
+                        Object.posts = [];
+                    }
+                    return response.data;
+                })
+            };
+
+            Object.deleteChat = function(){
+                return $http.delete( '/chats/'+Object.id+'').then(function (response) {
+                    return response.data;
+                })
+            };
             Object.enableSound = function(user_id){
                 return $http.post( '/chats/'+Object.id+'/sound',{ user_id: user_id,'enable': 1}).then(function (response) {
                     if (response.data.success==true){

@@ -49,8 +49,11 @@ class UserController extends Controller
                 throw new \Exception('no user');
             }
             $chats = $user->Chats;
-            return response()->json($chats->toArray()  );
+
+            return response()->json($chats->toArray());
         }catch( \Exception $e ){
+
+            dd($e->getMessage());
             return response()->json( null );
         }
     }

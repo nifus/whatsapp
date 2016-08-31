@@ -134,4 +134,58 @@ class ChatController extends Controller
         }
     }
 
+    public function clear($chat_id){
+
+        try{
+            $user = JWTAuth::parseToken()->authenticate();
+            if ( is_null($user) ){
+                throw new \Exception('no user');
+            }
+            if ( $user->is_delete=='1' ){
+                throw new \Exception('no user');
+            }
+            if ( $user->can_edit_myself=='0' ){
+                throw new \Exception('Access Error');
+            }
+            $chat = Chat::find($chat_id);
+            if (is_null($chat) ){
+                throw new \Exception('no chat');
+            }
+            $chat->clearAllPosts();
+            return response()->json(['success'=>true]);
+
+        }catch( \Exception $e ){
+            return response()->json(['success'=>false,'error'=>$e->getMessage()]);
+
+        }
+
+    }
+
+    public function remove($chat_id){
+
+        try{
+            $user = JWTAuth::parseToken()->authenticate();
+            if ( is_null($user) ){
+                throw new \Exception('no user');
+            }
+            if ( $user->is_delete=='1' ){
+                throw new \Exception('no user');
+            }
+            if ( $user->can_edit_myself=='0' ){
+                throw new \Exception('Access Error');
+            }
+            $chat = Chat::find($chat_id);
+            if (is_null($chat) ){
+                throw new \Exception('no chat');
+            }
+            $chat->remove();
+            return response()->json(['success'=>true]);
+
+        }catch( \Exception $e ){
+            return response()->json(['success'=>false,'error'=>$e->getMessage()]);
+
+        }
+
+    }
+
 }

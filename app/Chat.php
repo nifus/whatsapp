@@ -24,6 +24,11 @@ class Chat extends Model
         return $this->hasOne('App\ChatPost',  'id','last_post');
     }
 
+    public function Posts()
+    {
+        return $this->hasMany('App\ChatPost');
+    }
+
     public function toArray()
     {
         $array = parent::toArray();
@@ -35,7 +40,8 @@ class Chat extends Model
             }
         }
         $array['name'] = !empty($array['name']) ? $array['name'] : (sizeof($list_names)>1 ? implode(', ', $list_names) :  $list_names[0]);
-        $array['LastPost'] = $this->LastPost;
+
+        $array['LastPost'] = $this->last_post!=null ? $this->LastPost : null;
         $array['AvatarSrc'] = $this->AvatarSrc;
 
         return $array;
@@ -44,9 +50,12 @@ class Chat extends Model
     public function getAvatarSrcAttribute(){
         if ($this->avatar){
             return '/uploads/avatar/'.$this->attributes['avatar'];
+        }elseif ($this->last_post!=null){
+                return $this->LastPost->User->AvatarSrc;
         }else{
-            return $this->LastPost->User->AvatarSrc;
+            return null;
         }
+
     }
 
     public function canAccess($user_id){
@@ -76,6 +85,16 @@ class Chat extends Model
         \DB::table('chats_members')->where('user_id', $user)->where('chat_id', $this->id)->update(['sound'=>$flag]);
         //$members = $this->Members();
         //dd($members);
+    }
+
+    public function clearAllPosts(){
+        $this->Posts()->update(['is_deleted'=>'1']);
+        $this->update(['last_post'=>null]);
+    }
+
+    public function remove(){
+        $this->Posts()->update(['is_deleted'=>'1']);
+        $this->update(['is_deleted'=>1]);
     }
 
 }
