@@ -31,16 +31,23 @@
         });
 
         $scope.$watch('env.chat', function(value){
+            value = value.toLowerCase();
             if ($scope.env.chat!=''){
                 $scope.env.search_activated = true;
                 $scope.env.chats = $scope.env.source_chats.filter( function(chat){
                     if ( chat.name.toLowerCase().indexOf(value)!=-1){
                         return true;
                     }
+                    if ( chat.login.toLowerCase().indexOf(value)!=-1){
+                        return true;
+                    }
                     return false;
                 });
                 $scope.env.contacts = $scope.env.source_contacts.filter( function(contact){
                     if ( contact.name.toLowerCase().indexOf(value)!=-1){
+                        return true;
+                    }
+                    if ( contact.login.toLowerCase().indexOf(value)!=-1){
                         return true;
                     }
                     return false;
