@@ -34,12 +34,14 @@ class Chat extends Model
         $array = parent::toArray();
         $members = $this->Members;
         $list_names=[];
+
+
         foreach($members as $member){
             if ( $this->author!=$member->id){
                 array_push($list_names, $member->name);
             }
         }
-        $array['name'] = !empty($array['name']) ? $array['name'] : (sizeof($list_names)>1 ? implode(', ', $list_names) :  $list_names[0]);
+        $array['name'] = !empty($array['name']) ? $array['name'] : (sizeof($list_names)>=1 ? implode(', ', $list_names) :  '');
 
         $array['LastPost'] = $this->last_post!=null ? $this->LastPost : null;
         $array['AvatarSrc'] = $this->AvatarSrc;
@@ -95,6 +97,15 @@ class Chat extends Model
     public function remove(){
         $this->Posts()->update(['is_deleted'=>'1']);
         $this->update(['is_deleted'=>1]);
+    }
+
+    static function createNewChat($user_id, $users_ids){
+        //$user_chats = self::where('author', $user_id)->where('')->get();
+
+        $data = ['author'=>$user_id];
+        $chat = self::create($data);
+        $chat->Members()->sync($users_ids);
+        return $chat;
     }
 
 }

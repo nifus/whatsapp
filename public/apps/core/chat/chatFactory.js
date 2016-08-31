@@ -13,8 +13,13 @@
             createByContact: createByContact
         };
 
-        function createByContact(contact, author) {
-            return new chatService({author:author.id})
+        function createByContact(author,contact) {
+            return $http.post(window.SERVER+'/chats',{members:[contact.id]}).then(
+                function(response){
+                    return  new chatService(response.data.chat )
+                }
+            )
+
         }
 
         function getByUser(){

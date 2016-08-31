@@ -48,6 +48,7 @@ class UserController extends Controller
                 JWTAuth::invalidate(JWTAuth::getToken());
                 throw new \Exception('no user');
             }
+
             $chats = $user->Chats;
 
             return response()->json($chats->toArray());

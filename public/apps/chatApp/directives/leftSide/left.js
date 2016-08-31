@@ -42,7 +42,11 @@
             }
 
             $scope.createChat = function(contact){
-                $scope.chat = chatFactory.createByContact($scope.user, contact)
+                chatFactory.createByContact($scope.user, contact).then(function(response){
+                    $scope.chat = response;
+                    //$scope.$apply();
+                    console.log(response)
+                });
             }
 
         }
