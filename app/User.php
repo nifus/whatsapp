@@ -56,7 +56,7 @@ class User extends Authenticatable
 
     public function Chats()
     {
-        return $this->hasMany('App\Chat', 'author', 'id');
+        return $this->hasMany('App\Chat', 'author', 'id')->with('Members');
     }
 
 
@@ -80,6 +80,7 @@ class User extends Authenticatable
 
     public function getUsersAttribute()
     {
+
         $users = [];
         $contacts = $this->Contacts() ->get();
         foreach($contacts as $contact){
@@ -117,6 +118,8 @@ class User extends Authenticatable
         $this->attributes['avatar'] = $result;
     }
 
+
+
     public function delete()
     {
         $oldStatus = $this->Status;
@@ -147,6 +150,7 @@ class User extends Authenticatable
         //$this->fill($data);
        // $changed = $this->getDirty();
         $this->update($data);
+        $this->sinxContacts($data['users']);
         //event(new UserEvent('change', $old, $changed));
     }
 

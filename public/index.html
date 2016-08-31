@@ -1,5 +1,7 @@
 <html>
 <head>
+    <meta charset="utf-8">
+
     <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap-theme.min.css">
 
@@ -32,7 +34,7 @@
 
 <body ng-app="chatApp" ng-controller="mainController" >
 
-<div  id="main" ui-view>
+<div   ui-view>
 
 </div>
 
@@ -44,6 +46,7 @@
 <script src="components/satellizer/dist/satellizer.min.js"></script>
 <script src="components/angular-base64-upload/src/angular-base64-upload.js"></script>
 <script src="components/alertify.js/lib/alertify.min.js"></script>
+<script src="components/angular-hotkeys/build/hotkeys.min.js"></script>
 
 <script src="apps/core/core.js"></script>
 <script src="apps/core/cacheService.js"></script>
@@ -64,9 +67,10 @@
 <script src="apps/chatApp/signIn/signInController.js"></script>
 
 <script src="apps/chatApp/chat/chatController.js"></script>
-<script src="apps/chatApp/leftSide/contacts/contacts.js"></script>
-<script src="apps/chatApp/leftSide/profile/profile.js"></script>
-<script src="apps/chatApp/leftSide/left.js"></script>
+<script src="apps/chatApp/directives/leftSide/contacts/contacts.js"></script>
+<script src="apps/chatApp/directives/leftSide/profile/profile.js"></script>
+<script src="apps/chatApp/directives/leftSide/left.js"></script>
+<script src="apps/chatApp/directives/post/post.js"></script>
 
 <script src="apps/chatApp/users/userListController.js"></script>
 <script src="apps/chatApp/users/userFormController.js"></script>

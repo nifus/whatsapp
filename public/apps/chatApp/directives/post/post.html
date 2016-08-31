@@ -1,0 +1,29 @@
+<div class="post" ng-class="{'myself':post.isMyselfMessage(user.id),'from_me':!post.isMyselfMessage(user.id) }">
+
+    <div class="message">{{ post.is_deleted=='0' ? post.message : "Сообщение удалено"}}</div>
+
+    <div style="padding-top:5px;text-align: right;" class="time" ng-show="post.is_deleted=='0'">
+
+        <ul class="nav navbar-nav navbar-right post-menu" ng-mouseenter="expression" >
+
+
+            <li class="time" >{{post.Time}}</li>
+            <li class="status">
+                <span ng-show="post.is_read==1" style="color: #00aced" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                <span ng-show="post.is_read==0 && post.is_sent==1"  class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                <span ng-show="post.is_sent==0"  class="glyphicon glyphicon-time" aria-hidden="true"></span>
+
+            </li>
+
+            <li class="dd-menu">
+                <span data-toggle="dropdown" role="button" aria-haspopup="true"
+                      aria-expanded="false" class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+
+                <ul class="dropdown-menu">
+                    <li><a ng-click="replyToMessage()" class="link">Ответить</a></li>
+                    <li><a  ng-show="user.can_edit_myself=='1'" ng-click="remove()" class="link" ng-show="post.user_id==user.id">Удалить</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

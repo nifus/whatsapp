@@ -28,5 +28,11 @@ Route::get('signout', ['as' => 'signout', 'uses' => 'User\SignOutController@inde
 
     Route::group(['prefix' => 'chats'], function () {
         Route::put('/{id}', 'Api\ChatController@loadChat');
+        Route::post('/{id}/add-post', 'Api\ChatController@addPost');
+        Route::post('/{id}/sound', 'Api\ChatController@sound');
+
     });
 
+Route::group(['prefix' => 'posts'], function () {
+    Route::delete('/{id}', 'Api\ChatController@removePost');
+});

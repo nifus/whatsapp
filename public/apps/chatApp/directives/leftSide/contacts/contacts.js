@@ -53,5 +53,7 @@
 
             console.log($scope.env.chat)
         })
+
+
     }
 })(angular);

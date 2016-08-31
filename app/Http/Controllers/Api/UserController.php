@@ -85,7 +85,7 @@ class UserController extends Controller
     public function getById($id){
         $user = User::find($id);
         $result = $user->toArray();
-        $result['Users'] = $user->Users;
+        $result['users'] = $user->Users;
         return response()->json($result );
     }
 

@@ -16,7 +16,7 @@ class Chat extends Model
 
     public function Members()
     {
-        return $this->belongsToMany('App\User',  'chats_members','chat_id','user_id');
+        return $this->belongsToMany('App\User',  'chats_members','chat_id','user_id') ->withPivot("sound", "is_admin");
     }
 
     public function LastPost()
@@ -66,6 +66,17 @@ class Chat extends Model
 
     }
 
+    public function addPost($message, $type, $user){
+        $post =  ChatPost::addPost($this->id, $message, $type, $user);
+        $this->update(['last_post'=>$post->id]);
+        return $post;
+    }
+
+    public function updateSound($user, $flag){
+        \DB::table('chats_members')->where('user_id', $user)->where('chat_id', $this->id)->update(['sound'=>$flag]);
+        //$members = $this->Members();
+        //dd($members);
+    }
 
 }
 

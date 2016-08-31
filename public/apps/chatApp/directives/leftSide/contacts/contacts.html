@@ -1,11 +1,10 @@
-<div id="buscar">
+<div class="left-search">
     <div class="center-search">
-        <input type="text" class="form-control" ng-model="env.chat"
-               placeholder="Поиск или новый чат">
+        <input type="text" class="form-control" ng-model="env.chat"  placeholder="Поиск или новый чат">
     </div>
 </div>
 
-<div id="contacts">
+<div class="left-contacts">
     <div class="persona" ng-show="env.search_activated && env.chats.length>0"><h3>Чаты</h3></div>
 
     <div class="persona" ng-repeat="chat in env.chats" ng-click="openChat(chat)">
@@ -19,20 +18,16 @@
 
     <div class="persona" ng-show="env.search_activated && env.contacts.length>0 "><h3>Контакты</h3></div>
 
-    <div class="persona" ng-repeat="contact in env.contacts" ng-show="env.search_activated">
+    <div class="persona" ng-repeat="contact in env.contacts" ng-show="env.search_activated" ng-click="createChat(contact)">
 
         <div class="foto"><img ng-src="{{contact.AvatarSrc}}"
                                class="img-circle" width="50"></div>
         <div class="detalle-contacto">
-            <div
-                    class="nombre-contacto"
-            >{{contact.name}}
-            </div>
+            <div class="nombre-contacto">{{contact.name}}</div>
         </div>
     </div>
 
-    <div class="persona" ng-show="env.search_activated && env.contacts.length==0 && env.chats.length==0">Ничего
-        не
+    <div class="persona" ng-show="env.search_activated && env.contacts.length==0 && env.chats.length==0">Ничего не
         найдено
     </div>
 </div>

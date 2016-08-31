@@ -10,7 +10,7 @@ class ChatPost extends Model
 
 
     protected
-        $fillable = ['chat_id', 'user_id','message','is_system','is_sent','is_read','type','created_at','updated_at'],
+        $fillable = ['chat_id', 'user_id','message','is_system','is_sent','is_read','type','created_at','updated_at','is_deleted'],
         $table = 'chats_posts';
 
 
@@ -33,7 +33,29 @@ class ChatPost extends Model
         return $date->format('H:i');
     }
 
-    static function getPosts($chat_id, $start, $limit){
-        return self::where('chat_id',$chat_id)->get();
+    public function remove(){
+        $this->update(['is_deleted'=>'1']);
     }
+
+    static function getPosts($chat_id, $start, $limit){
+        return self::where('chat_id',$chat_id)->where('is_deleted','0')->orderBy('created_at','DESC')->limit(50)->get();
+    }
+
+    static function addPost($chat, $message, $type, $user,  $is_system=0){
+        $message = trim($message);
+        if ( $message==''){
+            return null;
+        }
+        return self::create([
+            'chat_id'=>$chat,
+            'user_id'=>$user,
+            'message'=>$message,
+            'type'=>$type,
+            'is_sent'=>'1',
+            'is_system'=>$is_system,
+            'is_deleted'=>'0',
+            'is_read'=>'0',
+        ]);
+    }
+
 }

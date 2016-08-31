@@ -1,6 +1,6 @@
 <div>
 
-    <div ng-show="show_contacts"  style="padding:3px;background-color: #eee;height:50px">
+    <div class="left-header" ng-show="show_contacts" >
 
         <a ng-click="openProfile()"><img ng-src="{{user.AvatarSrc}}" class="img-circle link"></a>
 
@@ -8,10 +8,7 @@
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                    aria-expanded="false" style="height:40px">
-
                     <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
-
-
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="#">Новая группа</a></li>
@@ -22,16 +19,13 @@
             </li>
         </ul>
 
-
-
-
     </div>
 
 
     <div
             ng-controller="profileController"
             ng-show="show_profile"
-            ng-include="'apps/chatApp/leftSide/profile/profile.html'">
+            ng-include="'apps/chatApp/directives/leftSide/profile/profile.html'">
         <div>
             <h4><a ng-click="openContacts()"><span class="glyphicon glyphicon-chevron-left"
                                                    aria-hidden="true"></span></a> Профиль </h4>
@@ -42,9 +36,10 @@
     </div>
 
     <div
+            style="height:91%"
             ng-controller="contactsController"
             ng-show="show_contacts"
-            ng-include="'apps/chatApp/leftSide/contacts/contacts.html'">
+            ng-include="'apps/chatApp/directives/leftSide/contacts/contacts.html'">
 
     </div>
 

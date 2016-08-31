@@ -10,10 +10,12 @@
 
         return {
             getByUser:getByUser,
-
+            createByContact: createByContact
         };
 
-
+        function createByContact(contact, author) {
+            return new chatService({author:author.id})
+        }
 
         function getByUser(){
             return $http.get(window.SERVER+'/backend/user/chats').then(

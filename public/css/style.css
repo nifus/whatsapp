@@ -12,20 +12,42 @@ body, html{
 	margin-top:20px;
 	background-color: #ffffff;border:1px solid darkgrey;
 	width: 80%;
-	min-height: 100%;
+	height: 100%;
+	min-height: 600px;
 	position: relative;
 }
 
 #left{
 	border-right: 1px solid darkgrey;padding:0;
-	min-height: 100%;
-	width:20%;
+	height: 100%;
+	min-height: 600px;
+	width:25%;
 	float:left
 }
+.left-header{
+	padding:3px;background-color: #eee; min-height: 55px;
+	height:5%
+}
+
+.left-search{
+	background: #fbfbfb;
+}
+.left-contacts{
+	overflow: auto;
+	height: inherit;
+}
+
+
+
 #center{
 	min-height: 100%;
-	width:60%;
-	float:left
+	width:55%;
+	float:left;
+	overflow: hidden;
+}
+
+.full-center{
+	width:75%!important;
 }
 #right{
 	border-left: 1px solid darkgrey;padding:0;
@@ -34,9 +56,56 @@ body, html{
 	float:left
 }
 
+.chat-info{
+	background-color: #eee;padding:3px;height:50px
+}
 
 .link{
 	cursor: pointer;
+}
+
+.message{
+	white-space:pre-wrap;
+}
+.messages{
+	background-image: url(http://1.bp.blogspot.com/-P5uqUWLgZmA/UtQDdtahipI/AAAAAAAAF3E/IgvARwfxAlw/s1600/seamless-stone-background.jpg);
+	overflow-y:auto;
+	height:87%;
+}
+.post{
+	padding:10px;
+	padding-bottom:30px;
+	 background-color:white;border-radius: 8px;margin:10px;
+}
+.post-menu{
+	padding-right:20px;
+	width:80px
+
+}
+
+.post-menu li.status{
+
+}
+
+.post-menu li.time{
+	padding-right: 5px;
+	width:40px
+
+}
+.post-menu li.dd-menu{
+	display: none;
+	cursor:pointer
+}
+
+.myself{
+	background-color:white;
+	text-align: right;
+	margin-left:40%;
+}
+.from_me{
+	background-color:greenyellow;
+	text-align: left;
+	margin-right:40%;
 }
 .img-circle {
 	width: 40px;
@@ -50,7 +119,9 @@ body, html{
 }
 
 
-
+div.input{
+	padding:10px
+}
 
 #menu{
 	padding-left: 10px;
@@ -65,9 +136,7 @@ body, html{
 	width: 250px;
 	margin-bottom: 10px;
 }
-#buscar{
-	background: #fbfbfb;
-}
+
 .center-search{
 
 	margin: auto;
@@ -102,10 +171,7 @@ body, html{
 .top-whats{
 	background: white;
 }
-#contacts{
-	overflow: auto;
-	height: 500px;
-}
+
 .detalle-contacto{
 	padding-left: 15px;
 

@@ -96,7 +96,10 @@
         $scope.$watchCollection('env.filters', function (value) {
             __reloadList();
         }, true)
-
+        $scope.logout = function(){
+            userFactory.logout();
+            window.location.href='/'
+        }
     }
 
 })();
