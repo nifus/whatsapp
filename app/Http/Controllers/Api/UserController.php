@@ -96,8 +96,8 @@ class UserController extends Controller
         $data = $request->all();
         try{
             $user = User::createNewActivatedUser($data);
-            if ( !empty($data['Users'])){
-                $user->sinxContacts($data['Users']);
+            if ( !empty($data['users'])){
+                $user->sinxContacts($data['users']);
             }
 
             return response()->json(['success'=>true]);

@@ -176,9 +176,23 @@ class User extends Authenticatable
                 continue;
             }
             array_push($contact_ids, $user->id);
+            $user->addNewContact($this->id);
+
         }
         $this->Contacts()->sync($contact_ids);
         return true;
+    }
+
+    public function addNewContact($user_id){
+        $contact_ids = [];
+        $contacts = $this->Contacts()->get();
+        foreach($contacts as $contact){
+            if ($contact->contact_id!=$user_id){
+                array_push($contact_ids, $contact->contact_id);
+            }
+        }
+        array_push($contact_ids, $user_id);
+        $this->Contacts()->sync($contact_ids);
     }
 
     static function userValidation($data, $create = true, $user_id = null)
