@@ -8,6 +8,46 @@
             var Object = data;
             Object.waiting = false;
 
+            Object.getChatName = function(user_id){
+                if ( Object.name!='' ){
+                    return Object.name;
+                }
+                var users = Object.members.filter( function(user){
+                    if (user.id!=user_id){
+                        return true;
+                    }
+                    return false;
+                });
+
+                if ( users.length==1 ){
+                    return users[0].name;
+                }else if( users.length>1 ){
+                    var names = [];
+                    for( var i in users ){
+                        names.push( users[i].name );
+                    }
+                    return names.join(', ');
+                }
+            };
+
+            Object.getChatAvatar = function(user_id){
+                if ( Object.avatar!='' ){
+                    return Object.AvatarSrc;
+                }
+                var users = Object.members.filter( function(user){
+                    if (user.id!=user_id){
+                        return true;
+                    }
+                    return false;
+                });
+                if ( users.length==1 ){
+                    return users[0].AvatarSrc;
+                }else if( users.length>1 ){
+
+                    return '/image/default_chat.jpg';
+                }
+            };
+
             Object.getPosts = function(){
                 return postFactory.getPosts(Object.id)
             };

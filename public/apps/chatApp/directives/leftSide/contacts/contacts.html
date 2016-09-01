@@ -8,9 +8,9 @@
     <div class="persona" ng-show="env.search_activated && env.chats.length>0"><h3>Чаты</h3></div>
 
     <div class="persona" ng-repeat="chat in env.chats" ng-click="openChat(chat)">
-        <div class="foto"><img ng-src="{{chat.AvatarSrc}}" class="img-circle" width="50"></div>
+        <div class="foto"><img ng-src="{{chat.getChatAvatar(user.id)}}" class="img-circle" width="50"></div>
         <div class="detalle-contacto">
-            <div class="nombre-contacto">{{chat.name}}</div>
+            <div class="nombre-contacto">{{chat.getChatName(user.id)}}</div>
             <div class="mensaje-contacto">{{chat.LastPost.message}}</div>
         </div>
         <div class="hora-chat">{{chat.LastPost.Time}}</div>

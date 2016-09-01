@@ -32,22 +32,34 @@ class Chat extends Model
     public function toArray()
     {
         $array = parent::toArray();
-        $members = $this->Members;
-        $list_names=[];
 
 
-        foreach($members as $member){
-            if ( $this->author!=$member->id){
-                array_push($list_names, $member->name);
-            }
-        }
-        $array['name'] = !empty($array['name']) ? $array['name'] : (sizeof($list_names)>=1 ? implode(', ', $list_names) :  '');
+        //$array['name'] = $this->ChatName;
 
         $array['LastPost'] = $this->last_post!=null ? $this->LastPost : null;
         $array['AvatarSrc'] = $this->AvatarSrc;
 
         return $array;
     }
+
+    /*public function getChatNameAttribute(){
+        $name = $this->attributes['name'];
+        if (!empty($name)){
+            return $name;
+        }
+
+        $members = $this->Members;
+        $list_names=[];
+        foreach($members as $member){
+
+            if ( $this->author!=$member->id){
+                array_push($list_names, $member->name);
+            }
+        }
+        dd($list_names);
+        return  (sizeof($list_names)>=1 ? implode(', ', $list_names) :  '');
+
+    }*/
 
     public function getAvatarSrcAttribute(){
         if ($this->avatar){
@@ -104,6 +116,7 @@ class Chat extends Model
 
         $data = ['author'=>$user_id];
         $chat = self::create($data);
+        array_push($users_ids,$user_id);
         $chat->Members()->sync($users_ids);
         return $chat;
     }
