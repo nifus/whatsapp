@@ -151,6 +151,8 @@ class ChatController extends Controller
 
             }
             $post->remove();
+
+            $post->Chat->updateLastPost();
             return response()->json(['success'=>true]);
 
         }catch( \Exception $e ){

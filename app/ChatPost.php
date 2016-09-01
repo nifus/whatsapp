@@ -13,6 +13,10 @@ class ChatPost extends Model
         $fillable = ['chat_id', 'user_id','message','is_system','is_sent','is_read','type','created_at','updated_at','is_deleted'],
         $table = 'chats_posts';
 
+    public function Chat()
+    {
+        return $this->hasOne('App\Chat',  'id','chat_id');
+    }
 
     public function User()
     {
@@ -35,6 +39,10 @@ class ChatPost extends Model
 
     public function remove(){
         $this->update(['is_deleted'=>'1']);
+    }
+
+    static function getLastPost($chat_id){
+        return self::where('chat_id',$chat_id)->where('is_deleted','0')->limit(1)->first();
     }
 
     static function getPosts($chat_id, $start, $limit){

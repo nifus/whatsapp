@@ -72,9 +72,21 @@ class Chat extends Model
 
     }
 
+    public function updateLastPost($post_id=null){
+        if (is_null($post_id)){
+            $post = ChatPost::getLastPost($this->id);
+            if (!is_null($post)){
+                $post_id = $post->id;
+            }else{
+                $post_id = null;
+            }
+        }
+        $this->update(['last_post'=>$post_id]);
+    }
+
     public function addPost($message, $type, $user){
         $post =  ChatPost::addPost($this->id, $message, $type, $user);
-        $this->update(['last_post'=>$post->id]);
+        $this->updateLastPost($post->id);
         return $post;
     }
 
