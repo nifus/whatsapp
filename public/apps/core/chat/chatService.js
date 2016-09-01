@@ -48,6 +48,19 @@
                 }
             };
 
+            Object.getUser = function(user_id){
+
+                var users = Object.members.filter( function(user){
+                    if (user.id!=user_id){
+                        return true;
+                    }
+                    return false;
+                });
+                if ( users.length==1 ){
+                    return users[0];
+                }
+            };
+
             Object.getPosts = function(){
                 return postFactory.getPosts(Object.id)
             };

@@ -84,6 +84,14 @@
             console.log($scope.user.chats)
         };
 
+        $scope.openProfile = function(user){
+            $scope.env.show_add_info = true;
+            $scope.env.add_info = user;
+        }
+        $scope.closeProfile = function(){
+            $scope.env.show_add_info = false;
+        }
+
         hotkeys.add({
             combo: 'enter',
             action: 'keydown',

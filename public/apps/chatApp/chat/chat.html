@@ -7,7 +7,7 @@
 
 
             <div class="chat-info">
-                <a href="" style="font-size: 18px">
+                <a ng-click="openProfile(env.chat.getUser(user.id))" style="font-size: 18px">
                     <img ng-src="{{env.chat.getChatAvatar(user.id)}}" class="img-circle link" style="margin-right:30px">{{env.chat.getChatName(user.id)}}</a>
 
                 <ul class="nav navbar-nav navbar-right" style="padding-right:20px;">
@@ -74,29 +74,25 @@
 
 
             <ul class="nav navbar-nav ">
-                <li>
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false" style="height:40px">
-                        <span class=" glyphicon glyphicon-open" aria-hidden="true"></span>
-                    </a>
+                <li style="padding:10px">
+
+                    <a class="link" ng-click="closeProfile()" style="display: inline"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+
+                    Информация о контакте
                 </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false" style="height:40px">
 
-                        <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
-
-
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a ng-click="env.show_add_info=true">Информация о контакте</a></li>
-                        <li><a ng-click="openProfile()" class="link">Без звука</a></li>
-                        <li><a ng-click="openProfile()" class="link">Очистить чат</a></li>
-                        <li><a ng-click="openProfile()" class="link">Удалить чат</a></li>
-                    </ul>
-                </li>
             </ul>
 
+
+        </div>
+        <div style="
+    height: 100%;
+    text-align: center;
+    padding: 20px;
+">
+            <img style="width: 150px" ng-src="{{env.add_info.AvatarSrc}}" alt="">
+
+            <div><strong>Login:</strong> {{env.add_info.login}}</div>
 
         </div>
     </div>
