@@ -26,12 +26,12 @@
             $scope.show_profile = false;
 
 
-            /*$scope.openProfile = function(){
+            $scope.openProfile = function(){
                 $scope.show_contacts=false;$scope.show_profile = true
             }
-            $scope.openContacts = function(){
+             $scope.openContacts = function(){
                 $scope.show_contacts=true;$scope.show_profile = false
-            };*/
+            };
             $scope.logout = function(){
                 userFactory.logout();
             }
