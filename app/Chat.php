@@ -42,24 +42,7 @@ class Chat extends Model
         return $array;
     }
 
-    /*public function getChatNameAttribute(){
-        $name = $this->attributes['name'];
-        if (!empty($name)){
-            return $name;
-        }
 
-        $members = $this->Members;
-        $list_names=[];
-        foreach($members as $member){
-
-            if ( $this->author!=$member->id){
-                array_push($list_names, $member->name);
-            }
-        }
-        dd($list_names);
-        return  (sizeof($list_names)>=1 ? implode(', ', $list_names) :  '');
-
-    }*/
 
     public function getAvatarSrcAttribute(){
         if ($this->avatar){

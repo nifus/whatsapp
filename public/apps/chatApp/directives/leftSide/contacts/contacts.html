@@ -13,7 +13,13 @@
             <div class="nombre-contacto">{{chat.getChatName(user.id)}}</div>
             <div class="mensaje-contacto">{{chat.LastPost.message}}</div>
         </div>
-        <div class="hora-chat">{{chat.LastPost.Time}}</div>
+        <div class="hora-chat" style="float: left;
+    width: 50px;
+    text-align: center;margin:5px;padding:0px">
+            {{chat.LastPost.Time}} <br>
+
+            <span class="badge" ng-show="chat.CountUnreadMessages>0">{{chat.CountUnreadMessages}}</span>
+        </div>
     </div>
 
     <div class="persona" ng-show="env.search_activated && env.contacts.length>0 "><h3>Контакты</h3></div>

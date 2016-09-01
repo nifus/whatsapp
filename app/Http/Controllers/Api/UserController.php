@@ -8,6 +8,7 @@ use JWTAuth;
 use Mockery\CountValidator\Exception;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\User;
+use App\ChatPost;
 
 
 use App\Events\SignInErrorEvent;
@@ -50,8 +51,14 @@ class UserController extends Controller
             }
 
             $chats = $user->Chats;
+            $result = [];
+            foreach( $chats as $chat ){
+                array_push($result,array_merge($chat->toArray(),['CountUnreadMessages'=>ChatPost::getCountUnreadPosts($chat->id, $user->id)]));
+            }
 
-            return response()->json($chats->toArray());
+
+
+            return response()->json($result);
         }catch( \Exception $e ){
 
             dd($e->getMessage());
