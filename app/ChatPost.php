@@ -59,8 +59,14 @@ class ChatPost extends Model
     }
 
     static function getCountUnreadPosts($chat_id, $user_id){
-        
+
         return self::where('chat_id', $chat_id)->where('user_id','!=',$user_id)->where('is_read','0')->where('is_deleted','0')->count();
     }
+
+    static function readPosts4User($chat_id, $user_id){
+        return self::where('chat_id', $chat_id)->where('user_id','!=',$user_id)->where('is_read','0')->where('is_deleted','0')->update(['is_read'=>'1']);
+
+    }
+
 
 }

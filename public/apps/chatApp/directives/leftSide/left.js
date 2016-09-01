@@ -38,14 +38,13 @@
 
 
             $scope.openChat = function(chat){
-                $scope.chat = chat
+                $scope.chat = chat;
+                $scope.chat.CountUnreadMessages = 0;
             }
 
             $scope.createChat = function(contact){
                 chatFactory.createByContact($scope.user, contact).then(function(response){
                     $scope.chat = response;
-                    //$scope.$apply();
-                    console.log(response)
                 });
             }
 

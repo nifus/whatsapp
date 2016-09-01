@@ -94,6 +94,10 @@ class Chat extends Model
         $this->update(['is_deleted'=>1]);
     }
 
+    public function readPosts4User($user_id){
+        ChatPost::readPosts4User($this->id, $user_id);
+    }
+
     static function createNewChat($user_id, $users_ids){
         //$user_chats = self::where('author', $user_id)->where('')->get();
 

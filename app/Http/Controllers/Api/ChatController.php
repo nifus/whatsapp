@@ -59,6 +59,8 @@ class ChatController extends Controller
             throw new \Exception('no cht');
         }
         $posts = $chat->getPosts($data['start'],$data['count']);
+        $chat->readPosts4User($user->id);
+
         return response()->json(['success'=>true,'posts'=>$posts->toArray()]);
 
     }
