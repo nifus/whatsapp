@@ -9,26 +9,28 @@
         var $promises = [];
         $scope.env = {
             chat: '',
-            chats:[],
-            contacts:[],
+            //chats:[],
+            //contacts:[],
             search_activated: false
 
         };
 
 
 
-        $scope.$watch('user', function(value){
+        $scope.$watch('user.contacts', function(value){
             if (value){
-                $promises.push( $scope.user.getAllContacts().then(function (contacts) {
-                    $scope.env.contacts = contacts;
-                    $scope.env.source_contacts = contacts;
-                }) );
-                $promises.push( $scope.user.getAllChats().then(function (chats) {
-                    $scope.env.chats = chats;
-                    $scope.env.source_chats = chats;
-                }) );
+                    $scope.env.contacts = value;
+                    $scope.env.source_contacts = value;
             }
         });
+        $scope.$watch('user.chats', function(value){
+            if (value){
+                $scope.env.chats = value;
+                $scope.env.source_chats = value;
+
+            }
+        });
+
 
         $scope.$watch('env.chat', function(value){
             value = value.toLowerCase();

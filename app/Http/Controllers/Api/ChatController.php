@@ -33,6 +33,8 @@ class ChatController extends Controller
             }
             $data = $request->all();
             $chat = Chat::createNewChat($user->id,$data['members']);
+            $chat = Chat::with('Members')->with('LastPost')->find($chat->id);
+
             return response()->json(['success'=>true,'chat'=>$chat->toArray()]);
 
         }catch( \Exception $e ){

@@ -105,6 +105,8 @@ class Chat extends Model
         $chat = self::create($data);
         array_push($users_ids,$user_id);
         $chat->Members()->sync($users_ids);
+       // $chat
+
         return $chat;
     }
 

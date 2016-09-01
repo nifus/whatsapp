@@ -34,6 +34,14 @@
                 return false;
             }
 
+            user.getAllContacts().then(function (contacts) {
+                user.contacts = contacts;
+                //$scope.env.source_contacts = contacts;
+            });
+            user.getAllChats().then(function (chats) {
+                user.chats = chats;
+                //$scope.env.source_chats = chats;
+            });
         });
         $scope.promises.push(userPromise);
         /*userFactory.refresh().then(function(){
@@ -41,7 +49,7 @@
         });*/
 
         $q.all($scope.promises).then(function () {
-            console.log('mainController loaded');
+           // console.log('mainController loaded');
             $scope.loaded = true;
             execute();
         });

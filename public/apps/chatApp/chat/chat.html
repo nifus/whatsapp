@@ -1,24 +1,85 @@
 <div id="main">
-<div  id="left">
-    <left user="user" chat="env.chat" style="height:100%"></left>
-</div>
-<div  id="center" ng-class="{'full-center':env.show_add_info==false}">
-    <div  ng-show="env.chat">
+    <div id="left">
+        <left user="user" chat="env.chat" style="height:100%"></left>
+    </div>
+    <div id="center" ng-class="{'full-center':env.show_add_info==false}">
+        <div ng-show="env.chat">
 
 
-        <div class="chat-info"  >
-            <a href="" style="font-size: 18px">
-                <img ng-src="/image/default.jpg" class="img-circle link" style="margin-right:30px">{{env.chat.name}}</a>
+            <div class="chat-info">
+                <a href="" style="font-size: 18px">
+                    <img ng-src="{{env.chat.getChatAvatar(user.id)}}" class="img-circle link" style="margin-right:30px">{{env.chat.getChatName(user.id)}}</a>
 
-            <ul class="nav navbar-nav navbar-right" style="padding-right:20px;">
+                <ul class="nav navbar-nav navbar-right" style="padding-right:20px;">
 
-                <li ng-show="user.can_upload_files=='1'">
+                    <li ng-show="user.can_upload_files=='1'">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false" style="height:40px">
+                            <span class=" glyphicon glyphicon-open" aria-hidden="true"></span></a>
+
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false" style="height:40px">
+
+                            <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="link" ng-click="env.show_add_info=true">Информация о контакте</a></li>
+                            <li><a ng-show="env.chat.IsEnabledSound(user.id)" ng-click="disableSound(env.chat, user.id)"
+                                   class="link">Без звука</a></li>
+                            <li><a ng-show="env.chat.IsDisabledSound(user.id)" ng-click="enableSound(env.chat, user.id)"
+                                   class="link">Вкл. звук</a></li>
+                            <li><a ng-show="user.can_edit_myself=='1'" ng-click="clearChat(env.chat)" class="link">Очистить
+                                чат</a></li>
+                            <li><a ng-show="user.can_edit_myself=='1'" ng-click="deleteChat(env.chat)" class="link">Удалить
+                                чат</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="messages" scroll-glue>
+                <post ng-repeat="post in env.chat.posts |orderBy:'-created_at':true" post="post"
+                      is-select-post="selected_post" user="user"></post>
+            </div>
+
+            <div class="input">
+                <!--<div>
+                    <p>name</p>
+                    <p>121212 1e1c312312312</p>
+                </div>-->
+                <textarea placeholder="Введите сообщение" class="form-control" ng-model="env.message"></textarea>
+            </div>
+            <!--<div class="col-md-8 left" style="text-align: center">
+                            <pre style="white-space:pre-wrap; width:500px;background-color:darkseagreen;border-radius: 2%;margin:10px">
+                                Заголовок
+                            </pre>
+            </div>
+            <div class="col-md-12 right">3</div>-->
+        </div>
+        <div ng-show="!env.chat">
+            <h2 style="text-align: center">Добро пожаловать к нам в чат</h2>
+            <div style="text-align: center"><img src="http://s0.tchkcdn.com/fun/g2/s/1/1/0/5/5105/49333_10cb.jpeg"
+                                                 alt=""></div>
+
+
+        </div>
+    </div>
+    <div id="right" ng-show="env.show_add_info==true">
+        <div style="background-color: #eee;padding:3px;height:50px;">
+
+
+            <ul class="nav navbar-nav ">
+                <li>
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false" style="height:40px">
-                        <span class=" glyphicon glyphicon-open" aria-hidden="true"></span></a>
-
+                        <span class=" glyphicon glyphicon-open" aria-hidden="true"></span>
+                    </a>
                 </li>
-
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false" style="height:40px">
@@ -28,73 +89,17 @@
 
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="link" ng-click="env.show_add_info=true">Информация о контакте</a></li>
-                        <li><a ng-show="env.chat.IsEnabledSound(user.id)" ng-click="disableSound(env.chat, user.id)" class="link">Без звука</a></li>
-                        <li><a ng-show="env.chat.IsDisabledSound(user.id)" ng-click="enableSound(env.chat, user.id)" class="link">Вкл. звук</a></li>
-                        <li><a ng-show="user.can_edit_myself=='1'" ng-click="clearChat(env.chat)" class="link">Очистить чат</a></li>
-                        <li><a ng-show="user.can_edit_myself=='1'" ng-click="deleteChat(env.chat)" class="link">Удалить чат</a></li>
+                        <li><a ng-click="env.show_add_info=true">Информация о контакте</a></li>
+                        <li><a ng-click="openProfile()" class="link">Без звука</a></li>
+                        <li><a ng-click="openProfile()" class="link">Очистить чат</a></li>
+                        <li><a ng-click="openProfile()" class="link">Удалить чат</a></li>
                     </ul>
                 </li>
             </ul>
-        </div>
 
-        <div class="messages" scroll-glue>
-                <post ng-repeat="post in env.chat.posts |orderBy:'-created_at':true" post="post" is-select-post="selected_post" user="user"> </post>
-        </div>
 
-        <div class="input">
-            <!--<div>
-                <p>name</p>
-                <p>121212 1e1c312312312</p>
-            </div>-->
-            <textarea placeholder="Введите сообщение" class="form-control"  ng-model="env.message"  ></textarea>
         </div>
-        <!--<div class="col-md-8 left" style="text-align: center">
-                        <pre style="white-space:pre-wrap; width:500px;background-color:darkseagreen;border-radius: 2%;margin:10px">
-                            Заголовок
-                        </pre>
-        </div>
-        <div class="col-md-12 right">3</div>-->
     </div>
-    <div ng-show="!env.chat" >
-        <h2 style="text-align: center">Добро пожаловать к нам в чат</h2>
-        <div style="text-align: center"><img src="http://s0.tchkcdn.com/fun/g2/s/1/1/0/5/5105/49333_10cb.jpeg" alt=""></div>
-
-
-    </div>
-</div>
-<div  id="right" ng-show="env.show_add_info==true">
-    <div  style="background-color: #eee;padding:3px;height:50px;">
-
-
-        <ul class="nav navbar-nav " >
-            <li>
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false" style="height:40px">
-                    <span class=" glyphicon glyphicon-open" aria-hidden="true"></span>
-                </a>
-            </li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false" style="height:40px">
-
-                    <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
-
-
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a ng-click="env.show_add_info=true">Информация о контакте</a></li>
-                    <li><a ng-click="openProfile()" class="link">Без звука</a></li>
-                    <li><a ng-click="openProfile()" class="link">Очистить чат</a></li>
-                    <li><a ng-click="openProfile()" class="link">Удалить чат</a></li>
-                </ul>
-            </li>
-        </ul>
-
-
-
-    </div>
-</div>
 </div>
 <!--
 

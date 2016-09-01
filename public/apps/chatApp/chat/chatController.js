@@ -30,8 +30,6 @@
 
             chat.getPosts().then(function (response) {
                 chat.posts = response;
-                //$('div.messages').scrollTop(99999)
-                console.log(response)
             })
         });
 
@@ -74,8 +72,18 @@
                     alertify.success('Чат удален');
                     $scope.env.chat = null;
                 }
-            })
-        }
+            });
+            console.log($scope.user.chats)
+
+            $scope.user.chats = $scope.user.chats.filter( function(el){
+                if (el.id==chat.id){
+                    return false;
+                }
+                return true;
+            });
+            console.log($scope.user.chats)
+        };
+
         hotkeys.add({
             combo: 'enter',
             action: 'keydown',
