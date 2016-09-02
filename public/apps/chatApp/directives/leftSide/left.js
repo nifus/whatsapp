@@ -9,41 +9,47 @@
             link: leftLink,
             templateUrl: 'apps/chatApp/directives/leftSide/left.html',
             scope: {
-                user:'=',
-                chat:'='
+                user: '=',
+                chat: '='
             }
         };
 
-        leftController.$inject = ['$scope', '$state', 'userFactory', 'chatFactory','$q'];
+        leftController.$inject = ['$scope', 'userFactory', 'chatFactory', '$q'];
 
-        function leftLink($scope,element) {
+        function leftLink($scope, element) {
         }
-        function leftController($scope, $state, userFactory, chatFactory,$q) {
-            $scope.env = {
+
+        function leftController($scope, userFactory, chatFactory, $q) {
+            $scope.dialog = 'group';
+
+
+
+
+            $scope.openGroupDialog = function () {
+                $scope.dialog = 'group';
 
             };
-            $scope.show_contacts = true;
-            $scope.show_profile = false;
+            $scope.openProfile = function () {
+                $scope.dialog = 'profile';
 
-
-            $scope.openProfile = function(){
-                $scope.show_contacts=false;$scope.show_profile = true
-            }
-             $scope.openContacts = function(){
-                $scope.show_contacts=true;$scope.show_profile = false
             };
-            $scope.logout = function(){
+
+            $scope.openContacts = function () {
+                $scope.dialog = 'contacts';
+            };
+
+            $scope.logout = function () {
                 userFactory.logout();
-            }
+            };
 
 
-            $scope.openChat = function(chat){
+            $scope.openChat = function (chat) {
                 $scope.chat = chat;
                 $scope.chat.CountUnreadMessages = 0;
-            }
+            };
 
-            $scope.createChat = function(contact){
-                chatFactory.createByContact($scope.user, contact).then(function(response){
+            $scope.createChat = function (contact) {
+                chatFactory.createByContact($scope.user, contact).then(function (response) {
                     $scope.chat = response;
                     $scope.user.chats.push(response);
                 });

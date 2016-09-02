@@ -21,7 +21,7 @@
                 if (response.success == false) {
                     alertify.error(response.error);
                 } else {
-                    alertify.success('Измнения сохранены');
+                    alertify.success('Изменения сохранены');
                 }
             })
         }

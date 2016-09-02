@@ -10,9 +10,24 @@
 
         return {
             getByUser:getByUser,
-            createByContact: createByContact
+            createByContact: createByContact,
+            createGroup: createGroup
         };
 
+        function createGroup(data) {
+            console.log(data)
+            var contact_ids = [];
+            for( var i in data['contacts']){
+                contact_ids.push( data['contacts'][i].id)
+            }
+            data['contacts'] = contact_ids;
+            return $http.post(window.SERVER+'/chats/group',data).then(
+                function(response){
+                    return  new chatService(response.data.chat )
+                }
+            )
+
+        }
         function createByContact(author,contact) {
             return $http.post(window.SERVER+'/chats',{members:[contact.id]}).then(
                 function(response){

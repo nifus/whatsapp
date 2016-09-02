@@ -42,7 +42,22 @@ class Chat extends Model
         return $array;
     }
 
-
+    public function setAvatarAttribute($value){
+        if (is_array($value)  && isset($value[0]) && isset($value[0]['base64'])) {
+            $name = time() . rand(1, 10000) . '.' . pathinfo($value[0]['filename'], PATHINFO_EXTENSION);
+            file_put_contents(public_path('uploads/avatar/' . $name), base64_decode($value[0]['base64']));
+            $result = $name;
+        }elseif (is_array($value)  && isset($value['base64'])) {
+            $name = time() . rand(1, 10000) . '.' . pathinfo($value['filename'], PATHINFO_EXTENSION);
+            file_put_contents(public_path('uploads/avatar/' . $name), base64_decode($value['base64']));
+            $result = $name;
+        }elseif (is_array($value)  && isset($value[0]) && is_string($value[0])) {
+            $result = basename($value[0]);
+        }else{
+            $result = null;
+        }
+        $this->attributes['avatar'] = $result;
+    }
 
     public function getAvatarSrcAttribute(){
         if ($this->avatar){
@@ -117,6 +132,18 @@ class Chat extends Model
         $chat = self::create($data);
         array_push($users_ids,$user_id);
         $chat->Members()->sync($users_ids);
+       // $chat
+
+        return $chat;
+    }
+    static function createNewGroup($user_id, $data){
+        //$user_chats = self::where('author', $user_id)->where('')->get();
+
+        $chat_array = ['author'=>$user_id, 'is_group'=>1, 'avatar'=>$data['avatar'], 'name'=>$data['name']];
+        $chat = self::create($chat_array);
+        array_push($data['contacts'],$user_id);
+        $chat->Members()->sync($data['contacts']);
+        \DB::table('chats_members')->where('chat_id',$chat->id)->where('user_id', $user_id)->update(['is_admin'=>'1']);
        // $chat
 
         return $chat;

@@ -9,12 +9,8 @@
         var $promises = [];
         $scope.env = {
             chat: '',
-            //chats:[],
-            //contacts:[],
             search_activated: false
-
         };
-
 
 
         $scope.$watch('user.contacts', function(value){
