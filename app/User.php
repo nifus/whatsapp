@@ -53,6 +53,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\User', 'users_contacts', 'user_id', 'contact_id');
     }
+    public function BackContacts()
+    {
+        return $this->belongsToMany('App\User', 'users_contacts', 'contact_id', 'user_id');
+    }
 
     public function Chats()
     {
@@ -180,14 +184,35 @@ class User extends Authenticatable
                 continue;
             }
             array_push($contact_ids, $user->id);
-            $user->addNewContact($this->id);
-
+           // $user->addNewContact($this->id);
         }
         $this->Contacts()->sync($contact_ids);
+
+
         return true;
     }
 
-    public function addNewContact($user_id){
+    public function getContacts(){
+        $contacts = $this->Contacts;
+        $back_contacts = $this->BackContacts;
+        $ids = [];
+        $result = [];
+        foreach( $contacts as $contact ){
+            if ( !in_array($contact->id,$ids) ){
+                array_push($ids, $contact->id);
+                array_push($result,$contact);
+            }
+        }
+        foreach( $back_contacts as $contact ){
+            if ( !in_array($contact->id,$ids) ){
+                array_push($ids, $contact->id);
+                array_push($result,$contact);
+            }
+        }
+        return $result;
+    }
+
+    /*public function addNewContact($user_id){
         $contact_ids = [];
         $contacts = $this->Contacts()->get();
         foreach($contacts as $contact){
@@ -197,7 +222,7 @@ class User extends Authenticatable
         }
         array_push($contact_ids, $user_id);
         $this->Contacts()->sync($contact_ids);
-    }
+    }*/
 
     static function userValidation($data, $create = true, $user_id = null)
     {

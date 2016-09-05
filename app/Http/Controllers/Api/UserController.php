@@ -32,8 +32,10 @@ class UserController extends Controller
                 JWTAuth::invalidate(JWTAuth::getToken());
                 throw new \Exception('no user');
             }
-            $contacts = $user->Contacts;
-            return response()->json($contacts->toArray()  );
+            $contacts = $user->getContacts();
+
+
+            return response()->json($contacts  );
         }catch( \Exception $e ){
             return response()->json( null );
         }
@@ -96,7 +98,13 @@ class UserController extends Controller
     public function getById($id){
         $user = User::find($id);
         $result = $user->toArray();
-        $result['users'] = $user->Users;
+
+        $contacts = $user->getContacts();
+        $names=[];
+        foreach( $contacts as $contact ){
+            array_push($names, $contact->login);
+        }
+        $result['users'] = implode(',',$names);
         return response()->json($result );
     }
 

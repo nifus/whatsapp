@@ -2,6 +2,7 @@
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <li><a ui-sref="users" >Пользователи</a></li>
                 <li><a href="#" ng-click="logout()" >Выход</a></li>
 
             </ul>
@@ -105,6 +106,9 @@
 
                     <button type="button" ng-disabled="userForm.$invalid || env.user.waiting==true"
                             ng-click="save( env.model )" class="btn btn-default">Сохранить
+                    </button>
+
+                    <button type="button" ui-sref="users" class="btn btn-danger">Назад
                     </button>
                 </form>
             </div>
