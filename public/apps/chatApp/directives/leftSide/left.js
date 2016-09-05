@@ -20,7 +20,7 @@
         }
 
         function leftController($scope, userFactory, chatFactory, $q) {
-            $scope.dialog = 'group';
+            $scope.dialog = 'contacts';
 
 
 
