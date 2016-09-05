@@ -45,7 +45,7 @@ class UserController extends Controller
             if ( is_null($user) ){
                 throw new \Exception('no user');
             }
-            if ( $user->is_delete=='1' ){
+            if ( $user->is_deleted=='1' ){
                 JWTAuth::invalidate(JWTAuth::getToken());
                 throw new \Exception('no user');
             }
@@ -55,9 +55,6 @@ class UserController extends Controller
             foreach( $chats as $chat ){
                 array_push($result,array_merge($chat->toArray(),['CountUnreadMessages'=>ChatPost::getCountUnreadPosts($chat->id, $user->id)]));
             }
-
-
-
             return response()->json($result);
         }catch( \Exception $e ){
 

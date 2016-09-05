@@ -78,16 +78,19 @@
         </div>
     </div>
     <div id="right" ng-show="env.show_add_info==true">
-        <div style="background-color: #eee;padding:3px;height:50px;">
+        <div style="background-color: #eee;padding:3px;height:55px;">
 
 
             <ul class="nav navbar-nav ">
                 <li style="padding:10px">
 
-                    <a class="link" ng-click="closeProfile()" style="display: inline"><span
+                    <a class="link" ng-click="closeProfile()" style="display: inline;float:left"><span
                             class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                    <div style="vertical-align: top;float:left">
+                        {{env.chat.is_group==0 ? 'Информация о контакте' : 'Информация о группе'}}
+                        <p style="font-size: 12px">{{env.chat.is_group==0 ? env.chat.status : 'Создана '+ env.chat.created_at }} </p>
+                    </div>
 
-                    Информация о контакте
                 </li>
 
             </ul>

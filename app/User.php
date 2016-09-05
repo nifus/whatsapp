@@ -151,7 +151,10 @@ class User extends Authenticatable
         //$this->fill($data);
        // $changed = $this->getDirty();
         $this->update($data);
-        $this->sinxContacts($data['users']);
+        if ( isset($data['users'])){
+            $this->sinxContacts($data['users']);
+        }
+
         //event(new UserEvent('change', $old, $changed));
     }
 
