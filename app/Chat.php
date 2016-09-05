@@ -62,7 +62,7 @@ class Chat extends Model
     public function getAvatarSrcAttribute(){
         if ($this->avatar){
             return '/uploads/avatar/'.$this->attributes['avatar'];
-        }elseif ($this->last_post!=null){
+        }elseif ($this->last_post>0){
                 return $this->LastPost->User->AvatarSrc;
         }else{
             return null;
