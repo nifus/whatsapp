@@ -23,6 +23,7 @@ Route::get('signout', ['as' => 'signout', 'uses' => 'User\SignOutController@inde
         Route::get('/logout', 'Api\UserController@logout');
         Route::post('/{id}', 'Api\UserController@update');
         Route::get('/update-token', 'Api\UserController@updateToken');
+        Route::get('/get-status/{user_id}', 'Api\UserController@getStatus');
     });
 
 

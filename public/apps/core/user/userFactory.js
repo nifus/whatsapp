@@ -10,6 +10,7 @@
 
         return {
             refresh: refresh,
+            getStatus: getStatus,
             isAuthenticated: isAuthenticated,
             login: login,
             logout: logout,
@@ -19,6 +20,11 @@
             getById:getById,
             store:store
         };
+
+        function getStatus(user_id){
+            return $http.get(window.SERVER+'/backend/user/get-status/'+user_id)
+
+        }
 
         function refresh(){
             return $http.get(window.SERVER+'/backend/user/update-token').then( function(response){

@@ -1,12 +1,21 @@
 (function (angular, window) {
     'use strict';
     angular.module('core').service('chatService', chatService);
-    chatService.$inject = ['postFactory','$http'];
+    chatService.$inject = ['postFactory','$http','userFactory'];
 
-    function chatService( postFactory, $http) {
+    function chatService( postFactory, $http, userFactory) {
         return function (data) {
             var Object = data;
             Object.waiting = false;
+
+            Object.isAdmin = function(user_id){
+                for( var i in Object.members ){
+                    if ( Object.members[i].id==user_id && Object.members[i].pivot.is_admin=="1" ){
+                        return true;
+                    }
+                }
+                return false;
+            };
 
             Object.getChatName = function(user_id){
                 if ( Object.name!='' ){
@@ -45,6 +54,39 @@
                 }else if( users.length>1 ){
 
                     return '/image/default_chat.jpg';
+                }
+            };
+
+            Object.getChatStatus = function(user_id){
+                Object.status = Object.is_group==1 ?  'Информация о группе' : 'Информация о пользователе';
+
+                if ( Object.is_group==0 ){
+                    var users = Object.members.filter( function(user){
+                        if (user.id!=user_id){
+                            return true;
+                        }
+                        return false;
+                    });
+
+                    if ( users.length==1 ){
+                        userFactory.getStatus(users[0].id).then(function(response){
+                            if ( response.data.online===true ){
+                                Object.status = 'online'
+                            }else{
+                                Object.status = 'был(-а): суббота в 08:35';
+                            }
+                        })
+                    }
+                }else{
+                    var names = [];
+                    for( var i in  Object.members ){
+                        if ( Object.members[i].id==user_id ){
+                            names.push('Вы')
+                        }else{
+                            names.push(  Object.members[i].name );
+                        }
+                    }
+                    Object.status = names.join(', ');
                 }
             };
 

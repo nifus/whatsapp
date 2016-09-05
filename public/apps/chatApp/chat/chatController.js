@@ -30,7 +30,9 @@
 
             chat.getPosts().then(function (response) {
                 chat.posts = response;
-            })
+            });
+
+            chat.getChatStatus($scope.user.id);
         });
 
 

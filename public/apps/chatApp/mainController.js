@@ -2,9 +2,9 @@
     'use strict';
     angular.module('chatApp').controller('mainController', mainController);
 
-    mainController.$inject=['$scope',  '$q','userFactory','$state'];
+    mainController.$inject=['$scope',  '$q','userFactory','$state','chatFactory'];
 
-    function mainController($scope,  $q, userFactory,$state) {
+    function mainController($scope,  $q, userFactory,$state,chatFactory) {
         $scope.env = {
             loading : true,
             config : [],
@@ -38,7 +38,7 @@
                 user.contacts = contacts;
                 //$scope.env.source_contacts = contacts;
             });
-            user.getAllChats().then(function (chats) {
+            chatFactory.getByUser().then(function (chats) {
                 user.chats = chats;
                 //$scope.env.source_chats = chats;
             });

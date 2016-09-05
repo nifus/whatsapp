@@ -1,9 +1,9 @@
 (function (angular, window) {
     'use strict';
     angular.module('core').service('userService', userService);
-    userService.$inject = ['$http', 'chatFactory'];
+    userService.$inject = ['$http'];
 
-    function userService($http, chatFactory) {
+    function userService($http) {
         return function (data) {
             var Object = data;
             Object.waiting = false;
@@ -48,10 +48,9 @@
                 )
             };
 
-            Object.getAllChats = function(){
-                return chatFactory.getByUser()
 
-            };
+
+
 
             Object.hasAdminGroup = function(){
                 if (Object.group_id==1){

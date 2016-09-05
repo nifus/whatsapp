@@ -66,7 +66,10 @@ class UserController extends Controller
         }
     }
 
+    public function getStatus(){
+        return response()->json( ['online'=>true, 'last_active'=>null] );
 
+    }
 
 
     public function getAuth()

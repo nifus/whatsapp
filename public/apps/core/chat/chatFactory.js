@@ -15,7 +15,7 @@
         };
 
         function createGroup(data) {
-            console.log(data)
+
             var contact_ids = [];
             for( var i in data['contacts']){
                 contact_ids.push( data['contacts'][i].id)

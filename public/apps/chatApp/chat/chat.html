@@ -4,11 +4,19 @@
     </div>
     <div id="center" ng-class="{'full-center':env.show_add_info==false}">
         <div ng-show="env.chat">
-
-
             <div class="chat-info">
-                <a ng-click="openProfile(env.chat.getUser(user.id))" style="font-size: 18px">
-                    <img ng-src="{{env.chat.getChatAvatar(user.id)}}" class="img-circle link" style="margin-right:30px">{{env.chat.getChatName(user.id)}}</a>
+
+
+                <img ng-click="openProfile(env.chat.getUser(user.id))" ng-src="{{env.chat.getChatAvatar(user.id)}}"
+                     class="img-circle link" style="margin-right:30px;float:left">
+
+                <div style="vertical-align: top;width:200px;float:left">
+                    <a ng-click="openProfile(env.chat.getUser(user.id))" style="font-size: 18px" class="link">{{env.chat.getChatName(user.id)}}</a>
+
+                    <p style="font-size: 12px" >{{env.chat.status}}</p>
+                </div>
+
+
 
                 <ul class="nav navbar-nav navbar-right" style="padding-right:20px;">
 
@@ -52,7 +60,7 @@
                     <p>name</p>
                     <p>121212 1e1c312312312</p>
                 </div>-->
-                <textarea placeholder="Введите сообщение" class="form-control" ng-model="env.message"></textarea>
+                <textarea ng-disabled="!env.chat.isAdmin(user.id) && env.chat.is_group==1" placeholder="Введите сообщение" class="form-control" ng-model="env.message"></textarea>
             </div>
             <!--<div class="col-md-8 left" style="text-align: center">
                             <pre style="white-space:pre-wrap; width:500px;background-color:darkseagreen;border-radius: 2%;margin:10px">
@@ -76,7 +84,8 @@
             <ul class="nav navbar-nav ">
                 <li style="padding:10px">
 
-                    <a class="link" ng-click="closeProfile()" style="display: inline"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                    <a class="link" ng-click="closeProfile()" style="display: inline"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
 
                     Информация о контакте
                 </li>
