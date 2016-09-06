@@ -8,6 +8,20 @@
             var Object = data;
             Object.waiting = false;
 
+            Object.addMember = function(user){
+                return $http.post( '/chats/'+Object.id+'/'+user.id).then(function (response) {
+                    if (response.data.success==true){
+
+                        user.pivot = {
+                                is_admin:"0",
+                                sound:"1"
+                        };
+                        Object.members.push(user)
+                    }
+                    return response.data;
+                })
+            };
+
             Object.removeMember = function(user_id){
                 return $http.delete( '/chats/'+Object.id+'/'+user_id).then(function (response) {
                     if (response.data.success==true){
@@ -195,6 +209,24 @@
                     return true;
                 }
                 return false;
+            };
+
+            Object.updateName = function(name){
+                return $http.put( '/chats/'+Object.id,{ name: name }).then(function (response) {
+                    if (response.data.success==true){
+                        Object.name = name;
+                    }
+                    return response.data;
+                })
+            };
+            Object.updateAvatar = function(value){
+                return $http.put( '/chats/'+Object.id,{ avatar: value}).then(function (response) {
+                    if (response.data.success==true){
+                        Object.avatar = response.data.avatar;
+                        Object.AvatarSrc = response.data.avatar;
+                    }
+                    return response.data;
+                })
             };
             return Object;
         };

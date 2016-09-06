@@ -20,6 +20,26 @@ class ChatController extends Controller
         $this->middleware('jwt.auth', []);
     }
 
+    public function addMember($chat, $member){
+        try{
+            $user = JWTAuth::parseToken()->authenticate();
+            if ( is_null($user) ){
+                throw new \Exception('no user');
+            }
+            if ( $user->is_delete=='1' ){
+                JWTAuth::invalidate(JWTAuth::getToken());
+                throw new \Exception('no user');
+            }
+            $chat = Chat::find($chat);
+            $chat->addMember($member);
+            return response()->json(['success'=>true]);
+
+        }catch( \Exception $e ){
+            return response()->json(['success'=>false,'error'=>$e->getMessage()]);
+
+        }
+    }
+
     public function removeMember($chat, $member){
         try{
         $user = JWTAuth::parseToken()->authenticate();
@@ -87,9 +107,28 @@ class ChatController extends Controller
 
     }
 
-    public function loadChat($id, Request $request){
+    public function updateChat($id, Request $request){
         $data = $request->all();
 
+        $user = JWTAuth::parseToken()->authenticate();
+        if ( is_null($user) ){
+            throw new \Exception('no user');
+        }
+        if ( $user->is_delete=='1' ){
+            JWTAuth::invalidate(JWTAuth::getToken());
+            throw new \Exception('no user');
+        }
+
+        Chat::find($id)->update($data);
+        $chat =  Chat::find($id);
+        return response()->json(['success'=>true,'chat'=>$chat->toArray()]);
+
+    }
+
+    public function loadChat($id, Request $request){
+        $data = $request->all();
+        $data['start'] = 0;
+        $data['count'] = 100;
         $user = JWTAuth::parseToken()->authenticate();
         if ( is_null($user) ){
             throw new \Exception('no user');

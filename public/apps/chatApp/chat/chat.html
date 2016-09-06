@@ -107,7 +107,7 @@
             <form>
                 <div class="form-group" style="text-align: center">
 
-                    <upload ng-model="model.avatar">
+                    <upload ng-model="model.avatar" ng-change="changeChatAvatar">
                         <img src="/image/default.jpg" class="img-circle-upload"
                              style="margin-left:auto;margin-right:auto">
                     </upload>
@@ -121,8 +121,16 @@
                              style="text-align: left; border-bottom: 1px solid #f7f7f7;color:#7c8b92">Тема
                         </div>
                         <div class="panel-body">
-                            <input type="text" class="form-control" placeholder="Тема" ng-model="model.name">
+                            <div class="input-group">
 
+                            <input type="text" class="form-control" placeholder="Тема" ng-model="model.name" ng-change="changeChatName(model.name)">
+                                <span class="input-group-btn">
+        <button
+                ng-click="changeChatName(model.name)"
+                ng-disabled="model.name==''" class="btn btn-default" type="button"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;</button>
+      </span>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -152,18 +160,12 @@
 
                         <div class="list-group">
 
-                            <div class="list-group-item " style="text-align: left;" ng-repeat="member in env.chat.members">
+                            <div class="list-group-item " style="text-align: left;" ng-repeat="member in env.chat.members track by $index">
                                 <img ng-src="{{member.AvatarSrc}}" class="img-circle" width="50" >
                                 <span ng-show="env.chat.isAdmin(member.id)" class="badge" style="position: absolute;right: 10%;top: 35%;">admin</span>
-                                <span ng-show="!env.chat.isAdmin(member.id) && env.chat.isAdmin(user.id)" class="glyphicon glyphicon-remove" aria-hidden="true" style="float: right;cursor: pointer;position: absolute;right: 10%;top: 35%;" ng-click="removeMember(member.id)"></span>
+                                <span ng-show="!env.chat.isAdmin(member.id) && env.chat.isAdmin(user.id)" class="glyphicon glyphicon-remove" aria-hidden="true" style="float: right;cursor: pointer;position: absolute;right: 10%;top: 35%;" ng-click="removeMember(member)"></span>
                                 {{member.name}}
                             </div>
-
-                            <!--<div class="list-group-item " style="text-align: left;">
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"
-                                      style="float: right;cursor: pointer"></span>
-                                Cras justo odio
-                            </div>-->
 
                         </div>
                     </div>

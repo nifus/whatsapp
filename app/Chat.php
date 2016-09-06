@@ -37,7 +37,7 @@ class Chat extends Model
         //$array['name'] = $this->ChatName;
 
         $array['LastPost'] = $this->last_post!=null ? $this->LastPost : null;
-        $array['AvatarSrc'] = $this->AvatarSrc;
+        $array['AvatarSrc'] = $this->Avatar;
 
         return $array;
     }
@@ -70,15 +70,14 @@ class Chat extends Model
         $this->attributes['avatar'] = $result;
     }
 
-    public function getAvatarSrcAttribute(){
-        if ($this->avatar){
+    public function getAvatarAttribute(){
+        if ( isset($this->attributes['avatar']) && $this->attributes['avatar']!=''){
             return '/uploads/avatar/'.$this->attributes['avatar'];
         }elseif ($this->last_post>0){
                 return $this->LastPost->User->AvatarSrc;
         }else{
             return null;
         }
-
     }
 
     public function canAccess($user_id){
@@ -134,6 +133,18 @@ class Chat extends Model
 
     public function readPosts4User($user_id){
         ChatPost::readPosts4User($this->id, $user_id);
+    }
+
+    public function addMember($user_id){
+        $ids = [];
+        $members = $this->Members()->get();
+
+        foreach($members as $member){
+            array_push($ids, ['user_id'=>$member->id,'is_admin'=>$member->pivot->is_admin,'sound'=>$member->pivot->sound]);
+        }
+        array_push($ids, ['user_id'=>$user_id,'is_admin'=>0,'sound'=>1]);
+
+        $this->Members()->sync($ids);
     }
 
     public function removeMember($user_id){

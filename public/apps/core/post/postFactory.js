@@ -25,7 +25,7 @@
 
         function getPosts(id) {
 
-            return $http.put( '/chats/'+id,{start:0,count:0}).then(function (response) {
+            return $http.get( '/chats/'+id,{start:0,count:0}).then(function (response) {
                 var result = [];
                 for (var i in response.data.posts) {
                     result.push( new postService(response.data.posts[i]) );

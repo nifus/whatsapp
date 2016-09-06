@@ -12,7 +12,8 @@
             controller: uploadController,
             scope:{
                 ngModel:'=',
-                numberOfFiles:'@'
+                numberOfFiles:'@',
+                ngChange:'='
             }
         };
 
@@ -83,6 +84,7 @@
                             $scope.ngModel.push(value)
 
                 }
+                $scope.ngChange($scope.ngModel );
             },true);
 
 
@@ -91,7 +93,8 @@
                     $scope.ngModel.splice(index,1);
                 }
 
-                rematch($scope.ngModel)
+                rematch($scope.ngModel);
+                $scope.ngChange($scope.ngModel);
             };
 
             function rematch(value){
