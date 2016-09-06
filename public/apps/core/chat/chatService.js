@@ -8,6 +8,20 @@
             var Object = data;
             Object.waiting = false;
 
+            Object.removeMember = function(user_id){
+                return $http.delete( '/chats/'+Object.id+'/'+user_id).then(function (response) {
+                    if (response.data.success==true){
+                        Object.members = Object.members.filter( function(member){
+                            if ( member.id==user_id ){
+                                return false;
+                            }
+                            return true;
+                        });
+                    }
+                    return response.data;
+                })
+            };
+
             Object.isAdmin = function(user_id){
                 for( var i in Object.members ){
                     if ( Object.members[i].id==user_id && Object.members[i].pivot.is_admin=="1" ){

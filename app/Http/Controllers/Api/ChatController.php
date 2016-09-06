@@ -20,6 +20,25 @@ class ChatController extends Controller
         $this->middleware('jwt.auth', []);
     }
 
+    public function removeMember($chat, $member){
+        try{
+        $user = JWTAuth::parseToken()->authenticate();
+        if ( is_null($user) ){
+            throw new \Exception('no user');
+        }
+        if ( $user->is_delete=='1' ){
+            JWTAuth::invalidate(JWTAuth::getToken());
+            throw new \Exception('no user');
+        }
+        $chat = Chat::find($chat);
+        $chat->removeMember($member);
+            return response()->json(['success'=>true,'chat'=>$chat->toArray()]);
+
+        }catch( \Exception $e ){
+            return response()->json(['success'=>false,'error'=>$e->getMessage()]);
+
+        }
+    }
 
     public function addGroup(Request $request){
         try{

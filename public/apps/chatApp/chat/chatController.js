@@ -75,7 +75,6 @@
                     $scope.env.chat = null;
                 }
             });
-            console.log($scope.user.chats)
 
             $scope.user.chats = $scope.user.chats.filter( function(el){
                 if (el.id==chat.id){
@@ -83,16 +82,26 @@
                 }
                 return true;
             });
-            console.log($scope.user.chats)
         };
 
         $scope.openProfile = function(user){
             $scope.env.show_add_info = true;
             $scope.env.add_info = user;
-        }
+        };
         $scope.closeProfile = function(){
             $scope.env.show_add_info = false;
-        }
+        };
+
+        $scope.removeMember = function(user_id){
+            $scope.env.chat.removeMember(user_id).then( function(response){
+                if (response.success==true){
+                    alertify.success('Пользователь удален');
+                }else{
+                    alertify.error(response.error);
+
+                }
+            })
+        };
 
         hotkeys.add({
             combo: 'enter',

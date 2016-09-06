@@ -125,6 +125,17 @@ class Chat extends Model
         ChatPost::readPosts4User($this->id, $user_id);
     }
 
+    public function removeMember($user_id){
+        $ids = [];
+        $members = $this->Members();
+        foreach($members as $member){
+            if ( $member->id!=$user_id ){
+                array_push($ids, $member->id);
+            }
+        }
+        $this->Members()->sync($ids);
+    }
+
     static function createNewChat($user_id, $users_ids){
         //$user_chats = self::where('author', $user_id)->where('')->get();
 

@@ -13,9 +13,8 @@
                 <div style="vertical-align: top;width:200px;float:left">
                     <a ng-click="openProfile(env.chat.getUser(user.id))" style="font-size: 18px" class="link">{{env.chat.getChatName(user.id)}}</a>
 
-                    <p style="font-size: 12px" >{{env.chat.status}}</p>
+                    <p style="font-size: 12px">{{env.chat.status}}</p>
                 </div>
-
 
 
                 <ul class="nav navbar-nav navbar-right" style="padding-right:20px;">
@@ -60,7 +59,8 @@
                     <p>name</p>
                     <p>121212 1e1c312312312</p>
                 </div>-->
-                <textarea ng-disabled="!env.chat.isAdmin(user.id) && env.chat.is_group==1" placeholder="Введите сообщение" class="form-control" ng-model="env.message"></textarea>
+                <textarea ng-disabled="!env.chat.isAdmin(user.id) && env.chat.is_group==1"
+                          placeholder="Введите сообщение" class="form-control" ng-model="env.message"></textarea>
             </div>
             <!--<div class="col-md-8 left" style="text-align: center">
                             <pre style="white-space:pre-wrap; width:500px;background-color:darkseagreen;border-radius: 2%;margin:10px">
@@ -88,7 +88,8 @@
                             class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                     <div style="vertical-align: top;float:left">
                         {{env.chat.is_group==0 ? 'Информация о контакте' : 'Информация о группе'}}
-                        <p style="font-size: 12px">{{env.chat.is_group==0 ? env.chat.status : 'Создана '+ env.chat.created_at }} </p>
+                        <p style="font-size: 12px">{{env.chat.is_group==0 ? env.chat.status : 'Создана '+
+                            env.chat.created_at }} </p>
                     </div>
 
                 </li>
@@ -97,15 +98,71 @@
 
 
         </div>
-        <div style="
-    height: 100%;
-    text-align: center;
-    padding: 20px;
-">
+        <div style="height: 100%;text-align: center;padding: 20px;" ng-show="env.chat.is_group==0">
             <img style="width: 150px" ng-src="{{env.add_info.AvatarSrc}}" alt="">
-
             <div><strong>Login:</strong> {{env.add_info.login}}</div>
+        </div>
+        <div style="height: 100%;text-align: center;padding: 20px;background-color: #f7f7f7"
+             ng-show="env.chat.is_group==1">
+            <form>
+                <div class="form-group" style="text-align: center">
 
+                    <upload ng-model="model.avatar">
+                        <img src="/image/default.jpg" class="img-circle-upload"
+                             style="margin-left:auto;margin-right:auto">
+                    </upload>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="panel panel-default" style="border: 1px solid #f7f7f7">
+                        <div class="panel-body"
+                             style="text-align: left; border-bottom: 1px solid #f7f7f7;color:#7c8b92">Тема
+                        </div>
+                        <div class="panel-body">
+                            <input type="text" class="form-control" placeholder="Тема" ng-model="model.login">
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-default" style="border: 1px solid #f7f7f7">
+                    <div class="panel-body" style="text-align: left; border-bottom: 1px solid #f7f7f7;color:#7c8b92">
+                        Участники
+                    </div>
+                    <div class="panel-body">
+                        <div style="margin-bottom: 20px"><select name="" id="" class="form-control">
+                            <option value="">Добавить участника</option>
+                        </select></div>
+
+                        <div class="list-group">
+
+                            <div class="list-group-item " style="text-align: left;" ng-repeat="member in env.chat.members">
+                                <img ng-src="{{member.AvatarSrc}}" class="img-circle" width="50" >
+                                <span ng-show="env.chat.isAdmin(member.id)" class="badge" style="position: absolute;right: 10%;top: 35%;">admin</span>
+                                <span ng-show="!env.chat.isAdmin(member.id) && env.chat.isAdmin(user.id)" class="glyphicon glyphicon-remove" aria-hidden="true" style="float: right;cursor: pointer;position: absolute;right: 10%;top: 35%;" ng-click="removeMember(member.id)"></span>
+                                {{member.name}}
+                            </div>
+
+                            <!--<div class="list-group-item " style="text-align: left;">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"
+                                      style="float: right;cursor: pointer"></span>
+                                Cras justo odio
+                            </div>-->
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <button ng-show="env.chat.isAdmin(user.id)" style="width: 100%" type="button" class="btn btn-danger" ng-click="deleteChat(env.chat)">
+                    Удалить чат
+                </button>
+
+
+            </form>
         </div>
     </div>
 </div>
