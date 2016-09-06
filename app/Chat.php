@@ -46,10 +46,21 @@ class Chat extends Model
         if (is_array($value)  && isset($value[0]) && isset($value[0]['base64'])) {
             $name = time() . rand(1, 10000) . '.' . pathinfo($value[0]['filename'], PATHINFO_EXTENSION);
             file_put_contents(public_path('uploads/avatar/' . $name), base64_decode($value[0]['base64']));
+
+            $img = \Image::make( public_path('uploads/avatar/' . $name ) );
+            $img->resize(150, 150);
+            $img->save( public_path('uploads/avatar/' . $name), 60);
+
+
             $result = $name;
         }elseif (is_array($value)  && isset($value['base64'])) {
             $name = time() . rand(1, 10000) . '.' . pathinfo($value['filename'], PATHINFO_EXTENSION);
             file_put_contents(public_path('uploads/avatar/' . $name), base64_decode($value['base64']));
+            $img = \Image::make( public_path('uploads/avatar/' . $name ) );
+            $img->resize(150, 150);
+            $img->save( public_path('uploads/avatar/' . $name), 60);
+
+            
             $result = $name;
         }elseif (is_array($value)  && isset($value[0]) && is_string($value[0])) {
             $result = basename($value[0]);
@@ -127,10 +138,13 @@ class Chat extends Model
 
     public function removeMember($user_id){
         $ids = [];
-        $members = $this->Members();
+        $members = $this->Members()->get();
+
+
         foreach($members as $member){
+
             if ( $member->id!=$user_id ){
-                array_push($ids, $member->id);
+                array_push($ids, ['user_id'=>$member->id,'is_admin'=>$member->pivot->is_admin,'sound'=>$member->pivot->sound]);
             }
         }
         $this->Members()->sync($ids);

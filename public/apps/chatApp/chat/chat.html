@@ -7,11 +7,11 @@
             <div class="chat-info">
 
 
-                <img ng-click="openProfile(env.chat.getUser(user.id))" ng-src="{{env.chat.getChatAvatar(user.id)}}"
+                <img ng-click="openInfoBlock(env.chat.getUser(user.id))" ng-src="{{env.chat.getChatAvatar(user.id)}}"
                      class="img-circle link" style="margin-right:30px;float:left">
 
                 <div style="vertical-align: top;width:200px;float:left">
-                    <a ng-click="openProfile(env.chat.getUser(user.id))" style="font-size: 18px" class="link">{{env.chat.getChatName(user.id)}}</a>
+                    <a ng-click="openInfoBlock(env.chat.getUser(user.id))" style="font-size: 18px" class="link">{{env.chat.getChatName(user.id)}}</a>
 
                     <p style="font-size: 12px">{{env.chat.status}}</p>
                 </div>
@@ -35,7 +35,7 @@
 
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="link" ng-click="env.show_add_info=true">Информация о контакте</a></li>
+                            <li><a class="link" ng-click="openInfoBlock()">Информация о контакте</a></li>
                             <li><a ng-show="env.chat.IsEnabledSound(user.id)" ng-click="disableSound(env.chat, user.id)"
                                    class="link">Без звука</a></li>
                             <li><a ng-show="env.chat.IsDisabledSound(user.id)" ng-click="enableSound(env.chat, user.id)"
@@ -121,7 +121,7 @@
                              style="text-align: left; border-bottom: 1px solid #f7f7f7;color:#7c8b92">Тема
                         </div>
                         <div class="panel-body">
-                            <input type="text" class="form-control" placeholder="Тема" ng-model="model.login">
+                            <input type="text" class="form-control" placeholder="Тема" ng-model="model.name">
 
                         </div>
                     </div>
@@ -133,9 +133,22 @@
                         Участники
                     </div>
                     <div class="panel-body">
-                        <div style="margin-bottom: 20px"><select name="" id="" class="form-control">
+                        <div style="margin-bottom: 20px">
+                            <div class="input-group">
+                            <select
+
+                                    ng-model="model.selected_member" class="form-control"
+                                    ng-options="contact.name  for contact in model.members track by contact.id">
                             <option value="">Добавить участника</option>
-                        </select></div>
+                        </select>
+                                <span class="input-group-btn">
+        <button
+                ng-click="addMember(model.selected_member)"
+                ng-disabled="!model.selected_member" class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;</button>
+      </span>
+
+                            </div>
+                        </div>
 
                         <div class="list-group">
 

@@ -8,6 +8,7 @@ use Mockery\CountValidator\Exception;
 //use App\Events\UserEvent;
 use App\Group;
 
+
 class User extends Authenticatable
 {
 
@@ -109,10 +110,21 @@ class User extends Authenticatable
         if (is_array($value)  && isset($value[0]) && isset($value[0]['base64'])) {
             $name = time() . rand(1, 10000) . '.' . pathinfo($value[0]['filename'], PATHINFO_EXTENSION);
             file_put_contents(public_path('uploads/avatar/' . $name), base64_decode($value[0]['base64']));
+
+            $img = \Image::make( public_path('uploads/avatar/' . $name ) );
+            $img->resize(150, 150);
+            $img->save( public_path('uploads/avatar/' . $name), 60);
+
             $result = $name;
         }elseif (is_array($value)  && isset($value['base64'])) {
             $name = time() . rand(1, 10000) . '.' . pathinfo($value['filename'], PATHINFO_EXTENSION);
             file_put_contents(public_path('uploads/avatar/' . $name), base64_decode($value['base64']));
+
+            $img = \Image::make( public_path('uploads/avatar/' . $name ) );
+            $img->resize(150, 150);
+            $img->save( public_path('uploads/avatar/' . $name), 60);
+
+
             $result = $name;
         }elseif (is_array($value)  && isset($value[0]) && is_string($value[0])) {
             $result = basename($value[0]);

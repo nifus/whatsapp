@@ -35,6 +35,32 @@
             chat.getChatStatus($scope.user.id);
         });
 
+        $scope.addMember = function(member){
+            $scope.model.selected_member = null;
+            alertify.success('Пользователь добавлен');
+
+        };
+
+        $scope.openInfoBlock = function (user) {
+            $scope.env.show_add_info=true;
+            $scope.env.add_info = user;
+
+            $scope.model = angular.copy($scope.env.chat);
+            console.log($scope.user.contacts);
+            console.log($scope.env.chat.members);
+
+            $scope.model.members = $scope.user.contacts.filter( function(contact){
+                for( var i in $scope.env.chat.members ){
+                    if ( contact.id != $scope.env.chat.members[i].id ){
+                        return true;
+                    }
+                }
+                return false;
+            });
+            console.log($scope.model.members)
+        };
+
+
 
         $scope.disableSound = function (chat, user) {
             chat.disableSound(user).then(function(response){
@@ -84,10 +110,7 @@
             });
         };
 
-        $scope.openProfile = function(user){
-            $scope.env.show_add_info = true;
-            $scope.env.add_info = user;
-        };
+
         $scope.closeProfile = function(){
             $scope.env.show_add_info = false;
         };
