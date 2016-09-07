@@ -18,7 +18,7 @@
         <div class="form-group">
 
             <upload ng-model="model.avatar">
-                <img src="/image/default.jpg" class="img-circle-upload">
+                <img style="margin-left:auto;margin-right:auto" src="/image/default.jpg" class="img-circle-upload">
             </upload>
 
         </div>
@@ -26,7 +26,7 @@
             <input type="text" class="form-control" placeholder="Тема группы" ng-model="model.name">
         </div>
 
-        <button type="button" class="btn btn-default" ng-click="step='two'">Далее</button>
+        <button ng-disabled="!model.name || model.name==''" type="button" class="btn btn-default" ng-click="step='two'">Далее</button>
     </div>
 </div>
 
@@ -37,36 +37,46 @@
         <h4 style="color:#FFFFFF"><a ng-click="step='one'"
                                      style="    padding-right: 50px;color:#FFFFFF;cursor:pointer"><span
                 class="glyphicon glyphicon-chevron-left" style="color:#FFFFFF"></span></a>
-            Добавить учатников группы</h4>
+            Добавить участников группы</h4>
 
     </div>
 
     <div class="col-md-12" style="padding: 30px;">
-        <ul class="list-group">
-            <li class="list-group-item" ng-repeat="contact in model.contacts track by $index">
-                <a ng-click="removeContact(contact, $index)" style="float: right"><span
-                        class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                {{contact.name}}
-            </li>
-        </ul>
 
+        <div class="form-group">
+            <div class="panel panel-default" style="border: 1px solid #f7f7f7">
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a ng-click="removeContact(contact,$index)" class="link list-group-item" ng-repeat="contact in model.contacts track by $index">
+                            <img ng-src="{{contact.AvatarSrc}}" class="img-circle" width="50" >
 
-        <br>
-        <div class="media" ng-repeat="contact in env.contacts track by $index">
-            <a ng-click="selectContact(contact,$index)" class="link">
-                <div class="media-left">
+                            {{contact.name}}
 
-                    <img class="media-object img-circle" style="width: 40px" ng-src="{{contact.AvatarSrc}}" alt="...">
-
+                                <span style="top: 40%;right: 10%;position: absolute;" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
+                    </div>
                 </div>
-                <div class="media-body">
-                    <h4 class="media-heading ">{{contact.name}}</h4>
-                </div>
-            </a>
+            </div>
         </div>
 
+        <div class="form-group">
+            <div class="panel panel-default" style="border: 1px solid #f7f7f7">
+                <div class="panel-body" style="text-align: left; border-bottom: 1px solid #f7f7f7;color:#7c8b92">
+                    Выберите Контакты
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                            <a ng-click="selectContact(contact,$index)" class="link list-group-item" ng-repeat="contact in env.contacts track by $index">
+                                <img ng-src="{{contact.AvatarSrc}}" class="img-circle" width="50" >
 
-        <button type="button" class="btn btn-default" ng-click="saveGroup(model)">Создать</button>
+                                {{contact.name}}
+                            </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button ng-disabled="model.contacts.length==0" type="button" class="btn btn-default" ng-click="saveGroup(model)">Создать</button>
 
     </div>
 

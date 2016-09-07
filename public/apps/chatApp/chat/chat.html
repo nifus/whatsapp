@@ -95,15 +95,13 @@
                 </li>
 
             </ul>
-
-
         </div>
-        <div style="height: 100%;text-align: center;padding: 20px;" ng-show="env.chat.is_group==0">
+        <div class="right-contact-info"  ng-show="env.chat.is_group==0">
             <img style="width: 150px" ng-src="{{env.add_info.AvatarSrc}}" alt="">
             <div><strong>Login:</strong> {{env.add_info.login}}</div>
         </div>
-        <div style="height: 100%;text-align: center;padding: 20px;background-color: #f7f7f7"
-             ng-show="env.chat.is_group==1">
+
+        <div class="right-group-info"  ng-show="env.chat.is_group==1">
             <form>
                 <div class="form-group" style="text-align: center">
 
@@ -181,18 +179,3 @@
         </div>
     </div>
 </div>
-<!--
-
-    <div  id="left">
-        1212
-    </div>
-    <div  id="center">
-
-
-
-
-    </div>
-    <div ng-show="env.show_add_info==true"  id="right" style="background-color: #eee;">
-
-    </div>
--->
