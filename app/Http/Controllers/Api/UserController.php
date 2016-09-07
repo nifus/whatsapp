@@ -19,7 +19,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt.auth', ['except' => ['getAuthUser', 'authenticate']]);
+        $this->middleware('jwt.auth', ['except' => [ 'authenticate']]);
     }
 
     public function getContacts(){
