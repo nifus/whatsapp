@@ -22,16 +22,7 @@
             }
         });
 
-        $scope.saveGroup = function(data){
-            chatFactory.createGroup(data).then(function(response){
-                if (response.success == false) {
-                    alertify.error(response.error);
-                } else {
-                    alertify.success('Группа создана');
-                }
-            })
 
-        };
         $scope.selectContact = function(contact, index){
             $scope.model.contacts.push(contact);
              $scope.env.contacts.splice(index,1)

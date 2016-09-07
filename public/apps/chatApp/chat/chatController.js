@@ -55,6 +55,10 @@
 
         };
 
+        $scope.closeInfoBlock = function(){
+            $scope.env.show_add_info=false;
+        };
+
         $scope.openInfoBlock = function (user) {
             $scope.env.show_add_info=true;
             $scope.env.add_info = user;
@@ -73,6 +77,7 @@
         $scope.changeChatAvatar = function(value){
             $scope.env.chat.updateAvatar(value)
         }
+
         $scope.changeChatName = function(value){
             if ( value!=''){
                 $scope.env.chat.updateName(value)
@@ -116,16 +121,19 @@
                     alertify.error(response.error);
                 } else {
                     alertify.success('Чат удален');
+                    $scope.closeInfoBlock();
                     $scope.env.chat = null;
+                    $scope.user.chats = $scope.user.chats.filter( function(el){
+                        if (el.id==chat.id){
+                            return false;
+                        }
+                        return true;
+                    });
+
                 }
             });
 
-            $scope.user.chats = $scope.user.chats.filter( function(el){
-                if (el.id==chat.id){
-                    return false;
-                }
-                return true;
-            });
+
         };
 
 

@@ -37,7 +37,7 @@ class Chat extends Model
         //$array['name'] = $this->ChatName;
 
         $array['LastPost'] = $this->last_post!=null ? $this->LastPost : null;
-        $array['AvatarSrc'] = $this->Avatar;
+        $array['AvatarSrc'] = $this->AvatarSrc;
 
         return $array;
     }
@@ -78,6 +78,11 @@ class Chat extends Model
         }else{
             return null;
         }
+    }
+
+    public function getAvatarSrcAttribute(){
+        return $this->attributes['avatar'] == '' ? '/image/default.jpg' : '/uploads/avatar/' . $this->attributes['avatar'];
+
     }
 
     public function canAccess($user_id){
@@ -144,6 +149,7 @@ class Chat extends Model
         }
         array_push($ids, ['user_id'=>$user_id,'is_admin'=>0,'sound'=>1]);
 
+        $this->Members()->sync([]);
         $this->Members()->sync($ids);
     }
 
@@ -175,7 +181,10 @@ class Chat extends Model
     static function createNewGroup($user_id, $data){
         //$user_chats = self::where('author', $user_id)->where('')->get();
 
-        $chat_array = ['author'=>$user_id, 'is_group'=>1, 'avatar'=>$data['avatar'], 'name'=>$data['name']];
+        $chat_array = ['author'=>$user_id, 'is_group'=>1, 'name'=>$data['name']];
+        if ( isset($data['avatar']) ){
+            $chat_array['avatar'] = $data['avatar'];
+        }
         $chat = self::create($chat_array);
         array_push($data['contacts'],$user_id);
         $chat->Members()->sync($data['contacts']);

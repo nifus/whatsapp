@@ -23,7 +23,9 @@
             $scope.dialog = 'contacts';
 
 
-
+            $scope.openContactList = function () {
+                $scope.contact_list = true;
+            };
 
             $scope.openGroupDialog = function () {
                 $scope.dialog = 'group';
@@ -64,7 +66,22 @@
                         console.log(response)
                     }
                 })
-            }
+            };
+
+            $scope.saveGroup = function(data){
+                var save_data = angular.copy(data);
+                chatFactory.createGroup(save_data).then(function(response){
+                    if (response.success == false) {
+                        alertify.error(response.error);
+                    } else {
+                        alertify.success('Группа создана');
+                        $scope.openContacts();
+                        $scope.user.chats.push(response.chat);
+
+                    }
+                })
+
+            };
         }
 
 

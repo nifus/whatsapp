@@ -23,7 +23,11 @@
             data['contacts'] = contact_ids;
             return $http.post(window.SERVER+'/chats/group',data).then(
                 function(response){
-                    return  new chatService(response.data.chat )
+                    if (response.data.success==true){
+                        return  {success:true,chat: new chatService(response.data.chat ) }
+                    }else{
+                        return  {success:false,error: response.data.error }
+                    }
                 }
             )
 

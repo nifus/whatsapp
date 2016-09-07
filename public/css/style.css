@@ -58,16 +58,14 @@ body, html{
 }
 
 .right-group-info{
-	height: 100%;
-	overflow: scroll;
+	height: 93%;
 
 	text-align: center;padding: 20px;
 	background-color: #f7f7f7
 }
 
 .right-contact-info{
-	height: 100%;
-	overflow: scroll;
+	height: 93%;
 	text-align: center;
 	padding: 20px;
 }

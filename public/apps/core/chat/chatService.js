@@ -221,9 +221,10 @@
             };
             Object.updateAvatar = function(value){
                 return $http.put( '/chats/'+Object.id,{ avatar: value}).then(function (response) {
+                    console.log(response.data)
                     if (response.data.success==true){
-                        Object.avatar = response.data.avatar;
-                        Object.AvatarSrc = response.data.avatar;
+                        Object.avatar = response.data.chat.AvatarSrc;
+                        Object.AvatarSrc = response.data.chat.AvatarSrc;
                     }
                     return response.data;
                 })

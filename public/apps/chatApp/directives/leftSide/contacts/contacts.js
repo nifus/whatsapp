@@ -6,12 +6,17 @@
 
     contactsController.$inject = ['$scope', 'userFactory', '$state'];
     function contactsController($scope, userFactory, $state) {
-        var $promises = [];
         $scope.env = {
-            chat: '',
+            chat: undefined,
             search_activated: false
         };
 
+        $scope.$watch('contact_list', function(value){
+            if (value==true){
+                $scope.showContactList();
+                $scope.contact_list = false;
+            }
+        })
 
         $scope.$watch('user.contacts', function(value){
             if (value){
@@ -27,36 +32,48 @@
             }
         });
 
-
-        $scope.$watch('env.chat', function(value){
-            value = value.toLowerCase();
-            if ($scope.env.chat!=''){
-                $scope.env.search_activated = true;
-                $scope.env.chats = $scope.env.source_chats.filter( function(chat){
-                    if ( chat.name.toLowerCase().indexOf(value)!=-1){
-                        return true;
-                    }
-                    if ( chat.login.toLowerCase().indexOf(value)!=-1){
-                        return true;
-                    }
-                    return false;
-                });
-                $scope.env.contacts = $scope.env.source_contacts.filter( function(contact){
-                    if ( contact.name.toLowerCase().indexOf(value)!=-1){
-                        return true;
-                    }
-                    if ( contact.login.toLowerCase().indexOf(value)!=-1){
-                        return true;
-                    }
-                    return false;
-                })
+        $scope.showContactList = function(value){
+            if ( value!=undefined ){
+                value = value.toLowerCase();
+                if ($scope.env.chat!=''){
+                    $scope.env.search_activated = true;
+                    $scope.env.chats = $scope.env.source_chats.filter( function(chat){
+                        if ( chat.name.toLowerCase().indexOf(value)!=-1){
+                            return true;
+                        }
+                        if ( chat.login.toLowerCase().indexOf(value)!=-1){
+                            return true;
+                        }
+                        return false;
+                    });
+                    $scope.env.contacts = $scope.env.source_contacts.filter( function(contact){
+                        if ( contact.name.toLowerCase().indexOf(value)!=-1){
+                            return true;
+                        }
+                        if ( contact.login.toLowerCase().indexOf(value)!=-1){
+                            return true;
+                        }
+                        return false;
+                    })
+                }else{
+                    $scope.env.search_activated = false;
+                    $scope.env.contacts = $scope.env.source_contacts;
+                    $scope.env.chats = $scope.env.source_chats;
+                }
             }else{
-                $scope.env.search_activated = false;
+                $scope.env.search_activated = true;
                 $scope.env.contacts = $scope.env.source_contacts;
-                $scope.env.chats = $scope.env.source_chats;
+                $scope.env.chats = [];
             }
 
-            console.log($scope.env.chat)
+            //console.log($scope.env.chat)
+        }
+
+        $scope.$watch('env.chat', function(value){
+            if (value!=undefined){
+                $scope.showContactList(value)
+            }
+
         })
 
 
