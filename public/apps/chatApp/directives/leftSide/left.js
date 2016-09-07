@@ -55,6 +55,16 @@
                 });
             }
 
+            $scope.saveProfile = function(data){
+                $scope.user.update(data).then(function(response){
+                    if (response.success == false) {
+                        alertify.error(response.error);
+                    } else {
+                        alertify.success('Изменения сохранены');
+                        console.log(response)
+                    }
+                })
+            }
         }
 
 

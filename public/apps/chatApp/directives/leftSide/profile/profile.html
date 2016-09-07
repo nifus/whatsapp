@@ -14,15 +14,15 @@
         <div class="form-group">
 
             <upload ng-model="model.avatar">
-                <img src="/image/default.jpg" class="img-circle-upload" >
+                <img src="/image/default.jpg" class="img-circle-upload" style="margin-left:auto;margin-right:auto" >
             </upload>
 
         </div>
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Login" ng-model="model.login">
+            <input type="text" class="form-control" placeholder="Имя" ng-model="model.name">
         </div>
 
-        <button type="button" class="btn btn-default" ng-click="saveProfile(model)">Сохранить</button>
+        <button ng-disabled="model.name=='' || !model.name" type="button" class="btn btn-default" ng-click="saveProfile(model)">Сохранить</button>
     </form>
 </div>
 

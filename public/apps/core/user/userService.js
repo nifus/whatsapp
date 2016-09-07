@@ -33,6 +33,11 @@
                 return $http.post(window.SERVER+'/backend/user/'+this.id,data).then(
                     function(response){
                         Object.waiting = false;
+                        if ( response.data.success==true ){
+                            for( var i in response.data.user ){
+                                Object[i] = response.data.user[i]
+                            }
+                        }
                         return response.data;
                     }
                 )

@@ -84,7 +84,10 @@
                             $scope.ngModel.push(value)
 
                 }
-                $scope.ngChange($scope.ngModel );
+                if ($scope.ngChange){
+                    $scope.ngChange($scope.ngModel );
+                }
+
             },true);
 
 
@@ -94,7 +97,10 @@
                 }
 
                 rematch($scope.ngModel);
-                $scope.ngChange($scope.ngModel);
+                if ($scope.ngChange){
+                    $scope.ngChange($scope.ngModel);
+                }
+
             };
 
             function rematch(value){

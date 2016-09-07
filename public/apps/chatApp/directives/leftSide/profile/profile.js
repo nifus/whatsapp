@@ -16,14 +16,6 @@
         });
 
 
-        $scope.saveProfile = function(data){
-            $scope.model.update(data).then(function(response){
-                if (response.success == false) {
-                    alertify.error(response.error);
-                } else {
-                    alertify.success('Изменения сохранены');
-                }
-            })
-        }
+
     }
 })(angular);

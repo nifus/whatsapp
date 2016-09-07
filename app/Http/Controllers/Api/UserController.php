@@ -130,7 +130,9 @@ class UserController extends Controller
                 Abort(404);
             }
             $user->updateUser($request->all());
-            return response()->json(['success'=>true]);
+
+            $user = User::find($id);
+            return response()->json(['success'=>true,'user'=>$user->toArray()]);
         }catch( \Exception $e ){
             return response()->json(['success'=>false, 'error'=>$e->getMessage()]);
         }
