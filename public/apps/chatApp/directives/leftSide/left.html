@@ -15,7 +15,7 @@
                     <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a ng-click="openGroupDialog()" class="link">Новая группа</a></li>
+                    <li ng-show="user.can_mass_messages=='1'"><a ng-click="openGroupDialog()" class="link">Новая группа</a></li>
                     <li><a ng-click="openProfile()" class="link">Профиль</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a class="link" ng-click="logout()">Выход</a></li>

@@ -11,7 +11,12 @@
             chat: undefined,
             show_add_info: false,
             chat_posts: [],
-            message: null
+            message: null,
+            imageDialog: false,
+            upload: {
+                image: null,
+                message:null
+            }
         };
         function initPage(deferred) {
             $scope.user = $scope.$parent.env.user;
@@ -22,6 +27,28 @@
         // initPage();
         $scope.$parent.init.push(initPage);
 
+        $scope.closeImageDialog = function(){
+            $scope.env.imageDialog = false;
+            $scope.env.upload = {};
+        };
+
+        $scope.addImagePost = function(model){
+            $scope.env.chat.addImagePost(model.image, model.message).then(function (response) {
+                if (response.success == false) {
+                    alertify.error(response.error);
+                } else {
+                    $scope.env.chat.posts.push(response.post);
+                    console.log(response.post)
+                }
+            })
+        }
+
+        $scope.$watch('env.upload', function(value){
+            if ( value ){
+                $scope.env.imageDialog = true;
+                $scope.env.upload = $scope.env.upload[0]
+            }
+        });
 
         $scope.$watch('env.chat', function (chat) {
             if (!chat) {

@@ -72,6 +72,80 @@ body, html{
 .chat-info{
 	background-color: #eee;padding:3px;height:55px
 }
+#add-image{
+	position: absolute;
+	top: 0;
+	width: 75%;
+	z-index: 33333;
+	background-color: lightgray;
+	height:100%
+}
+
+#add-image div.header{
+	padding: 20px;
+	background-color: #00bfa5;
+	color: #ffffff;
+	height: 55px;
+	font-weight: bold;
+	font-size: 19px;
+}
+#add-image div.image-preview{
+	text-align: center;
+	padding:20px;
+	height:70%;position: relative;
+}
+
+#add-image div.image-preview img{
+	max-width:350px;
+	max-height:350px;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+	margin: auto;
+}
+#add-image input.input-desc{
+
+}
+
+#add-image div.control{
+	padding: 20px;
+}
+
+div.control .input{
+	text-align: center
+}
+div.control .input input{
+	width: 50%;
+	font-size: 16px;
+	padding:5px;
+	border:none;
+	border-bottom: 1px solid grey;
+	background-color:transparent;
+}
+
+div.input input:focus{
+	outline: none;
+	border-bottom: 1px solid #00bfa5;
+}
+
+div.button{
+	text-align: right;
+	padding:20px;
+	padding-right:150px;
+
+}
+
+div.button span{
+	background-color: #00e676;
+	color: #ffffff;
+	font-size: 40px;
+	padding: 20px;
+	border-radius: 80px;
+	cursor: pointer;
+}
 
 .link{
 	cursor: pointer;

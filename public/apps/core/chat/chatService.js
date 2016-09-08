@@ -142,6 +142,9 @@
             Object.addPost = function(message){
                 return postFactory.addPost(message, Object.id);
             };
+            Object.addImagePost = function(image,message){
+                //return postFactory.addPost(message, Object.id);
+            };
 
             Object.clearChat = function(){
                 return $http.post( '/chats/'+Object.id+'/clear',{}).then(function (response) {
@@ -221,7 +224,6 @@
             };
             Object.updateAvatar = function(value){
                 return $http.put( '/chats/'+Object.id,{ avatar: value}).then(function (response) {
-                    console.log(response.data)
                     if (response.data.success==true){
                         Object.avatar = response.data.chat.AvatarSrc;
                         Object.AvatarSrc = response.data.chat.AvatarSrc;

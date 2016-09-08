@@ -13,19 +13,25 @@
             scope:{
                 ngModel:'=',
                 numberOfFiles:'@',
-                ngChange:'='
+                ngChange:'=',
+                hideResult:'@'
             }
         };
 
 
         function uploadLink(scope,element,el2){
 
-            var html = '<div class="row" style="margin:10px"><div style="margin:5px" class="col-md-3" ng-repeat="item in ngModel" style="text-align: right">' +
-                '<img ng-src="data:{{item.filetype}};base64,{{item.base64}}" style="width: 200px" ng-show="item.base64!=undefined">' +
-                '<img ng-src="{{item.base64==undefined ? item : \'\'}}" style="width: 200px" ng-show="item.base64==undefined">' +
-                '<button type="button" style="position: absolute;left:15px;top:0px" ng-click="deleteItem($index)" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>' +
+            if ( !scope.hideResult ){
+                var html = '<div class="row" style="margin:10px"><div style="margin:5px" class="col-md-3" ng-repeat="item in ngModel" style="text-align: right">' +
+                    '<img ng-src="data:{{item.filetype}};base64,{{item.base64}}" style="width: 200px" ng-show="item.base64!=undefined">' +
+                    '<img ng-src="{{item.base64==undefined ? item : \'\'}}" style="width: 200px" ng-show="item.base64==undefined">' +
+                    '<button type="button" style="position: absolute;left:15px;top:0px" ng-click="deleteItem($index)" class="btn btn-danger">' +
+                    '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></div></div>';
+            }else{
+                var html = '';
+            }
 
-                '</div></div>';
+
             if ( scope.numberOfFiles==undefined || scope.numberOfFiles<=1 ){
                 html += '<input type="file" ng-model="file"  base-sixty-four-input style="visibility: hidden; display: none"  >';
             }else{
@@ -39,6 +45,8 @@
                 scope.button = element.find('button');
             }else if (element.find('img').length==1){
                 scope.button = element.find('img');
+            }else if (element.find('a').length==1){
+                scope.button = element.find('a');
             }
 
            // scope.buttonText = scope.button.html();
@@ -104,9 +112,11 @@
             };
 
             function rematch(value){
+                if ( $scope.hideResult ){
+                    return false;
+                }
                 var allowAddNewFiles = ( max==1 && value!=undefined && value.length==1 ) ? false : true;
                 allowAddNewFiles = ( max>1 && angular.isArray($scope.ngModel) && $scope.ngModel.length<max ) ? true : allowAddNewFiles;
-
 
                 if ( allowAddNewFiles==false ){
                     $scope.button.css('display','none')
