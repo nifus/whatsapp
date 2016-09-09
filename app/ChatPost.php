@@ -10,7 +10,7 @@ class ChatPost extends Model
 
 
     protected
-        $fillable = ['chat_id', 'user_id','message','is_system','is_sent','is_read','type','created_at','updated_at','is_deleted','image'],
+        $fillable = ['chat_id', 'user_id','message','is_system','is_sent','is_read','type','created_at','updated_at','is_deleted','image','reply_to'],
         $table = 'chats_posts';
 
     public function Chat()
