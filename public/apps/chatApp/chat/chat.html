@@ -50,16 +50,26 @@
                 </ul>
             </div>
 
-            <div class="messages" scroll-glue>
-                <post ng-repeat="post in env.chat.posts |orderBy:'-created_at':true" post="post"
-                      is-select-post="selected_post" user="user"></post>
-            </div>
+            <div control-height>
+                <div class="messages" scroll-glue >
 
-            <div class="input">
-                <textarea ng-disabled="!env.chat.isAdmin(user.id) && env.chat.is_group==1"
-                          placeholder="Введите сообщение" class="form-control" ng-model="env.message"></textarea>
-            </div>
 
+                    <post ng-repeat="post in env.chat.posts |orderBy:'-created_at':true" post="post"
+                          is-select-post="env.selected_post" user="user"></post>
+                </div>
+
+                <div class="input" >
+                    <div class="reply" ng-style="{'height': (env.selected_post!=null ? '55px' : '0px'), 'display': (env.selected_post!=null ? 'block' : 'none')}"  style="height:0px;border-left:3px solid darkgreen">
+                        <div class="author" style="float:left;width:98%;color:green;padding:5px;">Вы</div>
+
+                        <div style="float:left;width:2%;"><span ng-click="cancelReply()" class="link glyphicon glyphicon-remove" aria-hidden="true"></span></div>
+                        <div class="message" style="clear:both;white-space:nowrap;overflow: hidden;padding:5px;" > {{env.selected_post.message}}</div>
+                    </div>
+                    <textarea ng-disabled="!env.chat.isAdmin(user.id) && env.chat.is_group==1"
+                              placeholder="Введите сообщение" class="form-control" ng-model="env.message"></textarea>
+                </div>
+
+            </div>
             <div id="add-image" ng-show="env.imageDialog==true" >
                 <div class="header">
                     <span ng-click="closeImageDialog()" class="glyphicon glyphicon-remove" style="cursor: pointer;margin-right:30px" aria-hidden="true"></span>

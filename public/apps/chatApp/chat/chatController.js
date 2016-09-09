@@ -16,7 +16,8 @@
             upload: {
                 image: null,
                 message:null
-            }
+            },
+            selected_post:null
         };
         function initPage(deferred) {
             $scope.user = $scope.$parent.env.user;
@@ -26,6 +27,10 @@
 
         // initPage();
         $scope.$parent.init.push(initPage);
+
+        $scope.cancelReply = function(){
+            $scope.env.selected_post = null;
+        }
 
         $scope.closeImageDialog = function(){
             $scope.env.imageDialog = false;

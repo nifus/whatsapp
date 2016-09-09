@@ -209,6 +209,9 @@ div.button span{
 div.input{
 	padding:10px
 }
+div.input textarea{
+	height:50px
+}
 
 #menu{
 	padding-left: 10px;
@@ -270,7 +273,9 @@ div.input{
 	font-size: 17px;
 }
 .mensaje-contacto {
-	color: #a4a4a4
+	color: #a4a4a4;
+	white-space: nowrap;
+	overflow: hidden;
 }
 .hora-chat{
 	font-size: 10px;
