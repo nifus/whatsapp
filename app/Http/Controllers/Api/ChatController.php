@@ -167,7 +167,10 @@ class ChatController extends Controller
                 throw new \Exception('no chat');
             }
             $data = $request->all();
-            $post = $chat->addPost($data['message'], 'text', $user->id);
+
+                $post = $chat->addPost($data, $user->id);
+
+
             if ( is_null($post) ){
                 throw new \Exception('problem with add  message');
             }

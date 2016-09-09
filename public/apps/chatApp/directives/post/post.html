@@ -1,6 +1,14 @@
 <div class="post" ng-class="{'myself':post.isMyselfMessage(user.id),'from_me':!post.isMyselfMessage(user.id) }">
 
-    <div class="message">{{ post.is_deleted=='0' ? post.message : "Сообщение удалено"}}</div>
+    <div class="message" ng-show="post.is_deleted=='1'">Сообщение удалено</div>
+
+
+    <div class="message" ng-show="post.type=='text' &&  post.is_deleted=='0' ">{{post.message}}</div>
+
+    <div class="image" ng-show="post.type=='image' &&  post.is_deleted=='0'">
+        <a target="_blank" ng-href="{{post.image.original}}"><img ng-src="{{post.image.resize}}" alt=""></a>
+        <div>{{post.message}}</div>
+    </div>
 
     <div style="padding-top:5px;text-align: right;" class="time" ng-show="post.is_deleted=='0'">
 

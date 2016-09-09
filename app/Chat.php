@@ -114,11 +114,18 @@ class Chat extends Model
         $this->update(['last_post'=>$post_id]);
     }
 
-    public function addPost($message, $type, $user){
-        $post =  ChatPost::addPost($this->id, $message, $type, $user);
+    public function addPost($data, $user){
+        if ($data['type']=='text'){
+            $post =  ChatPost::addTextPost($this->id, $data['message'], $user);
+        }elseif($data['type']=='image'){
+            $post =  ChatPost::addImagePost($this->id, $data['image'], $data['message'], $user);
+        }
+
         $this->updateLastPost($post->id);
         return $post;
     }
+
+
 
     public function updateSound($user, $flag){
         \DB::table('chats_members')->where('user_id', $user)->where('chat_id', $this->id)->update(['sound'=>$flag]);

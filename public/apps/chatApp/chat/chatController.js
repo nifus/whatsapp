@@ -38,15 +38,15 @@
                     alertify.error(response.error);
                 } else {
                     $scope.env.chat.posts.push(response.post);
-                    console.log(response.post)
+                    $scope.closeImageDialog();
                 }
             })
         }
 
-        $scope.$watch('env.upload', function(value){
+        $scope.$watch('upload_image', function(value){
             if ( value ){
                 $scope.env.imageDialog = true;
-                $scope.env.upload = $scope.env.upload[0]
+                $scope.env.upload.image = $scope.upload_image[0]
             }
         });
 

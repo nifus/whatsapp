@@ -143,7 +143,7 @@
                 return postFactory.addPost(message, Object.id);
             };
             Object.addImagePost = function(image,message){
-                //return postFactory.addPost(message, Object.id);
+                return postFactory.addImagePost(image, message, Object.id);
             };
 
             Object.clearChat = function(){

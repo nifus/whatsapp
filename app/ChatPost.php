@@ -10,7 +10,7 @@ class ChatPost extends Model
 
 
     protected
-        $fillable = ['chat_id', 'user_id','message','is_system','is_sent','is_read','type','created_at','updated_at','is_deleted'],
+        $fillable = ['chat_id', 'user_id','message','is_system','is_sent','is_read','type','created_at','updated_at','is_deleted','image'],
         $table = 'chats_posts';
 
     public function Chat()
@@ -31,6 +31,62 @@ class ChatPost extends Model
         return $array;
     }
 
+    public function setImageAttribute($value){
+        if (is_array($value)  && isset($value[0]) && isset($value[0]['base64'])) {
+            $name = time() . rand(1, 10000) . '.' . pathinfo($value[0]['filename'], PATHINFO_EXTENSION);
+            file_put_contents(public_path('uploads/posts/' . $name), base64_decode($value[0]['base64']));
+
+            $img = \Image::make( public_path('uploads/posts/' . $name ) );
+            $img->save( public_path('uploads/posts/' . $name), 60);
+
+            $img->resize(null, 400, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            $img->resize(400, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            $img->save( public_path('uploads/posts/resize_' . $name), 60);
+
+
+            $result = $name;
+        }elseif (is_array($value)  && isset($value['base64'])) {
+            $name = time() . rand(1, 10000) . '.' . pathinfo($value['filename'], PATHINFO_EXTENSION);
+            file_put_contents(public_path('uploads/posts/' . $name), base64_decode($value['base64']));
+            $img = \Image::make( public_path('uploads/posts/' . $name ) );
+            $img->save( public_path('uploads/posts/' . $name), 60);
+
+            $img->resize(null, 400, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            $img->resize(400, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            $img->save( public_path('uploads/posts/resize_' . $name), 60);
+
+
+            $result = $name;
+        }elseif (is_array($value)  && isset($value[0]) && is_string($value[0])) {
+            $result = basename($value[0]);
+        }else{
+            $result = null;
+        }
+        $this->attributes['image'] = $result;
+    }
+
+    public function getImageAttribute(){
+        if ( isset($this->attributes['image']) && $this->attributes['image']!=''){
+            return ['resize'=>'/uploads/posts/resize_'.$this->attributes['image'],'original'=>'/uploads/posts/'.$this->attributes['image'] ];
+        }else{
+            return null;
+        }
+    }
+
 
     public function getTimeAttribute(){
         $date = new \DateTime($this->created_at);
@@ -49,7 +105,7 @@ class ChatPost extends Model
         return self::where('chat_id',$chat_id)->where('is_deleted','0')->orderBy('created_at','DESC')->limit(50)->get();
     }
 
-    static function addPost($chat, $message, $type, $user,  $is_system=0){
+    static function addTextPost($chat, $message, $user,  $is_system=0){
         $message = trim($message);
         if ( $message==''){
             return null;
@@ -58,7 +114,22 @@ class ChatPost extends Model
             'chat_id'=>$chat,
             'user_id'=>$user,
             'message'=>$message,
-            'type'=>$type,
+            'type'=>'text',
+            'is_sent'=>'1',
+            'is_system'=>$is_system,
+            'is_deleted'=>'0',
+            'is_read'=>'0',
+        ]);
+    }
+
+    static function addImagePost($chat, $image, $message, $user,  $is_system=0){
+        $message = trim($message);
+        return self::create([
+            'image'=>$image,
+            'chat_id'=>$chat,
+            'user_id'=>$user,
+            'message'=>$message,
+            'type'=>'image',
             'is_sent'=>'1',
             'is_system'=>$is_system,
             'is_deleted'=>'0',

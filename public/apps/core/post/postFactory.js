@@ -10,11 +10,22 @@
 
         return {
             getPosts: getPosts,
-            addPost: addPost
+            addPost: addPost,
+            addImagePost: addImagePost
         };
 
         function addPost(message, chat_id) {
-            return $http.post( '/chats/'+chat_id+'/add-post',{ message: message}).then(function (response) {
+            return $http.post( '/chats/'+chat_id+'/add-post',{ message: message, type: 'text'}).then(function (response) {
+                if ( response.data.success==true ){
+                    return {success: response.data.success, post: new postService(response.data.post)};
+                }else{
+                    return {success: response.data.success, error: response.data.error};
+                }
+            })
+        }
+
+        function addImagePost(image, message, chat_id) {
+            return $http.post( '/chats/'+chat_id+'/add-post',{ message: message, image: image, type: 'image'}).then(function (response) {
                 if ( response.data.success==true ){
                     return {success: response.data.success, post: new postService(response.data.post)};
                 }else{
@@ -24,7 +35,6 @@
         }
 
         function getPosts(id) {
-
             return $http.get( '/chats/'+id,{start:0,count:0}).then(function (response) {
                 var result = [];
                 for (var i in response.data.posts) {

@@ -69,7 +69,7 @@
                 if ( angular.isString(value) ){
                     $scope.ngModel = [value]
                 }
-                //console.log($scope.ngModel)
+
                 rematch(value)
             },true);
 
