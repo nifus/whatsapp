@@ -135,13 +135,11 @@
                 return postFactory.getPosts(Object.id)
             };
 
-            Object.addPost = function(message){
-                return postFactory.addPost(message, Object.id);
+            Object.addPost = function(message, reply){
+                return postFactory.addPost(message, reply, Object.id);
             };
 
-            Object.addPost = function(message){
-                return postFactory.addPost(message, Object.id);
-            };
+
             Object.addImagePost = function(image,message){
                 return postFactory.addImagePost(image, message, Object.id);
             };

@@ -210,18 +210,26 @@
                                 }
                             }
                            // $scope.env.chat.posts.push(response.post);
+                            $scope.env.edit_post = null;
                             alertify.success('Сообщение изменено')
                         }
                     })
                 }else{
-                    $scope.env.chat.addPost(message).then(function (response) {
+                    var reply = null;
+                    if ( $scope.env.selected_post ){
+                        reply = $scope.env.selected_post.id;
+                    }
+                    $scope.env.chat.addPost(message, reply).then(function (response) {
                         if (response.success == false) {
                             alertify.error(response.error);
                         } else {
                             $scope.env.chat.posts.push(response.post);
+                            $scope.env.selected_post = null;
                         }
                     })
                 }
+
+
 
             },
             allowIn: ['textarea']

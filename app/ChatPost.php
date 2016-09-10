@@ -23,11 +23,17 @@ class ChatPost extends Model
         return $this->hasOne('App\User',  'id','user_id');
     }
 
+    public function ReplyTo()
+    {
+        return $this->hasOne('App\ChatPost',  'id','reply_to');
+    }
+
     public function toArray()
     {
         $array = parent::toArray();
         $array['Time'] = $this->Time;
         $array['User'] = $this->User;
+        $array['ReplyTo'] = $this->ReplyTo;
         return $array;
     }
 
@@ -105,7 +111,7 @@ class ChatPost extends Model
         return self::where('chat_id',$chat_id)->where('is_deleted','0')->orderBy('created_at','DESC')->limit(50)->get();
     }
 
-    static function addTextPost($chat, $message, $user,  $is_system=0){
+    static function addTextPost($chat, $message, $reply_to, $user, $is_system=0){
         $message = trim($message);
         if ( $message==''){
             return null;
@@ -119,10 +125,11 @@ class ChatPost extends Model
             'is_system'=>$is_system,
             'is_deleted'=>'0',
             'is_read'=>'0',
+            'reply_to'=>$reply_to
         ]);
     }
 
-    static function addImagePost($chat, $image, $message, $user,  $is_system=0){
+    static function addImagePost($chat, $image, $message, $reply_to, $user,  $is_system=0){
         $message = trim($message);
         return self::create([
             'image'=>$image,
@@ -134,6 +141,7 @@ class ChatPost extends Model
             'is_system'=>$is_system,
             'is_deleted'=>'0',
             'is_read'=>'0',
+            'reply_to'=>$reply_to
         ]);
     }
 

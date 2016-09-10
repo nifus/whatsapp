@@ -14,8 +14,8 @@
             addImagePost: addImagePost
         };
 
-        function addPost(message, chat_id) {
-            return $http.post( '/chats/'+chat_id+'/add-post',{ message: message, type: 'text'}).then(function (response) {
+        function addPost(message, reply_to, chat_id) {
+            return $http.post( '/chats/'+chat_id+'/add-post',{ message: message, type: 'text', reply_to: reply_to}).then(function (response) {
                 if ( response.data.success==true ){
                     return {success: response.data.success, post: new postService(response.data.post)};
                 }else{

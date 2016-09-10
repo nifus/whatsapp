@@ -3,7 +3,18 @@
     <div class="message" ng-show="post.is_deleted=='1'">Сообщение удалено</div>
 
 
-    <div class="message" ng-show="post.type=='text' &&  post.is_deleted=='0' ">{{post.message}}</div>
+    <div class="message" ng-show="post.type=='text' &&  post.is_deleted=='0' ">
+        <div class="reply" ng-show="post.ReplyTo" style="background-color: lightgray;border-left: 3px solid green;padding:3px">
+            <div style="color: green">Вы</div>
+            <div class="message" ng-show="post.ReplyTo.type=='text' &&  post.ReplyTo.is_deleted=='0' "> {{post.ReplyTo.message}}</div>
+
+            <div class="image" ng-show="post.ReplyTo.type=='image' &&  post.ReplyTo.is_deleted=='0'">
+                <a target="_blank" ng-href="{{post.ReplyTo.image.original}}"><img ng-src="{{post.ReplyTo.image.resize}}" alt=""></a>
+                <div>{{post.ReplyTo.message}}</div>
+            </div>
+        </div>
+        {{post.message}}
+    </div>
 
     <div class="image" ng-show="post.type=='image' &&  post.is_deleted=='0'">
         <a target="_blank" ng-href="{{post.image.original}}"><img ng-src="{{post.image.resize}}" alt=""></a>

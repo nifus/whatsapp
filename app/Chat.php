@@ -116,9 +116,9 @@ class Chat extends Model
 
     public function addPost($data, $user){
         if ($data['type']=='text'){
-            $post =  ChatPost::addTextPost($this->id, $data['message'], $user);
+            $post =  ChatPost::addTextPost($this->id, $data['message'], $data['reply_to'], $user);
         }elseif($data['type']=='image'){
-            $post =  ChatPost::addImagePost($this->id, $data['image'], $data['message'], $user);
+            $post =  ChatPost::addImagePost($this->id, $data['image'], $data['message'], $data['reply_to'], $user);
         }
 
         $this->updateLastPost($post->id);
