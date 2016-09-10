@@ -1,36 +1,41 @@
+<div>
 <div class="post" ng-class="{'myself':post.isMyselfMessage(user.id),'from_me':!post.isMyselfMessage(user.id) }">
 
     <div class="message" ng-show="post.is_deleted=='1'">Сообщение удалено</div>
 
 
-    <div class="message" ng-show="post.type=='text' &&  post.is_deleted=='0' ">
-        <div class="reply" ng-show="post.ReplyTo" style="background-color: lightgray;border-left: 3px solid green;padding:3px">
-            <div style="color: green">Вы</div>
-            <div class="message" ng-show="post.ReplyTo.type=='text' &&  post.ReplyTo.is_deleted=='0' "> {{post.ReplyTo.message}}</div>
+    <div ng-show="post.type=='text' &&  post.is_deleted=='0' ">
+        <div class="reply" ng-show="post.ReplyTo"
+             style="background-color: lightgray;border-left: 3px solid green;padding:3px">
+            <div style="color: green">{{post.ReplyTo.User.id!=user.id ? post.ReplyTo.User.name : 'Вы'}}</div>
+            <div class="message" ng-show="post.ReplyTo.type=='text' &&  post.ReplyTo.is_deleted=='0' ">{{post.ReplyTo.message}}</div>
 
             <div class="image" ng-show="post.ReplyTo.type=='image' &&  post.ReplyTo.is_deleted=='0'">
-                <a target="_blank" ng-href="{{post.ReplyTo.image.original}}"><img ng-src="{{post.ReplyTo.image.resize}}" alt=""></a>
+                <a target="_blank" ng-href="{{post.ReplyTo.image.original}}"><img ng-src="{{post.ReplyTo.image.resize}}"
+                                                                                  alt=""></a>
                 <div>{{post.ReplyTo.message}}</div>
             </div>
         </div>
-        {{post.message}}
+        <div class="message">{{post.message}}</div>
     </div>
 
     <div class="image" ng-show="post.type=='image' &&  post.is_deleted=='0'">
         <a target="_blank" ng-href="{{post.image.original}}"><img ng-src="{{post.image.resize}}" alt=""></a>
-        <div>{{post.message}}</div>
+        <div class="message">{{post.message}}</div>
     </div>
 
     <div style="padding-top:5px;text-align: right;" class="time" ng-show="post.is_deleted=='0'">
 
-        <ul class="nav navbar-nav navbar-right post-menu" ng-mouseenter="expression" >
+        <ul class="nav navbar-nav navbar-right post-menu" ng-mouseenter="expression">
 
 
-            <li class="time" >{{post.Time}}</li>
+            <li class="time">{{post.Time}}</li>
             <li class="status">
-                <span ng-show="post.is_read==1" style="color: #00aced" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                <span ng-show="post.is_read==0 && post.is_sent==1"  class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                <span ng-show="post.is_sent==0"  class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                <span ng-show="post.is_read==1" style="color: #00aced" class="glyphicon glyphicon-ok"
+                      aria-hidden="true"></span>
+                <span ng-show="post.is_read==0 && post.is_sent==1" class="glyphicon glyphicon-ok"
+                      aria-hidden="true"></span>
+                <span ng-show="post.is_sent==0" class="glyphicon glyphicon-time" aria-hidden="true"></span>
 
             </li>
 
@@ -40,10 +45,14 @@
 
                 <ul class="dropdown-menu">
                     <li><a ng-click="replyToMessage()" class="link">Ответить</a></li>
-                    <li><a ng-show="user.can_edit_myself=='1' && post.type=='text'" ng-click="edit()" class="link">Редактировать</a></li>
-                    <li><a  ng-show="user.can_edit_myself=='1'" ng-click="remove()" class="link" ng-show="post.user_id==user.id">Удалить</a></li>
+                    <li><a ng-show="user.can_edit_myself=='1' && post.type=='text'" ng-click="edit()" class="link">Редактировать</a>
+                    </li>
+                    <li><a ng-show="user.can_edit_myself=='1'" ng-click="remove()" class="link"
+                           ng-show="post.user_id==user.id">Удалить</a></li>
                 </ul>
             </li>
         </ul>
     </div>
+</div>
+<br style="clear: both">
 </div>
