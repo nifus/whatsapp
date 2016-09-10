@@ -17,11 +17,11 @@
                 image: null,
                 message:null
             },
-            selected_post:null
+            selected_post:null,
+            edit_post: null
         };
         function initPage(deferred) {
             $scope.user = $scope.$parent.env.user;
-
             return deferred.promise;
         }
 
@@ -46,7 +46,13 @@
                     $scope.closeImageDialog();
                 }
             })
-        }
+        };
+
+        $scope.$watch('env.edit_post', function(value){
+            if ( value ){
+                $scope.env.message = value.message
+            }
+        });
 
         $scope.$watch('upload_image', function(value){
             if ( value ){
@@ -193,14 +199,30 @@
                 var message = $scope.env.message;
                 $scope.env.message = null;
 
-                $scope.env.chat.addPost(message).then(function (response) {
-                    if (response.success == false) {
-                        alertify.error(response.error);
-                    } else {
-                        $scope.env.chat.posts.push(response.post);
-                           console.log(response.post)
-                    }
-                })
+                if ( $scope.env.edit_post ){
+                    $scope.env.edit_post.update(message).then(function (response) {
+                        if (response.success == false) {
+                            alertify.error(response.error);
+                        } else {
+                            for( var i in $scope.env.chat.posts){
+                                if ( $scope.env.chat.posts[i].id==response.post.id ){
+                                    $scope.env.chat.posts[i].message = response.post.message;
+                                }
+                            }
+                           // $scope.env.chat.posts.push(response.post);
+                            alertify.success('Сообщение изменено')
+                        }
+                    })
+                }else{
+                    $scope.env.chat.addPost(message).then(function (response) {
+                        if (response.success == false) {
+                            alertify.error(response.error);
+                        } else {
+                            $scope.env.chat.posts.push(response.post);
+                        }
+                    })
+                }
+
             },
             allowIn: ['textarea']
         });

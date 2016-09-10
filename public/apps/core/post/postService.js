@@ -20,6 +20,11 @@
                     return response.data;
                 })
             };
+            Object.update = function(msg){
+                return $http.put( '/posts/'+Object.id,{'message':msg}).then(function (response) {
+                    return response.data;
+                })
+            };
 
 
             return (Object);

@@ -45,4 +45,5 @@ Route::get('signout', ['as' => 'signout', 'uses' => 'User\SignOutController@inde
 
 Route::group(['prefix' => 'posts'], function () {
     Route::delete('/{id}', 'Api\ChatController@removePost');
+    Route::put('/{id}', 'Api\ChatController@updatePost');
 });

@@ -55,7 +55,7 @@
 
 
                     <post ng-repeat="post in env.chat.posts |orderBy:'-created_at':true" post="post"
-                          is-select-post="env.selected_post" user="user"></post>
+                          is-select-post="env.selected_post" is-edit-post="env.edit_post" user="user"></post>
                 </div>
 
                 <div class="input" >

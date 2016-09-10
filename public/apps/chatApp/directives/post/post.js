@@ -11,7 +11,8 @@
             scope: {
                 post:'=',
                 user:'=',
-                isSelectPost:'='
+                isSelectPost:'=',
+                isEditPost:'='
             }
         };
 
@@ -37,7 +38,6 @@
         function postDirective($scope, $state, userFactory, chatFactory,$q) {
 
             $scope.remove = function(){
-
                 alertify.confirm("Удалить сообщение?", function (e) {
                     if (e) {
                         $scope.post.remove().then(function(response){
@@ -52,7 +52,11 @@
 
                     }
                 });
-            }
+            };
+
+            $scope.edit = function(){
+                $scope.isEditPost = $scope.post;
+            };
 
             $scope.replyToMessage = function(){
                 $scope.isSelectPost = $scope.post;
