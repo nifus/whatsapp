@@ -193,6 +193,15 @@ div.button span{
 	text-align: left;
 	float:left;
 }
+.system{
+	background-color:#e1f5fe;
+	margin-left: auto;
+	margin-right: auto;
+	float: none;
+	width: 40%;
+	text-align: center;
+
+}
 .img-circle {
 	width: 40px;
 	height: 40px;

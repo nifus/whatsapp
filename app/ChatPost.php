@@ -104,7 +104,7 @@ class ChatPost extends Model
     }
 
     static function getLastPost($chat_id){
-        return self::where('chat_id',$chat_id)->where('is_deleted','0')->limit(1)->first();
+        return self::where('chat_id',$chat_id)->where('is_deleted','0')->where('is_system',0)->limit(1)->first();
     }
 
     static function getPosts($chat_id, $start, $limit){

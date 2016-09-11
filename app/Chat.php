@@ -115,13 +115,16 @@ class Chat extends Model
     }
 
     public function addPost($data, $user){
+        $is_system = isset($data['is_system']) ? $data['is_system'] : 0;
+        $data['reply_to'] = isset($data['reply_to']) ? $data['reply_to'] : null;
         if ($data['type']=='text'){
-            $post =  ChatPost::addTextPost($this->id, $data['message'], $data['reply_to'], $user);
+            $post =  ChatPost::addTextPost($this->id, $data['message'], $data['reply_to'], $user, $is_system);
         }elseif($data['type']=='image'){
             $post =  ChatPost::addImagePost($this->id, $data['image'], $data['message'], $data['reply_to'], $user);
         }
-
-        $this->updateLastPost($post->id);
+        if ( $is_system==0 ){
+            $this->updateLastPost($post->id);
+        }
         return $post;
     }
 
@@ -158,6 +161,10 @@ class Chat extends Model
 
         $this->Members()->sync([]);
         $this->Members()->sync($ids);
+        $user = User::find($user_id);
+        $post = $this->addPost(['message'=>'Пользователь '.$user->name.' добавлен в чат','type'=>'text','is_system'=>1], null);
+
+        return $post;
     }
 
     public function removeMember($user_id){
@@ -171,7 +178,11 @@ class Chat extends Model
                 array_push($ids, ['user_id'=>$member->id,'is_admin'=>$member->pivot->is_admin,'sound'=>$member->pivot->sound]);
             }
         }
+        $this->Members()->sync([]);
         $this->Members()->sync($ids);
+        $user = User::find($user_id);
+        $post = $this->addPost(['message'=>'Пользователь '.$user->name.' удален из чата','type'=>'text','is_system'=>1], null);
+        return $post;
     }
 
     static function createNewChat($user_id, $users_ids){

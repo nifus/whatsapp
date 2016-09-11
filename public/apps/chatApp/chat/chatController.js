@@ -2,9 +2,9 @@
     'use strict';
     angular.module('chatApp').controller('chatController', chatController);
 
-    chatController.$inject = ['$scope',  'hotkeys'];
+    chatController.$inject = ['$scope',  'hotkeys','postService'];
 
-    function chatController($scope, hotkeys) {
+    function chatController($scope, hotkeys, postService) {
         $scope.env = {
             agents: [],
             chat: undefined,
@@ -95,6 +95,7 @@
             $scope.env.chat.addMember(member).then( function(response){
                 if (response.success==true){
                     alertify.success('Пользователь добавлен');
+                    $scope.env.chat.posts.push( new postService(response.post) );
 
                 }else{
                     alertify.error(response.error);
@@ -195,6 +196,7 @@
             $scope.env.chat.removeMember(user.id).then( function(response){
                 if (response.success==true){
                     alertify.success('Пользователь удален');
+                    $scope.env.chat.posts.push( new postService(response.post) )
                 }else{
                     alertify.error(response.error);
                 }

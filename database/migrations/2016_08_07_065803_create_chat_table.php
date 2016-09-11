@@ -40,7 +40,7 @@ class CreateChatTable extends Migration
         Schema::create('chats_posts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer("chat_id");
-            $table->integer("user_id");
+            $table->integer("user_id")->nullable();
             $table->text("message");
             $table->tinyInteger("is_system")->default(0);
             $table->tinyInteger("is_sent")->default(0);

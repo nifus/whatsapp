@@ -31,8 +31,8 @@ class ChatController extends Controller
                 throw new \Exception('no user');
             }
             $chat = Chat::find($chat);
-            $chat->addMember($member);
-            return response()->json(['success'=>true]);
+            $system_post = $chat->addMember($member);
+            return response()->json(['success'=>true, 'post'=>$system_post->toArray()]);
 
         }catch( \Exception $e ){
             return response()->json(['success'=>false,'error'=>$e->getMessage()]);
@@ -51,8 +51,8 @@ class ChatController extends Controller
             throw new \Exception('no user');
         }
         $chat = Chat::find($chat);
-        $chat->removeMember($member);
-            return response()->json(['success'=>true,'chat'=>$chat->toArray()]);
+            $system_post = $chat->removeMember($member);
+            return response()->json(['success'=>true,'chat'=>$chat->toArray(), 'post'=>$system_post->toArray()]);
 
         }catch( \Exception $e ){
             return response()->json(['success'=>false,'error'=>$e->getMessage()]);

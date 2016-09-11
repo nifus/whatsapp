@@ -17,7 +17,9 @@
                             sound: "1"
                         };
                         Object.members.push(user)
+
                     }
+
                     return response.data;
                 })
             };
