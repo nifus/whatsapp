@@ -2,10 +2,9 @@
     'use strict';
     angular.module('chatApp').controller('chatController', chatController);
 
-    chatController.$inject = ['$scope', 'userFactory', '$q', 'chatFactory', 'hotkeys'];
+    chatController.$inject = ['$scope',  'hotkeys'];
 
-    function chatController($scope, userFactory, $q, chatFactory, hotkeys) {
-        var $promises = [];
+    function chatController($scope, hotkeys) {
         $scope.env = {
             agents: [],
             chat: undefined,
@@ -38,11 +37,16 @@
         };
 
         $scope.addImagePost = function(model){
-            $scope.env.chat.addImagePost(model.image, model.message).then(function (response) {
+            var reply = null;
+            if ( $scope.env.selected_post ){
+                reply = $scope.env.selected_post.id;
+            }
+            $scope.env.chat.addImagePost(model.image, model.message, reply).then(function (response) {
                 if (response.success == false) {
                     alertify.error(response.error);
                 } else {
                     $scope.env.chat.posts.push(response.post);
+                    $scope.env.chat.LastPost = response.post;
                     $scope.closeImageDialog();
                 }
             })
@@ -66,9 +70,15 @@
                 return;
             }
 
-            chat.getPosts().then(function (response) {
-                chat.posts = response;
-            });
+            if (  $scope.user.history=='1' ){
+                chat.getPosts().then(function (response) {
+                    chat.posts = response;
+                });
+            }else{
+                chat.posts = [];
+                chat.LastPost = null
+            }
+
 
             chat.getChatStatus($scope.user.id);
         });
@@ -224,6 +234,8 @@
                             alertify.error(response.error);
                         } else {
                             $scope.env.chat.posts.push(response.post);
+                            $scope.env.chat.LastPost = response.post;
+
                             $scope.env.selected_post = null;
                         }
                     })

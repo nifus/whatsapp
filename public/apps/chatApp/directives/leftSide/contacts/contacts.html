@@ -12,8 +12,11 @@
         <div class="foto"><img ng-src="{{chat.getChatAvatar(user.id)}}" class="img-circle" width="50"></div>
         <div class="detalle-contacto">
             <div class="nombre-contacto">{{chat.getChatName(user.id)}}</div>
-            <div class="mensaje-contacto">{{chat.LastPost.message}}</div>
+            <div class="mensaje-contacto" ng-show="!chat.LastPost.message && chat.LastPost.type=='image'"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Фото </div>
+            <div class="mensaje-contacto" ng-show="chat.LastPost.message">{{chat.LastPost.message}} </div>
+
         </div>
+
         <div class="hora-chat" style="float: left;
     width: 50px;
     text-align: center;margin:5px;padding:0px">

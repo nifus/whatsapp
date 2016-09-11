@@ -60,10 +60,11 @@
 
                 <div class="input" >
                     <div class="reply" ng-style="{'height': (env.selected_post!=null ? '55px' : '0px'), 'display': (env.selected_post!=null ? 'block' : 'none')}"  style="height:0px;border-left:3px solid darkgreen">
-                        <div class="author" style="float:left;width:98%;color:green;padding:5px;">Вы</div>
+                        <div class="author" style="float:left;width:98%;color:green;padding:5px;">{{env.selected_post.user_id==user.id ? "Вы" : env.selected_post.User.name}}</div>
 
                         <div style="float:left;width:2%;"><span ng-click="cancelReply()" class="link glyphicon glyphicon-remove" aria-hidden="true"></span></div>
-                        <div class="message" style="clear:both;white-space:nowrap;overflow: hidden;padding:5px;" > {{env.selected_post.message}}</div>
+                        <div class="message" style="clear:both;white-space:nowrap;overflow: hidden;padding:5px;"  ng-show="!env.selected_post.message && env.selected_post.type=='image'"> <span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Фото</div>
+                        <div class="message" style="clear:both;white-space:nowrap;overflow: hidden;padding:5px;"  ng-show="env.selected_post.message "> {{env.selected_post.message}}</div>
                     </div>
                     <textarea ng-disabled="!env.chat.isAdmin(user.id) && env.chat.is_group==1"
                               placeholder="Введите сообщение" class="form-control" ng-model="env.message"></textarea>
