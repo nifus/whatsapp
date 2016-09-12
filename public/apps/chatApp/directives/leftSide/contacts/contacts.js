@@ -4,8 +4,8 @@
     angular.module('chatApp').
     controller('contactsController', contactsController);
 
-    contactsController.$inject = ['$scope', 'userFactory', '$state'];
-    function contactsController($scope, userFactory, $state) {
+    contactsController.$inject = ['$scope', 'userFactory'];
+    function contactsController($scope, userFactory) {
         $scope.env = {
             chat: undefined,
             search_activated: false

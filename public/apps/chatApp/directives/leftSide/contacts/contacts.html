@@ -5,23 +5,25 @@
     </div>
 </div>
 
+
 <div class="left-contacts">
+
     <div class="persona" ng-show="env.search_activated && env.chats.length>0"><h3>Чаты</h3></div>
 
-    <div class="persona" ng-repeat="chat in env.chats" ng-click="openChat(chat)">
-        <div class="foto"><img ng-src="{{chat.getChatAvatar(user.id)}}" class="img-circle" width="50"></div>
+    <div class="persona" ng-repeat="ch in env.chats" ng-click="openChat(ch)" ng-class="{'selected':chat.id==ch.id}">
+        <div class="foto"><img ng-src="{{ch.getChatAvatar(user.id)}}" class="img-circle" width="50"></div>
         <div class="detalle-contacto">
-            <div class="nombre-contacto">{{chat.getChatName(user.id)}}</div>
-            <div class="mensaje-contacto" ng-show="!chat.LastPost.message && chat.LastPost.type=='image'"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Фото </div>
-            <div class="mensaje-contacto" ng-show="chat.LastPost.message">{{chat.LastPost.message}} </div>
+            <div class="nombre-contacto">{{ch.getChatName(user.id)}}</div>
+            <div class="mensaje-contacto" ng-show="!ch.LastPost.message && ch.LastPost.type=='image'"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Фото </div>
+            <div class="mensaje-contacto" ng-show="ch.LastPost.message">{{ch.LastPost.message}} </div>
 
         </div>
 
         <div class="hora-chat" style="float: left;
     width: 50px;
     text-align: center;margin:5px;padding:0px">
-            {{chat.LastPost.Time}} <br>
-            <span class="badge" ng-show="chat.CountUnreadMessages>0">{{chat.CountUnreadMessages}}</span>
+            {{ch.LastPost.Time}} <br>
+            <span class="badge" ng-show="ch.CountUnreadMessages>0">{{ch.CountUnreadMessages}}</span>
         </div>
     </div>
 

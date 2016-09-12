@@ -249,6 +249,9 @@ div.input textarea{
 	background: #E9EBEB;
 	cursor: pointer;
 }
+.selected{
+	background-color: lightblue;
+}
 .foto{
 	width: 55px;
 	float: left;
