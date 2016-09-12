@@ -186,16 +186,24 @@ class Chat extends Model
     }
 
     static function createNewChat($user_id, $users_ids){
-        //$user_chats = self::where('author', $user_id)->where('')->get();
+        array_push($users_ids,$user_id);
 
+        //$user_chats = self::where('author', $user_id)->where('')->get();
+        $chats = Chat::where('author',$user_id)->where('is_group',0)->where('is_deleted',0)->get();
+        foreach( $chats as $chat ){
+            $ids = $chat->Members()->pluck('user_id')->toArray();
+            if ( $ids==$users_ids){
+                return  $chat;
+            }
+        }
         $data = ['author'=>$user_id];
         $chat = self::create($data);
-        array_push($users_ids,$user_id);
         $chat->Members()->sync($users_ids);
-       // $chat
+
 
         return $chat;
     }
+
     static function createNewGroup($user_id, $data){
         //$user_chats = self::where('author', $user_id)->where('')->get();
 
