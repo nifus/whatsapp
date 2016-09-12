@@ -158,6 +158,7 @@ div.button span{
 	background-image: url(http://1.bp.blogspot.com/-P5uqUWLgZmA/UtQDdtahipI/AAAAAAAAF3E/IgvARwfxAlw/s1600/seamless-stone-background.jpg);
 	overflow-y:auto;
 	height:87%;
+	width:100%
 }
 .post{
 	padding:10px;
@@ -288,9 +289,11 @@ div.input textarea{
 	white-space: nowrap;
 	overflow: hidden;
 }
-.hora-chat{
+.additional{
 	font-size: 10px;
-	padding-top: 10px;
+	float: left;
+	width: 50px;
+	text-align: center;margin:5px;padding:0px
 }
 #chat{
 	height: 610px;
