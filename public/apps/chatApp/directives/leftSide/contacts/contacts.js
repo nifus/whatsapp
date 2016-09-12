@@ -14,7 +14,9 @@
         $scope.$watch('contact_list', function(value){
             if (value==true){
                 $scope.showContactList();
-                $scope.contact_list = false;
+                //$scope.contact_list = false;
+            }else{
+                $scope.hideContactList();
             }
         })
 
@@ -31,6 +33,11 @@
 
             }
         });
+
+        $scope.hideContactList = function(){
+            $scope.env.search_activated = false;
+            $scope.env.chats = $scope.env.source_chats;
+        };
 
         $scope.showContactList = function(value){
             if ( value!=undefined ){

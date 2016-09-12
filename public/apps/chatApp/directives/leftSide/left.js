@@ -55,6 +55,8 @@
                     $scope.chat = response;
                     $scope.user.chats.push(response);
                 });
+                $scope.contact_list = false;
+
             }
 
             $scope.saveProfile = function(data){
