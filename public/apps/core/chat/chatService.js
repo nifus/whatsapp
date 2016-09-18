@@ -133,8 +133,8 @@
                 }
             };
 
-            Object.getPosts = function () {
-                return postFactory.getPosts(Object.id)
+            Object.getPosts = function (start) {
+                return postFactory.getPosts(Object.id, start)
             };
 
             Object.addPost = function (message, reply) {

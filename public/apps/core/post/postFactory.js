@@ -34,8 +34,11 @@
             })
         }
 
-        function getPosts(id) {
-            return $http.get( '/chats/'+id,{start:0,count:0}).then(function (response) {
+        function getPosts(id,start) {
+            if (start==undefined){
+                start = 0
+            }
+            return $http.post( '/chats/'+id,{start:start,count:30}).then(function (response) {
                 var result = [];
                 for (var i in response.data.posts) {
                     result.push( new postService(response.data.posts[i]) );

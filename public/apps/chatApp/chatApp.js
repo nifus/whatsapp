@@ -1,6 +1,6 @@
 (function (angular, window) {
     'use strict';
-    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies','naif.base64','cfp.hotkeys']).
+    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies','naif.base64','cfp.hotkeys','luegg.directives']).
     config(function ($stateProvider, $urlRouterProvider, $authProvider) {
 
         var href = window.location.href;

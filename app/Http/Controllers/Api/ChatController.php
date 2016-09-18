@@ -127,8 +127,8 @@ class ChatController extends Controller
 
     public function loadChat($id, Request $request){
         $data = $request->all();
-        $data['start'] = 0;
-        $data['count'] = 100;
+        $data['start'] = $request['start'];
+        $data['count'] = $request['count'];;
         $user = JWTAuth::parseToken()->authenticate();
         if ( is_null($user) ){
             throw new \Exception('no user');

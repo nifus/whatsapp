@@ -108,7 +108,7 @@ class ChatPost extends Model
     }
 
     static function getPosts($chat_id, $start, $limit){
-        return self::where('chat_id',$chat_id)->where('is_deleted','0')->orderBy('created_at','DESC')->limit(50)->get();
+        return self::where('chat_id',$chat_id)->where('is_deleted','0')->orderBy('created_at','DESC')->skip($start)->take($limit)->get();
     }
 
     static function addTextPost($chat, $message, $reply_to, $user, $is_system=0){

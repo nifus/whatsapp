@@ -30,7 +30,7 @@ Route::get('signout', ['as' => 'signout', 'uses' => 'User\SignOutController@inde
 
     Route::group(['prefix' => 'chats'], function () {
         Route::post('/', 'Api\ChatController@store');
-        Route::get('/{id}', 'Api\ChatController@loadChat');
+        Route::post('/{id}', 'Api\ChatController@loadChat');
         Route::put('/{id}', 'Api\ChatController@updateChat');
 
         Route::post('/group', 'Api\ChatController@addGroup');

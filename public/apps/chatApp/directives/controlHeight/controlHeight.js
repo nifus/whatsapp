@@ -20,13 +20,9 @@
             },styleChangeFn);
 
             function styleChangeFn(value,old){
-                console.log(value)
                 if (value>0){
-                    console.log('less')
-                   // messages_element.clientHeight = 100
                     messages_element.height('81%') //= '100px'
                 }else{
-                    console.log('more')
 
                     messages_element.height('87%')
                 }

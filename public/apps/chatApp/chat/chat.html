@@ -51,9 +51,12 @@
             </div>
 
             <div control-height>
-                <div class="messages" scroll-glue >
 
-
+                <img ng-show="env.loading==true" src="/image/loading-circle.gif" style="width:50px;    position: absolute;
+    width: 50px;
+    margin: 20px;
+    left: 55%;" alt="">
+                <div class="messages" scroll-glue scroll-load-messages >
                     <post ng-repeat="post in env.chat.posts |orderBy:'-created_at':true" post="post"
                           is-select-post="env.selected_post" is-edit-post="env.edit_post" user="user"></post>
                 </div>
