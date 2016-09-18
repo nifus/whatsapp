@@ -121,6 +121,8 @@ class Chat extends Model
             $post =  ChatPost::addTextPost($this->id, $data['message'], $data['reply_to'], $user, $is_system);
         }elseif($data['type']=='image'){
             $post =  ChatPost::addImagePost($this->id, $data['image'], $data['message'], $data['reply_to'], $user);
+        }elseif($data['type']=='document'){
+            $post =  ChatPost::addDocumentPost($this->id, $data['document'], $data['message'], $data['reply_to'], $user);
         }
         if ( $is_system==0 ){
             $this->updateLastPost($post->id);

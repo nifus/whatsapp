@@ -10,7 +10,7 @@ class ChatPost extends Model
 
 
     protected
-        $fillable = ['chat_id', 'user_id','message','is_system','is_sent','is_read','type','created_at','updated_at','is_deleted','image','reply_to'],
+        $fillable = ['chat_id', 'user_id','message','is_system','is_sent','is_read','type','created_at','updated_at','is_deleted','image','reply_to','document'],
         $table = 'chats_posts';
 
     public function Chat()
@@ -35,6 +35,20 @@ class ChatPost extends Model
         $array['User'] = $this->User;
         $array['ReplyTo'] = $this->ReplyTo;
         return $array;
+    }
+
+
+    public function setDocumentAttribute($value){
+        if ( is_array($value)  ) {
+            $name = time() . rand(1, 10000) . '.' . pathinfo($value['filename'], PATHINFO_EXTENSION);
+            file_put_contents(public_path('uploads/posts/' . $name), base64_decode($value['base64']));
+            $result = $name;
+        }elseif (is_array($value)  && isset($value[0]) && is_string($value[0])) {
+            $result = basename($value[0]);
+        }else{
+            $result = null;
+        }
+        $this->attributes['document'] = $result;
     }
 
     public function setImageAttribute($value){
@@ -93,7 +107,13 @@ class ChatPost extends Model
         }
     }
 
-
+    public function getDocumentAttribute(){
+        if ( isset($this->attributes['document']) && $this->attributes['document']!=''){
+            return '/uploads/posts/'.$this->attributes['document'];
+        }else{
+            return null;
+        }
+    }
     public function getTimeAttribute(){
         $date = new \DateTime($this->created_at);
         return $date->format('H:i');
@@ -137,6 +157,22 @@ class ChatPost extends Model
             'user_id'=>$user,
             'message'=>$message,
             'type'=>'image',
+            'is_sent'=>'1',
+            'is_system'=>$is_system,
+            'is_deleted'=>'0',
+            'is_read'=>'0',
+            'reply_to'=>$reply_to
+        ]);
+    }
+
+    static function addDocumentPost($chat, $document, $message, $reply_to, $user,  $is_system=0){
+        $message = trim($message);
+        return self::create([
+            'document'=>$document,
+            'chat_id'=>$chat,
+            'user_id'=>$user,
+            'message'=>$message,
+            'type'=>'document',
             'is_sent'=>'1',
             'is_system'=>$is_system,
             'is_deleted'=>'0',

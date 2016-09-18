@@ -19,12 +19,24 @@
                             alt=""></a>
                     <div>{{post.ReplyTo.message}}</div>
                 </div>
+                <div class="image" ng-show="post.ReplyTo.type=='document' &&  post.ReplyTo.is_deleted=='0'">
+                    <a target="_blank" ng-href="{{post.ReplyTo.document}}"><img
+                            src="/image/attachement.png"
+                            alt=""></a>
+                    <div>{{post.ReplyTo.message}}</div>
+                </div>
             </div>
             <div class="message">{{post.message}}</div>
         </div>
 
         <div class="image" ng-show="post.type=='image' &&  post.is_deleted=='0'">
             <a target="_blank" ng-href="{{post.image.original}}"><img ng-src="{{post.image.resize}}" alt=""></a>
+            <div class="message">{{post.message}}</div>
+        </div>
+
+
+        <div class="image" ng-show="post.type=='document' &&  post.is_deleted=='0'">
+            <a target="_blank" ng-href="{{post.document}}"><img style="width:200px" src="/image/attachement.png" alt=""></a>
             <div class="message">{{post.message}}</div>
         </div>
 

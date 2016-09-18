@@ -74,7 +74,30 @@
                     };
                     $timeout(function(){
                         $('div.messages').scrollTop( document.getElementById('post-'+response.post.id).offsetTop );
-                    },1000)
+                    },100)
+                }
+            })
+        };
+
+        $scope.addDocumentPost = function(model){
+            var reply = null;
+            if ( $scope.env.selected_post ){
+                reply = $scope.env.selected_post.id;
+            }
+            $scope.env.chat.addDocumentPost(model.image, model.message, reply).then(function (response) {
+                if (response.success == false) {
+                    alertify.error(response.error);
+                } else {
+                    $scope.env.chat.posts.push(response.post);
+                    $scope.env.chat.LastPost = response.post;
+                    $scope.closeImageDialog();
+                    $scope.env.upload = {
+                        image: null,
+                        message:null
+                    };
+                    $timeout(function(){
+                        $('div.messages').scrollTop( document.getElementById('post-'+response.post.id).offsetTop );
+                    },100)
                 }
             })
         };

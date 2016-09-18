@@ -146,6 +146,10 @@
                 return postFactory.addImagePost(image, message, reply, Object.id);
             };
 
+            Object.addDocumentPost = function (document, message, reply) {
+                return postFactory.addDocumentPost(document, message, reply, Object.id);
+            };
+
             Object.clearChat = function () {
                 return $http.post('/chats/' + Object.id + '/clear', {}).then(function (response) {
                     if (response.data.success == true) {
