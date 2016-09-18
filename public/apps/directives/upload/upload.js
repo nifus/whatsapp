@@ -77,20 +77,26 @@
                 if ( value==null ){
                     return false;
                 }
+                console.log(max)
 
                 if ( !$scope.ngModel ){
                     $scope.ngModel = max==1 ? [value] : [];
                 }
 
                 if ( angular.isArray($scope.ngModel) && angular.isArray(value) ){
+                    console.log(1)
                     for( var i in value ){
                         if ( $scope.ngModel.length< max)
                             $scope.ngModel.push(value[i])
                     }
-                }else if ( angular.isArray($scope.ngModel) && angular.isObject(value) ){
-                        if ( $scope.ngModel.length< max)
+                }else if ( max>1 && angular.isArray($scope.ngModel) && angular.isObject(value) ){
+
+                    if ( $scope.ngModel.length< max)
                             $scope.ngModel.push(value)
 
+                }else if(max==1 && angular.isArray($scope.ngModel) && angular.isObject(value)){
+
+                    $scope.ngModel[0] =(value)
                 }
                 if ($scope.ngChange){
                     $scope.ngChange($scope.ngModel );

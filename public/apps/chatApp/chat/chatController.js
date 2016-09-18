@@ -42,16 +42,10 @@
                         $scope.env.chat.posts.unshift(response[i])
                     }
                     if (response.length>0){
-
-                        console.log('post-'+$scope.env.first_post_id)
                         $('div.messages').scrollTop( document.getElementById('post-'+$scope.env.first_post_id).offsetTop );
                         $scope.env.first_post_id = response[0].id;
                     }
-                    //$scope.env.chat.posts.unshift(response) //= response.concat($scope.env.chat.posts);
-
-                    //chat.posts.concat(response) ;
                     $scope.env.loading = false;
-
                 });
             }
         });
@@ -60,6 +54,7 @@
             $scope.env.imageDialog = false;
             $scope.env.upload = {};
         };
+
 
         $scope.addImagePost = function(model){
             var reply = null;
@@ -73,6 +68,13 @@
                     $scope.env.chat.posts.push(response.post);
                     $scope.env.chat.LastPost = response.post;
                     $scope.closeImageDialog();
+                    $scope.env.upload = {
+                        image: null,
+                        message:null
+                    };
+                    $timeout(function(){
+                        $('div.messages').scrollTop( document.getElementById('post-'+response.post.id).offsetTop );
+                    },1000)
                 }
             })
         };
@@ -88,7 +90,7 @@
                 $scope.env.imageDialog = true;
                 $scope.env.upload.image = $scope.upload_image[0]
             }
-        });
+        },true);
 
         $scope.$watch('env.chat', function (chat) {
             if (!chat) {
@@ -99,7 +101,12 @@
                 chat.getPosts().then(function (response) {
                     chat.posts = response;
                     if (chat.posts.length>0){
-                        $scope.env.first_post_id = chat.posts[0].id
+                        $scope.env.first_post_id = chat.posts[0].id;
+                        $timeout(function(){
+                            $('div.messages').scrollTop( document.getElementById('post-'+$scope.env.first_post_id).offsetTop );
+
+                        },100)
+
                     }
                 });
             }else{
@@ -269,6 +276,9 @@
                             $scope.env.chat.LastPost = response.post;
 
                             $scope.env.selected_post = null;
+                            $timeout(function(){
+                                $('div.messages').scrollTop( document.getElementById('post-'+response.post.id).offsetTop );
+                            },100)
                         }
                     })
                 }
