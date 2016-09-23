@@ -18,7 +18,7 @@
         function addPost(message, reply_to, chat_id) {
             return $http.post( '/chats/'+chat_id+'/add-post',{ message: message, type: 'text', reply_to: reply_to}).then(function (response) {
                 if ( response.data.success==true ){
-                    return {success: response.data.success, post: new postService(response.data.post)};
+                    return {success: response.data.success, post: new postService(response.data.post), chat: response.data.chat};
                 }else{
                     return {success: response.data.success, error: response.data.error};
                 }
@@ -28,7 +28,7 @@
         function addImagePost(image, message, reply_to, chat_id) {
             return $http.post( '/chats/'+chat_id+'/add-post',{ message: message, image: image, reply_to: reply_to, type: 'image'}).then(function (response) {
                 if ( response.data.success==true ){
-                    return {success: response.data.success, post: new postService(response.data.post)};
+                    return {success: response.data.success, post: new postService(response.data.post), chat: response.data.chat};
                 }else{
                     return {success: response.data.success, error: response.data.error};
                 }
@@ -37,7 +37,7 @@
         function addDocumentPost(document, message, reply_to, chat_id) {
             return $http.post( '/chats/'+chat_id+'/add-post',{ message: message, document: document, reply_to: reply_to, type: 'document'}).then(function (response) {
                 if ( response.data.success==true ){
-                    return {success: response.data.success, post: new postService(response.data.post)};
+                    return {success: response.data.success, post: new postService(response.data.post), chat: response.data.chat};
                 }else{
                     return {success: response.data.success, error: response.data.error};
                 }

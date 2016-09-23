@@ -67,6 +67,8 @@
                 } else {
                     $scope.env.chat.posts.push(response.post);
                     $scope.env.chat.LastPost = response.post;
+                    $scope.env.chat.updated_at = response.chat.updated_at;
+
                     $scope.closeImageDialog();
                     $scope.env.upload = {
                         image: null,
@@ -90,6 +92,7 @@
                 } else {
                     $scope.env.chat.posts.push(response.post);
                     $scope.env.chat.LastPost = response.post;
+                    $scope.env.chat.updated_at = response.chat.updated_at;
                     $scope.closeImageDialog();
                     $scope.env.upload = {
                         image: null,
@@ -297,6 +300,7 @@
                         } else {
                             $scope.env.chat.posts.push(response.post);
                             $scope.env.chat.LastPost = response.post;
+                            $scope.env.chat.updated_at = response.chat.updated_at;
 
                             $scope.env.selected_post = null;
                             $timeout(function(){

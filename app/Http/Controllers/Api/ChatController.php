@@ -202,7 +202,7 @@ class ChatController extends Controller
                 throw new \Exception('problem with add  message');
             }
 
-            return response()->json(['success'=>true,'post'=>$post->toArray()]);
+            return response()->json(['success'=>true,'post'=>$post->toArray(),'chat'=>$chat->toArray()]);
 
         }catch( \Exception $e ){
             return response()->json(['success'=>false,'error'=>$e->getMessage()]);
