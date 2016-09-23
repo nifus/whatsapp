@@ -4,11 +4,12 @@
     angular.module('chatApp').
     controller('contactsController', contactsController);
 
-    contactsController.$inject = ['$scope', 'userFactory'];
-    function contactsController($scope, userFactory) {
+    contactsController.$inject = ['$scope', 'userFactory','$http'];
+    function contactsController($scope, userFactory, $http) {
         $scope.env = {
             chat: undefined,
-            search_activated: false
+            search_activated: false,
+            search_result: []
         };
 
         $scope.$watch('contact_list', function(value){
@@ -48,7 +49,8 @@
                         if ( chat.name.toLowerCase().indexOf(value)!=-1){
                             return true;
                         }
-                        if ( chat.login.toLowerCase().indexOf(value)!=-1){
+
+                        if ( chat.login!=undefined && chat.login.toLowerCase().indexOf(value)!=-1){
                             return true;
                         }
                         return false;
@@ -57,7 +59,7 @@
                         if ( contact.name.toLowerCase().indexOf(value)!=-1){
                             return true;
                         }
-                        if ( contact.login.toLowerCase().indexOf(value)!=-1){
+                        if ( contact.login!=undefined &&  contact.login.toLowerCase().indexOf(value)!=-1){
                             return true;
                         }
                         return false;
@@ -74,11 +76,29 @@
             }
 
             //console.log($scope.env.chat)
+        };
+
+        function search(value){
+            $http.get('/chats/search/'+value).success( function(result){
+                $scope.env.search_result = result.post;
+                var reg = new RegExp("("+value+")"+'(.{0,50})');
+                for(var i in result.post ){
+
+                    var message = result.post[i].message.match(reg);
+
+                    console.log(message)
+                        result.post[i].message =   '<strong>'+message[1]+'</strong>'+message[2]
+
+
+                    //.match(/пизде.{0,30}/)
+                }
+            })
         }
 
         $scope.$watch('env.chat', function(value){
             if (value!=undefined){
-                $scope.showContactList(value)
+                $scope.showContactList(value);
+                search(value);
             }
 
         })

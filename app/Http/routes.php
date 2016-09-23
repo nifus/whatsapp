@@ -32,6 +32,7 @@ Route::get('signout', ['as' => 'signout', 'uses' => 'User\SignOutController@inde
         Route::post('/', 'Api\ChatController@store');
         Route::post('/{id}', 'Api\ChatController@loadChat');
         Route::put('/{id}', 'Api\ChatController@updateChat');
+        Route::get('/search/{key}', 'Api\ChatController@search');
 
         Route::post('/group', 'Api\ChatController@addGroup');
         Route::post('/{id}/add-post', 'Api\ChatController@addPost');

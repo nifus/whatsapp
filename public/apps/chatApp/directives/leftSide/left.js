@@ -79,7 +79,6 @@
                         alertify.success('Группа создана');
                         $scope.openContacts();
                         $scope.user.chats.push(response.chat);
-
                     }
                 })
 
