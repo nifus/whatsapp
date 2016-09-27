@@ -5,9 +5,9 @@
 
         var href = window.location.href;
         if (href.indexOf('chat.dev') == -1) {
-            window.SERVER = 'http://62.76.185.138:8080';
+            window.SERVER = '';
         } else {
-            window.SERVER = 'http://chat.dev';
+            window.SERVER = '';
         }
 
        // $authProvider.httpInterceptor = false;

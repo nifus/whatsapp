@@ -25,12 +25,15 @@ class UserTableSeeder extends Seeder
             [
                 'name' => 'Петя',
                 'email' => 'admin@admin.dev',
+                'login' => 'admin',
                 'password' => Hash::make('testpass'),
                 'group_id' => 1,
             ],
             [
                 'name' => 'Вася',
                 'email' => 'user@user.dev',
+                'login' => 'user',
+
                 'password' => Hash::make('testpass'),
                 'group_id' => 2,
 
@@ -42,7 +45,7 @@ class UserTableSeeder extends Seeder
         User::create($users[1]);
         //\DB::table('users')->insert($users);
 
-        $faker = Faker\Factory::create();
+        /*$faker = Faker\Factory::create();
         $faker->addProvider(new Faker\Provider\Internet($faker));
         $faker->addProvider(new Faker\Provider\en_US\Person($faker));
 
@@ -67,7 +70,7 @@ class UserTableSeeder extends Seeder
             $user->Contacts()->sync($contacts);
         }
 
-
+*/
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         Model::reguard();
     }
