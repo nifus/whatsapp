@@ -15,7 +15,7 @@
         <div class="detalle-contacto">
             <div class="nombre-contacto">{{ch.getChatName(user.id)}}</div>
             <div class="mensaje-contacto" ng-show="!ch.LastPost.message && ch.LastPost.type=='image'"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Фото </div>
-            <div class="mensaje-contacto" ng-show="ch.LastPost.message">{{ch.LastPost.message}} </div>
+            <div class="mensaje-contacto" ng-show="ch.LastPost.message" ng-bind-html="ch.LastPost.message|to_trusted"> </div>
 
         </div>
 

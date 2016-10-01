@@ -9,35 +9,33 @@
             <div class="reply" ng-show="post.ReplyTo"
                  style="background-color: lightgray;border-left: 3px solid green;padding:3px">
                 <div style="color: green">{{post.ReplyTo.User.id!=user.id ? post.ReplyTo.User.name : 'Вы'}}</div>
-                <div class="message" ng-show="post.ReplyTo.type=='text' &&  post.ReplyTo.is_deleted=='0' ">
-                    {{post.ReplyTo.message}}
-                </div>
+                <div class="message" ng-show="post.ReplyTo.type=='text' &&  post.ReplyTo.is_deleted=='0' " ng-bind-html="post.ReplyTo.message|to_trusted"></div>
 
                 <div class="image" ng-show="post.ReplyTo.type=='image' &&  post.ReplyTo.is_deleted=='0'">
                     <a target="_blank" ng-href="{{post.ReplyTo.image.original}}"><img
                             ng-src="{{post.ReplyTo.image.resize}}"
                             alt=""></a>
-                    <div>{{post.ReplyTo.message}}</div>
+                    <div ng-bind-html="post.ReplyTo.message|to_trusted"></div>
                 </div>
                 <div class="image" ng-show="post.ReplyTo.type=='document' &&  post.ReplyTo.is_deleted=='0'">
                     <a target="_blank" ng-href="{{post.ReplyTo.document}}"><img
                             src="/image/attachement.png"
                             alt=""></a>
-                    <div>{{post.ReplyTo.message}}</div>
+                    <div ng-bind-html="post.ReplyTo.message|to_trusted"></div>
                 </div>
             </div>
-            <div class="message">{{post.message}}</div>
+            <div class="message" ng-bind-html="post.message|to_trusted"></div>
         </div>
 
         <div class="image" ng-show="post.type=='image' &&  post.is_deleted=='0'">
             <a target="_blank" ng-href="{{post.image.original}}"><img ng-src="{{post.image.resize}}" alt=""></a>
-            <div class="message">{{post.message}}</div>
+            <div class="message" ng-bind-html="post.message|to_trusted"></div>
         </div>
 
 
         <div class="image" ng-show="post.type=='document' &&  post.is_deleted=='0'">
             <a target="_blank" ng-href="{{post.document}}"><img style="width: 200px;" src="/image/attachement.png" alt=""></a>
-            <div class="message">{{post.message}}</div>
+            <div class="message" ng-bind-html="post.message|to_trusted"></div>
         </div>
 
         <div style="padding-top:5px;text-align: right;" class="time"
