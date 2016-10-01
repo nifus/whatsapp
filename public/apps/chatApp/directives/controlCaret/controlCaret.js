@@ -1,17 +1,63 @@
-<div id="test" contenteditable="true">
-    this is test
-    <div> is incap <img src="image/pixel.png" class="smile" alt="">sulate message</div>
+(function (angular) {
+    'use strict';
 
-</div>
+    function controlCaretDirective($rootScope) {
+        return {
+            restrict: 'A',
+            link: controlCaretLink,
 
-<style>
-    .smile{
-        background: url(image/smiles_01.png) no-repeat;
-        height: 32px;
-        width: 32px;
+        };
+
+
+        function controlCaretLink($scope,element) {
+            var position = 0;
+            var node = null;
+            var parent = null;
+            element.on('keydown', function(e){
+
+                //e.stopPropagation();
+                if (e.ctrlKey==true && e.keyCode==13){
+                    parent = getParentSelectedNode();
+                    node = pasteHtmlAtCaret('<br>&nbsp;');
+
+                    e.preventDefault();
+                }
+
+                if (e.ctrlKey==false && e.keyCode==13){
+                    $rootScope.$broadcast('submit',element[0].innerHTML);
+                    element[0].innerHTML = ''
+                    e.preventDefault();
+
+                }
+
+            });
+
+            element.on('keyup', function(){
+                node = getSelectedNode();
+                parent = getParentSelectedNode();
+                position = getCaretPosition(parent);
+
+            });
+            element.on('mouseup', function(){
+                node = getSelectedNode();
+                parent = getParentSelectedNode();
+                position = getCaretPosition(parent);
+            });
+
+            $rootScope.$on('insert_smiles', function (event, html) {
+                setCaret(node,position);
+                pasteHtmlAtCaret(html);
+                setCaret(node,position+1);
+
+            });
+
+
+
+        }
+
+
+
     }
-</style>
-<script>
 
     function getParentSelectedNode()
     {
@@ -36,21 +82,9 @@
         }
     }
 
-
-    function setCaret(el, position) {
-        var range = document.createRange();
-        var sel = window.getSelection();
-
-        range.setStart(el, position);
-        range.collapse(true);
-        sel.removeAllRanges();
-        sel.addRange(range);
-        //el.focus();
-    }
-
     function getCaretPosition(editableDiv) {
         var caretPos = 0,
-                sel, range;
+            sel, range;
         if (window.getSelection) {
 
             sel = window.getSelection();
@@ -75,6 +109,7 @@
         }
         return caretPos;
     }
+
     function pasteHtmlAtCaret(html) {
         var sel, range;
         if (window.getSelection) {
@@ -102,6 +137,7 @@
                     sel.removeAllRanges();
                     sel.addRange(range);
                 }
+                return el;
             }
         } else if (document.selection && document.selection.type != "Control") {
             // IE < 9
@@ -109,15 +145,17 @@
         }
     }
 
-    document.getElementById('test').addEventListener('click', function(){
-        var node = getSelectedNode();
-        var parent = getParentSelectedNode();
-        var number = getCaretPosition(  parent )
+    function setCaret(el, position) {
+        var range = document.createRange();
+        var sel = window.getSelection();
 
-        console.log(node )
-        console.log(node.parentNode.childNodes[0] )
-        console.log(number )
-        setCaret(node, number);
-        pasteHtmlAtCaret(' <img src="image/smiles_01.png" alt=""> ')
-    })
-    </script>
+        range.setStart(el, position);
+        range.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        //el.focus();
+    }
+    angular.module('chatApp').directive('controlCaret', controlCaretDirective);
+
+
+})(window.angular);

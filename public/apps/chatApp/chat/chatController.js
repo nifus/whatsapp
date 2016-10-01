@@ -2,9 +2,11 @@
     'use strict';
     angular.module('chatApp').controller('chatController', chatController);
 
-    chatController.$inject = ['$scope',  'hotkeys','postService','$timeout'];
+    chatController.$inject = ['$scope',  'hotkeys','postService','$timeout','$rootScope'];
 
-    function chatController($scope, hotkeys, postService,$timeout) {
+    function chatController($scope, hotkeys, postService,$timeout, $rootScope) {
+
+        $scope.more = false;
         $scope.env = {
             agents: [],
             chat: undefined,
@@ -20,7 +22,8 @@
             edit_post: null,
             loading:false,
             start: 0,
-            first_post_id: null
+            first_post_id: null,
+            show_smiles: false
         };
         function initPage(deferred) {
             $scope.user = $scope.$parent.env.user;
@@ -76,7 +79,7 @@
                     };
                     $timeout(function(){
                         $('div.messages').scrollTop( document.getElementById('post-'+response.post.id).offsetTop );
-                    },100)
+                    },10)
                 }
             })
         };
@@ -310,11 +313,68 @@
                     })
                 }
 
-
-
             },
             allowIn: ['textarea']
         });
+
+        $scope.smilesDialog = function(){
+            $scope.env.show_smiles = !$scope.env.show_smiles;
+            $timeout(function(){
+                $rootScope.$broadcast('smiles',{'smiles':$scope.env.show_smiles} );
+
+            },10)
+        };
+
+        $scope.$watch('msg', function(value){
+            $rootScope.$broadcast('textField',{'smiles':$scope.env.show_smiles});
+        });
+        $scope.$on('submit', function(event, html){
+           // $scope.env.messageconsole.log(html)
+            var message =html;
+            $timeout(function(){
+                $scope.env.message = null;
+            },100);
+
+            if ( $scope.env.edit_post ){
+                $scope.env.edit_post.update(message).then(function (response) {
+                    if (response.success == false) {
+                        alertify.error(response.error);
+                    } else {
+                        for( var i in $scope.env.chat.posts){
+                            if ( $scope.env.chat.posts[i].id==response.post.id ){
+                                $scope.env.chat.posts[i].message = response.post.message;
+                            }
+                        }
+                        // $scope.env.chat.posts.push(response.post);
+                        $scope.env.edit_post = null;
+                        alertify.success('Сообщение изменено')
+                    }
+                })
+            }else{
+                var reply = null;
+                if ( $scope.env.selected_post ){
+                    reply = $scope.env.selected_post.id;
+                }
+                $scope.env.chat.addPost(message, reply).then(function (response) {
+                    if (response.success == false) {
+                        alertify.error(response.error);
+                    } else {
+                        $scope.env.chat.posts.push(response.post);
+                        $scope.env.chat.LastPost = response.post;
+                        $scope.env.chat.updated_at = response.chat.updated_at;
+
+                        $scope.env.selected_post = null;
+                        $timeout(function(){
+                            $('div.messages').scrollTop( document.getElementById('post-'+response.post.id).offsetTop );
+                        },100)
+                    }
+                })
+            }
+
+        });
+        $scope.setSmile = function(text){
+            $rootScope.$broadcast('insert_smiles',text);
+        }
 
 
     }

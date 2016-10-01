@@ -1,7 +1,7 @@
 (function (angular) {
     'use strict';
 
-    function controlHeightDirective() {
+    function controlHeightDirective($rootScope) {
         return {
             restrict: 'A',
             controller: controlHeightDirective,
@@ -9,24 +9,52 @@
 
         };
 
-        controlHeightDirective.$inject = ['$scope', '$state', 'userFactory', 'chatFactory','$q'];
+        controlHeightDirective.$inject = ['$scope'];
 
         function controlHeightLink($scope,element) {
-            var reply_element = element.find('div.reply');
-            var messages_element = element.find('div.messages');
-            //var elements = element.find('ul.post-menu');
-            $scope.$watch(function(){
-                return reply_element[0].clientHeight;
-            },styleChangeFn);
+            var input_element = element.find('div.textarea');
+            var smiles_element = element.find('div.smiles');
+            var messages = element.find('div.messages');
 
-            function styleChangeFn(value,old){
-                if (value>0){
-                    messages_element.height('81%') //= '100px'
+
+            $rootScope.$on('textField', function (event, options) {
+                resize(options)
+
+            });
+
+
+            $rootScope.$on('smiles', function (event, options) {
+                resize(options)
+            });
+
+
+            function resize(options) {
+                var full_height = element[0].offsetHeight;
+                var input_height = input_element[0].offsetHeight;
+                var smiles_height = smiles_element[0].offsetHeight;
+
+
+                if (options.smiles==true){
+                    messages.height(full_height-input_height-17-smiles_height);
                 }else{
+                    messages.height(full_height-input_height-17);
 
-                    messages_element.height('85%')
                 }
+                console.log('full - '+full_height);
+                console.log('smiles - '+smiles_height);
+                console.log('input - '+input_height);
+                console.log('result - '+(full_height-input_height) );
+                console.log('----')
+                // console.log();
+                // console.log(input_element[0].scrollHeight);
+                //console.log(input_element[0].offsetHeight);
             }
+
+
+
+
+
+
         }
         function controlHeightDirective($scope, $state, userFactory, chatFactory,$q) {
 
