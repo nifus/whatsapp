@@ -24,7 +24,7 @@
                     messages_element.height('81%') //= '100px'
                 }else{
 
-                    messages_element.height('87%')
+                    messages_element.height('85%')
                 }
             }
         }

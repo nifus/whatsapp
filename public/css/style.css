@@ -3,8 +3,8 @@ body, html{
 	width: 100%;
 	height: 97%;
 	margin:0px;
-	padding:0px
-
+	padding:0px;
+	font-family:"Open Sans", sans-serif;
 }
 
 #main {
@@ -26,8 +26,8 @@ body, html{
 	float:left
 }
 .left-header{
-	padding:3px;background-color: #eee; min-height: 55px;
-	height:5%
+	padding:8px 15px;background-color: #eee; min-height: 60px;
+	 
 }
 
 .left-search{
@@ -71,8 +71,15 @@ body, html{
 	padding: 20px;
 }
 .chat-info{
-	background-color: #eee;padding:3px;height:55px
+	background-color: #eee;     padding: 8px 15px; min-height: 60px;
 }
+.chat-legend-btns{padding-right:20px;height:50px }
+.info-contact{background-color: #eee;     padding: 8px 15px; min-height: 60px;}
+.chat-legend{vertical-align: top;  float:left;    min-height: 52px;overflow: hidden;}
+.info-legend{}
+.info-legend a.link{display: inline;float:left}
+.info-legend .info-text{vertical-align: top;float:left}
+.info-legend .info-text p{font-size: 12px}
 #add-image{
 	position: absolute;
 	top: 0;
@@ -186,16 +193,8 @@ div.button span{
 	cursor:pointer
 }
 
-.myself{
-	background-color:white;
-	text-align: right;
-	float:right;
-}
-.from_me{
-	background-color:greenyellow;
-	text-align: left;
-	float:left;
-}
+ 
+
 .system{
 	background-color:#e1f5fe;
 	margin-left: auto;
@@ -216,7 +215,9 @@ div.button span{
 	cursor: pointer;
 }
 
-
+.username-link{font-size: 18px;     font-weight: 500;
+     
+    font-family: Roboto, sans-serif;}
 div.input{
 	padding:10px
 }
@@ -245,7 +246,7 @@ div.input textarea{
 }
 .persona{
 	border-top: 1px solid #f2f2f2;
-	padding: 10px;
+	padding: 10px 15px;
 	overflow: hidden;
 }
 .persona:hover{
@@ -277,24 +278,26 @@ div.input textarea{
 }
 
 .detalle-contacto{
-	padding-left: 15px;
+	padding-left: 5px;
 
 	float: left;
-	width: 230px;
+	width: 70%;
 }
 .nombre-contacto{
 	font-weight: 500;
 	font-size: 17px;
+	font-family: Roboto, sans-serif;
 }
 .mensaje-contacto {
 	color: #a4a4a4;
 	white-space: nowrap;
 	overflow: hidden;
+	    font-size: 13px;
 }
 .additional{
 	font-size: 10px;
 	float: left;
-	width: 50px;
+	width: 8%;
 	text-align: center;margin:5px;padding:0px
 }
 #chat{
@@ -366,6 +369,9 @@ div.input textarea{
 	text-align: right;
 	width: 100%;
 }
+
+.time-show{padding-top:5px;text-align: right;}
+.time-show li.time{font-size: 11px;}
 #envia{
 	background: #F5F1EE;
 	bottom: 0;
@@ -392,3 +398,42 @@ div.input textarea{
 	padding-left: 10px;
 	float: left;
 }
+.post {
+     
+}
+
+ 
+.myself{padding: 6px 7px 8px 9px;     background-color: #dcf8c6;
+    float: right; position: relative;     margin-right: 4%;}
+.myself:after {
+content: '';
+    position: absolute;
+    bottom: 8px;
+    right: -12px;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    border-top: 12px solid transparent;
+    border-left: 12px solid #dcf8c6;
+    border-bottom: 0px solid transparent;}
+	
+	
+	
+.from_me{
+	background-color: #fff;
+	text-align: left;
+	float:left;
+	position: relative;     margin-left: 4%;
+}	
+
+.from_me:before {
+content: '';
+    position: absolute;
+    bottom: 8px;
+    left: -12px;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    border-top: 12px solid transparent;
+    border-right: 12px solid #fff;
+    border-bottom: 0px solid transparent;}

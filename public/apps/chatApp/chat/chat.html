@@ -9,14 +9,14 @@
                 <img ng-click="openInfoBlock(env.chat.getUser(user.id))" ng-src="{{env.chat.getChatAvatar(user.id)}}"
                      class="img-circle link" style="margin-right:30px;float:left">
 
-                <div style="vertical-align: top;width:80%;float:left;    min-height: 52px;overflow: hidden;">
-                    <a ng-click="openInfoBlock(env.chat.getUser(user.id))" style="font-size: 18px" class="link">{{env.chat.getChatName(user.id)}}</a>
+                <div class="chat-legend" >
+                    <a ng-click="openInfoBlock(env.chat.getUser(user.id))"  class="link username-link">{{env.chat.getChatName(user.id)}}</a>
 
                     <p style="font-size: 12px">{{env.chat.status}}</p>
                 </div>
 
 
-                <ul class="nav navbar-nav navbar-right" style="padding-right:20px;height:50px">
+                <ul class="nav navbar-nav navbar-right chat-legend-btns" >
 
                     <li ng-show="user.can_upload_files=='1'" style="padding: 15px;">
                         <upload ng-model="upload_image" hide-result="true" number-of-files="1">
@@ -109,17 +109,17 @@
         </div>
     </div>
     <div id="right" ng-show="env.show_add_info==true">
-        <div style="background-color: #eee;padding:3px;height:55px;">
+        <div class="info-contact">
 
 
             <ul class="nav navbar-nav ">
-                <li style="padding:10px">
+                <li class="info-legend">
 
-                    <a class="link" ng-click="closeProfile()" style="display: inline;float:left"><span
+                    <a class="link" ng-click="closeProfile()"><span
                             class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                    <div style="vertical-align: top;float:left">
+                    <div class="info-text">
                         {{env.chat.is_group==0 ? 'Информация о контакте' : 'Информация о группе'}}
-                        <p style="font-size: 12px">{{env.chat.is_group==0 ? env.chat.status : 'Создана '+
+                        <p>{{env.chat.is_group==0 ? env.chat.status : 'Создана '+
                             env.chat.created_at }} </p>
                     </div>
 
