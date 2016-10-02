@@ -1,7 +1,7 @@
 (function (angular) {
     'use strict';
 
-    function postDirective() {
+    function postDirective($rootScope) {
         return {
             replace: true,
             restrict: 'E',
@@ -44,10 +44,11 @@
                             if (response.success==1){
                                 $scope.post.is_deleted='1';
                                 alertify.success("Сообщение удалено");
+                                $rootScope.$broadcast('delete',{} );
                             }else{
                                 alertify.error("Сообщение не удалено");
                             }
-                        })
+                        });
                         $scope.$apply();
 
                     }

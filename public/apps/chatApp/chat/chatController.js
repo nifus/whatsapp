@@ -381,7 +381,23 @@
                 })
             }
             $scope.msg = null;
+
+
+
+
+
         }
+
+        $scope.$on('delete', function(event, html){
+            var count = $scope.env.chat.posts.length;
+            $scope.env.chat.LastPost = null;
+            for(var i=0;i<count;i++){
+                if ( $scope.env.chat.posts[i].is_deleted=='0' ){
+                    $scope.env.chat.LastPost =$scope.env.chat.posts[i];
+                    break;
+                }
+            }
+        });
     }
 })();
 
