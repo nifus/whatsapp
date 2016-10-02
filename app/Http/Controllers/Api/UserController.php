@@ -59,7 +59,8 @@ class UserController extends Controller
                 array_push($result,array_merge($chat->toArray(),
                     [
                         'CountUnreadMessages'=>ChatPost::getCountUnreadPosts($chat->id, $user->id),
-                        'LastPost' => Chat::getLastPost($chat->id, $user->id)
+                        'LastPost' => Chat::getLastPost($chat->id, $user->id),
+                        'ChatAvatar' => $chat->getAvatar($user->id)
                     ]
                 ));
             }

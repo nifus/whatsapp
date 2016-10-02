@@ -37,7 +37,7 @@ class Chat extends Model
         //$array['name'] = $this->ChatName;
 
        // $array['LastPost'] = $this->last_post!=null ? $this->LastPost : null;
-        $array['AvatarSrc'] = $this->AvatarSrc;
+        //$array['AvatarSrc'] = $this->AvatarSrc;
 
         return $array;
     }
@@ -73,18 +73,33 @@ class Chat extends Model
     public function getAvatarAttribute(){
         if ( isset($this->attributes['avatar']) && $this->attributes['avatar']!=''){
             return '/uploads/avatar/'.$this->attributes['avatar'];
-        }elseif ($this->last_post>0){
-                return $this->LastPost->User->AvatarSrc;
-        }else{
+       // }elseif ($this->last_post>0){
+         //       return $this->LastPost->User->AvatarSrc;
+        }
+        else{
             return null;
         }
     }
 
     public function getAvatarSrcAttribute(){
         return $this->attributes['avatar'] == '' ? '/image/default.jpg' : '/uploads/avatar/' . $this->attributes['avatar'];
-
     }
 
+    public function getAvatar($user_id){
+        $avatar = $this->Avatar;
+        if ( !is_null($avatar) ){
+            return $avatar;
+        }
+        if ( $this->is_group==1 ){
+            return '/image/default.jpg';
+        }
+        $members = $this->Members()->get();
+        foreach( $members as $member ){
+            if ( $member->id!=$user_id ){
+                return $member->AvatarSrc;
+            }
+        }
+    }
     public function canAccess($user_id){
         $members = $this->Members()->get();
 

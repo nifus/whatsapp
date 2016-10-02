@@ -70,9 +70,11 @@
             };
 
             Object.getChatAvatar = function (user_id) {
+                //console.log(Object.avatar)
                 if (Object.avatar != '') {
-                    return Object.AvatarSrc;
+                    return Object.avatar;
                 }
+
                 var users = Object.members.filter(function (user) {
                     if (user.id != user_id) {
                         return true;
