@@ -1,123 +1,37 @@
-<div id="test" contenteditable="true">
-    this is test
-    <div> is incap <img src="image/pixel.png" class="smile" alt="">sulate message</div>
 
+<html>
+<head>
+    <meta charset="utf-8">
+
+
+    <style>
+        #parent {position: relative;height:200px;background-color: #0a9ec7}
+        .child {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 80px;
+            margin: auto;
+
+        }
+
+
+    </style>
+    </head>
+<body>
+
+<div id="parent">
+    <div class="child" >
+        <div>
+            <button style="position: absolute;left:10px">11</button>
+            <button style="position: absolute;right:10px">11</button>
+            <div style="width: 50%;background-color:green;margin-left:auto;margin-right:auto;height:80px">text</div>
+        </div>
+    </div>
 </div>
 
-<style>
-    .smile{
-        background: url(image/smiles_01.png) no-repeat;
-        height: 32px;
-        width: 32px;
-    }
-</style>
-<script>
-
-    function getParentSelectedNode()
-    {
-        if (document.selection)
-            return document.selection.createRange().parentElement();
-        else
-        {
-            var selection = window.getSelection();
-            if (selection.rangeCount > 0)
-                return selection.getRangeAt(0).startContainer.parentNode;
-        }
-    }
-    function getSelectedNode()
-    {
-        if (document.selection)
-            return document.selection.createRange();
-        else
-        {
-            var selection = window.getSelection();
-            if (selection.rangeCount > 0)
-                return selection.getRangeAt(0).startContainer;
-        }
-    }
-
-
-    function setCaret(el, position) {
-        var range = document.createRange();
-        var sel = window.getSelection();
-
-        range.setStart(el, position);
-        range.collapse(true);
-        sel.removeAllRanges();
-        sel.addRange(range);
-        //el.focus();
-    }
-
-    function getCaretPosition(editableDiv) {
-        var caretPos = 0,
-                sel, range;
-        if (window.getSelection) {
-
-            sel = window.getSelection();
-
-            //console.log(sel)
-            if (sel.rangeCount) {
-                range = sel.getRangeAt(0);
-                if (range.commonAncestorContainer.parentNode == editableDiv) {
-                    caretPos = range.endOffset;
-                }
-            }
-        } else if (document.selection && document.selection.createRange) {
-            range = document.selection.createRange();
-            if (range.parentElement() == editableDiv) {
-                var tempEl = document.createElement("span");
-                editableDiv.insertBefore(tempEl, editableDiv.firstChild);
-                var tempRange = range.duplicate();
-                tempRange.moveToElementText(tempEl);
-                tempRange.setEndPoint("EndToEnd", range);
-                caretPos = tempRange.text.length;
-            }
-        }
-        return caretPos;
-    }
-    function pasteHtmlAtCaret(html) {
-        var sel, range;
-        if (window.getSelection) {
-            // IE9 and non-IE
-            sel = window.getSelection();
-            if (sel.getRangeAt && sel.rangeCount) {
-                range = sel.getRangeAt(0);
-                range.deleteContents();
-
-                // Range.createContextualFragment() would be useful here but is
-                // non-standard and not supported in all browsers (IE9, for one)
-                var el = document.createElement("div");
-                el.innerHTML = html;
-                var frag = document.createDocumentFragment(), node, lastNode;
-                while ( (node = el.firstChild) ) {
-                    lastNode = frag.appendChild(node);
-                }
-                range.insertNode(frag);
-
-                // Preserve the selection
-                if (lastNode) {
-                    range = range.cloneRange();
-                    range.setStartAfter(lastNode);
-                    range.collapse(true);
-                    sel.removeAllRanges();
-                    sel.addRange(range);
-                }
-            }
-        } else if (document.selection && document.selection.type != "Control") {
-            // IE < 9
-            document.selection.createRange().pasteHTML(html);
-        }
-    }
-
-    document.getElementById('test').addEventListener('click', function(){
-        var node = getSelectedNode();
-        var parent = getParentSelectedNode();
-        var number = getCaretPosition(  parent )
-
-        console.log(node )
-        console.log(node.parentNode.childNodes[0] )
-        console.log(number )
-        setCaret(node, number);
-        pasteHtmlAtCaret(' <img src="image/smiles_01.png" alt=""> ')
-    })
-    </script>
+</body>
+</html>

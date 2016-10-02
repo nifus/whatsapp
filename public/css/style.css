@@ -169,7 +169,7 @@ div.button span{
 .messages{
 	background-image: url(http://1.bp.blogspot.com/-P5uqUWLgZmA/UtQDdtahipI/AAAAAAAAF3E/IgvARwfxAlw/s1600/seamless-stone-background.jpg);
 	overflow-y:auto;
-	height:91%;
+	height:92%;
 	width:100%
 }
 .post{
@@ -224,7 +224,8 @@ div.button span{
     font-family: Roboto, sans-serif;}
 div.input{
 	padding:10px;
-	height:100%;
+	height:62px;
+
 	background-color:#f5f1ee
 }
 div.input textarea{
@@ -250,7 +251,6 @@ div.input div.textarea{
 	min-height: 40px;
 	max-height: 80px;
 	overflow: auto;
-	float: right;
 	width:95%;
 	border-radius: 8px;
 	background-color:#ffffff;
