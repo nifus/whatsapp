@@ -328,9 +328,19 @@
         $scope.$watch('msg', function(value){
             $rootScope.$broadcast('textField',{'smiles':$scope.env.show_smiles});
         });
+
+
         $scope.$on('submit', function(event, html){
-           // $scope.env.messageconsole.log(html)
-            var message =html;
+            $scope.submit(html)
+        });
+
+        $scope.setSmile = function(text){
+            $rootScope.$broadcast('insert_smiles',text);
+        };
+
+        $scope.submit = function(message){
+            // $scope.env.messageconsole.log(html)
+
             $timeout(function(){
                 $scope.env.message = null;
             },100);
@@ -370,13 +380,8 @@
                     }
                 })
             }
-
-        });
-        $scope.setSmile = function(text){
-            $rootScope.$broadcast('insert_smiles',text);
+            $scope.msg = null;
         }
-
-
     }
 })();
 

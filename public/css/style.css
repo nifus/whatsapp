@@ -127,8 +127,10 @@ body, html{
 }
 
 div.control .input{
-	text-align: center
+	text-align: center;
+
 }
+
 div.control .input input{
 	width: 50%;
 	font-size: 16px;
@@ -871,4 +873,17 @@ div.textarea img :focus {
 	outline: none;
 	cursor: pointer;
 	font-family: inherit;
+}
+
+.i01{
+	background-position: -3458px -3511px;
+}
+.i02{
+	background-position: -1551px -1557px
+}
+
+[contenteditable=true]:empty:before{
+	content: attr(placeholder);
+	display: block; /* For Firefox */
+	color: darkgrey;
 }
