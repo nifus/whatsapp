@@ -36,7 +36,7 @@ class Chat extends Model
 
         //$array['name'] = $this->ChatName;
 
-        $array['LastPost'] = $this->last_post!=null ? $this->LastPost : null;
+       // $array['LastPost'] = $this->last_post!=null ? $this->LastPost : null;
         $array['AvatarSrc'] = $this->AvatarSrc;
 
         return $array;
@@ -97,8 +97,12 @@ class Chat extends Model
             return false;
     }
 
-    public function getPosts($start, $limit){
-        return ChatPost::getPosts($this->id, $start, $limit);
+    public function getPosts($start, $limit, $user_id){
+        $rec = \DB::table('chats_members')
+            ->where('chat_id', $this->id)
+            ->where('user_id', $user_id)->first();
+
+        return ChatPost::getPosts($this->id, $start, $limit, $rec->clear_date);
 
     }
 
@@ -138,9 +142,11 @@ class Chat extends Model
         //dd($members);
     }
 
-    public function clearAllPosts(){
-        $this->Posts()->update(['is_deleted'=>'1']);
-        $this->update(['last_post'=>null]);
+    public function clearAllPosts($user_id){
+
+        \DB::table('chats_members')
+            ->where('chat_id',$this->id)
+            ->where('user_id',$user_id )->update(['clear_date'=>date("Y-m-d H:i:s")]);
     }
 
     public function remove(){
@@ -220,6 +226,18 @@ class Chat extends Model
        // $chat
 
         return $chat;
+    }
+
+    static function getLastPost($chat_id,$user_id){
+
+
+        $rec = \DB::table('chats_members')
+            ->where('chat_id', $chat_id)
+            ->where('user_id', $user_id)->first();
+       // if( is_null($rec->clear_date)){
+         return    ChatPost::getLastPost($chat_id,$rec->clear_date);
+
+        //}
     }
 
 }

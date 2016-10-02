@@ -169,7 +169,7 @@ class ChatController extends Controller
         if ( !$chat->canAccess($user->id) ){
             throw new \Exception('no cht');
         }
-        $posts = $chat->getPosts($data['start'],$data['count']);
+        $posts = $chat->getPosts($data['start'],$data['count'], $user->id);
         $chat->readPosts4User($user->id);
 
         return response()->json(['success'=>true,'posts'=>$posts->toArray()]);
@@ -321,7 +321,7 @@ class ChatController extends Controller
             if (is_null($chat) ){
                 throw new \Exception('no chat');
             }
-            $chat->clearAllPosts();
+            $chat->clearAllPosts($user->id);
             return response()->json(['success'=>true]);
 
         }catch( \Exception $e ){

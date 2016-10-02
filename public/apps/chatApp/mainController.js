@@ -37,7 +37,7 @@
             user.getAllContacts().then(function (contacts) {
                 user.contacts = contacts;
                 //$scope.env.source_contacts = contacts;
-            })
+            });
             if ( user.history=='1'){
                 chatFactory.getByUser().then(function (chats) {
                     user.chats = chats;

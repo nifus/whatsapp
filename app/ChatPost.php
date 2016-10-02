@@ -123,17 +123,28 @@ class ChatPost extends Model
         $this->update(['is_deleted'=>'1']);
     }
 
-    static function getLastPost($chat_id){
-        return self::where('chat_id',$chat_id)
+    static function getLastPost($chat_id, $date=null){
+
+        $sql = self::where('chat_id',$chat_id)
             ->where('is_deleted','0')
             ->where('is_system',0)
-            ->orderBy('created_at','DESC')
-            ->limit(1)
-            ->first();
+            ->orderBy('created_at','DESC')->limit(1);
+        if ( !is_null($date) ){
+            $sql = $sql->where('created_at','>',$date);
+        }
+
+
+        return $sql->first();
     }
 
-    static function getPosts($chat_id, $start, $limit){
-        return self::where('chat_id',$chat_id)->where('is_deleted','0')->orderBy('created_at','DESC')->skip($start)->take($limit)->get();
+    static function getPosts($chat_id, $start, $limit, $date=null){
+
+        $sql = self::where('chat_id',$chat_id)->where('is_deleted','0')->orderBy('created_at','DESC')->skip($start)->take($limit);
+        if (!is_null($date)){
+            $sql = $sql->where('created_at','>',$date);
+        }
+
+        return $sql->get();
     }
 
     static function addTextPost($chat, $message, $reply_to, $user, $is_system=0){
@@ -193,8 +204,9 @@ class ChatPost extends Model
 
     static function readPosts4User($chat_id, $user_id){
         return self::where('chat_id', $chat_id)->where('user_id','!=',$user_id)->where('is_read','0')->where('is_deleted','0')->update(['is_read'=>'1']);
-
     }
+
+
 
 
 }

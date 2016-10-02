@@ -879,9 +879,17 @@ div.textarea img :focus {
 	background-position: -3458px -3511px;
 }
 .i02{
-	background-position: -1551px -1557px
+	background-position: -1551px -1557px;
 }
-
+.i03{
+	background-position: -2117px -2123px;
+}
+.i04{
+	background-position: -931px -937px;
+}
+.i05{
+	background-position: -759px -749px;
+}
 [contenteditable=true]:empty:before{
 	content: attr(placeholder);
 	display: block; /* For Firefox */
