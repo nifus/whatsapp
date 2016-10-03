@@ -97,10 +97,20 @@ body, html{
 	padding: 20px;
 	background-color: #00bfa5;
 	color: #ffffff;
-	height: 55px;
+	height: 60px;
+
+
+}
+#add-image div.header button{
+	float:left;
+	margin-right:25px
+}
+#add-image div.header span{
 	font-weight: bold;
 	font-size: 19px;
 }
+
+
 #add-image div.image-preview{
 	text-align: center;
 	padding:20px;
@@ -146,10 +156,11 @@ div.input input:focus{
 }
 
 div.button{
-	text-align: right;
+	background-color: #00e676;
+	float: right;
+	border-radius: 40px;
 	padding:20px;
-	padding-right:150px;
-
+	margin:20px
 }
 
 div.button span{
@@ -910,6 +921,12 @@ div.textarea img :focus {
 }
 .i06{
 	background-position: -3867px -3952px;
+}
+.i07{
+	background-position: -3979px -4064px;
+}
+.i08{
+	background-position: -3306px -3359px
 }
 [contenteditable=true]:empty:before{
 	content: attr(placeholder);

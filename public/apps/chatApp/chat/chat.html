@@ -153,8 +153,8 @@
             </div>
             <div id="add-image" ng-show="env.imageDialog==true" >
                 <div class="header">
-                    <span ng-click="closeImageDialog()" class="glyphsmile glyphsmile-remove" style="cursor: pointer;margin-right:30px" aria-hidden="true"></span>
-                    Просмотр
+                    <button ng-click="closeImageDialog()" class="icon i07"></button>
+                    <span>Просмотр</span>
                 </div>
 
 
@@ -170,8 +170,8 @@
 
 
                     <div  class="button">
-                            <span ng-show="env.upload.image.filetype.indexOf('image')!=-1" ng-click="addImagePost(env.upload)" class="glyphsmile glyphsmile-ok"  aria-hidden="true"></span>
-                            <span ng-show="env.upload.image.filetype.indexOf('image')==-1" ng-click="addDocumentPost(env.upload)" class="glyphsmile glyphsmile-ok"  aria-hidden="true"></span>
+                        <button ng-show="env.upload.image.filetype.indexOf('image')!=-1" ng-click="addImagePost(env.upload)"  class="icon i08"></button>
+                        <button ng-show="env.upload.image.filetype.indexOf('image')==-1" ng-click="addDocumentPost(env.upload)" class="icon i08"></button>
                     </div>
 
                 </div>
