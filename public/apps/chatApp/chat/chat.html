@@ -142,9 +142,9 @@
                             <button
                                     ng-class="{'i01' : !env.show_smiles,  'i02':env.show_smiles}"
                                     ng-click="smilesDialog()" class="icon" style="position: absolute;left:10px;bottom: 25%"></button>
-                            <button ng-click="submit(msg)"  class="icon" style="background-position: -3282px -3335px;position: absolute;right:10px;bottom: 25%"></button>
+                            <button ng-click="submit(env.message)"  class="icon" style="background-position: -3282px -3335px;position: absolute;right:10px;bottom: 25%"></button>
 
-                            <div control-caret class="textarea" style="width: 92%;margin-left:auto;margin-right:auto;" ng-model="msg" contenteditable="true" placeholder="Введите сообщение"></div>
+                            <div control-caret class="textarea" style="width: 92%;margin-left:auto;margin-right:auto;" ng-model="env.message" contenteditable="true" placeholder="Введите сообщение" ng-bind-html="env.message|to_trusted"></div>
                         </div>
                     </div>
 

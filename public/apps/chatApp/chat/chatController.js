@@ -322,13 +322,13 @@
         $scope.smilesDialog = function(){
             $scope.env.show_smiles = !$scope.env.show_smiles;
             $timeout(function(){
-                $rootScope.$broadcast('smiles',{'smiles':$scope.env.show_smiles,'answer': $scope.env.selected_post} );
+                $rootScope.$broadcast('smiles',{'smiles':$scope.env.show_smiles,'answer': $scope.env.selected_post ? true : false} );
 
             },10)
         };
 
-        $scope.$watch('msg', function(value){
-            $rootScope.$broadcast('textField',{'smiles':$scope.env.show_smiles,'answer': $scope.env.selected_post});
+        $scope.$watch('env.message', function(value){
+            $rootScope.$broadcast('textField',{'smiles':$scope.env.show_smiles,'answer': $scope.env.selected_post ? true : false});
         });
 
 
@@ -336,9 +336,7 @@
            // $scope.env.selected_post = post;
             $timeout(function(){
                 $rootScope.$broadcast('answer',{'smiles':$scope.env.show_smiles,'answer': true});
-
             },10)
-
         });
 
         $scope.$on('submit', function(event, html){
@@ -391,8 +389,9 @@
                     }
                 })
             }
-            $scope.msg = null;
-
+            $scope.env.message = null;
+            $rootScope.$broadcast('answer',{'smiles':$scope.env.show_smiles,'answer': false});
+            $scope.env.selected_post = null
 
 
 
