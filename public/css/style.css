@@ -260,6 +260,24 @@ div.input div.textarea{
 	font-weight:400;
 	font-size: 18px
 }
+#input div.reply{
+	background-color: rgba(0,0,0,.05);
+	border-left: 3px solid #35cd96;
+	border-radius: 4px;
+	margin: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 92%;
+}
+#input div.author{
+	float:left;width:98%;color:#35cd96;padding:5px;
+}
+#input div.close{
+	float:left;width:2%;
+}
+#input div.message{
+	clear:both;white-space:nowrap;overflow: hidden;padding:5px;
+}
 
 #menu{
 	padding-left: 10px;
@@ -889,6 +907,9 @@ div.textarea img :focus {
 }
 .i05{
 	background-position: -759px -749px;
+}
+.i06{
+	background-position: -3867px -3952px;
 }
 [contenteditable=true]:empty:before{
 	content: attr(placeholder);

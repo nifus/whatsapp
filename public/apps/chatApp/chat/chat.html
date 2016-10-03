@@ -6,7 +6,7 @@
         <div ng-show="env.chat" style="height: 100%">
             <div class="chat-info">
 
-                <img ng-click="openInfoBlock(env.chat.getUser(user.id))" ng-src="{{env.chat.getChatAvatar(user.id)}}"
+                <img ng-click="openInfoBlock(env.chat.getUser(user.id))" ng-src="{{env.chat.ChatAvatar}}"
                      class="img-circle link" style="margin-right:30px;float:left">
 
                 <div class="chat-legend" >
@@ -64,13 +64,14 @@
 
                 <div class="input" id="input"  style="position: relative"  >
 
-                    <div class="reply" ng-style="{'height': (env.selected_post!=null ? '55px' : '0px'), 'display': (env.selected_post!=null ? 'block' : 'none')}"  style="height:0px;border-left:3px solid darkgreen">
-                        <div class="author" style="float:left;width:98%;color:green;padding:5px;">{{env.selected_post.user_id==user.id ? "Вы" : env.selected_post.User.name}}</div>
+                    <div class="reply" ng-show="env.selected_post"  >
+                        <div class="author" >{{env.selected_post.user_id==user.id ? "Вы" : env.selected_post.User.name}}</div>
 
-                        <div style="float:left;width:2%;"><span ng-click="cancelReply()" class="link glyphsmile glyphsmile-remove" aria-hidden="true"></span></div>
-                        <div class="message" style="clear:both;white-space:nowrap;overflow: hidden;padding:5px;"  ng-show="!env.selected_post.message && env.selected_post.type=='image'"> <span class="glyphsmile glyphsmile-camera" aria-hidden="true"></span> Фото</div>
-                        <div class="message" style="clear:both;white-space:nowrap;overflow: hidden;padding:5px;"  ng-show="env.selected_post.message " ng-bind-html="env.selected_post.message|to_trusted"> </div>
+                        <div class="close"><button ng-click="cancelReply()" class="icon i06"></button></div>
+                        <div class="message"  ng-show="!env.selected_post.message && env.selected_post.type=='image'"> <span class="glyphsmile glyphsmile-camera" aria-hidden="true"></span> Фото</div>
+                        <div class="message"   ng-show="env.selected_post.message " ng-bind-html="env.selected_post.message|to_trusted"> </div>
                     </div>
+
                     <div ng-show="env.show_smiles" class="smiles"  style="padding:10px;clear:both">
                         <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s01\' />')" class="smile s01" ></span>
                         <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s02\' />')" class="smile s02" ></span>

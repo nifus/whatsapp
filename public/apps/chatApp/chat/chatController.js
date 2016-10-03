@@ -35,6 +35,8 @@
 
         $scope.cancelReply = function(){
             $scope.env.selected_post = null;
+            $rootScope.$broadcast('answer',{'smiles':$scope.env.show_smiles,'answer': false});
+
         };
 
         $scope.$watch('env.loading', function(value){
@@ -267,7 +269,7 @@
             })
         };
 
-        hotkeys.add({
+        /*hotkeys.add({
             combo: 'enter',
             action: 'keydown',
             description: 'This one goes to 11',
@@ -315,20 +317,29 @@
 
             },
             allowIn: ['textarea']
-        });
+        });*/
 
         $scope.smilesDialog = function(){
             $scope.env.show_smiles = !$scope.env.show_smiles;
             $timeout(function(){
-                $rootScope.$broadcast('smiles',{'smiles':$scope.env.show_smiles} );
+                $rootScope.$broadcast('smiles',{'smiles':$scope.env.show_smiles,'answer': $scope.env.selected_post} );
 
             },10)
         };
 
         $scope.$watch('msg', function(value){
-            $rootScope.$broadcast('textField',{'smiles':$scope.env.show_smiles});
+            $rootScope.$broadcast('textField',{'smiles':$scope.env.show_smiles,'answer': $scope.env.selected_post});
         });
 
+
+        $scope.$on('reply', function(event, post){
+           // $scope.env.selected_post = post;
+            $timeout(function(){
+                $rootScope.$broadcast('answer',{'smiles':$scope.env.show_smiles,'answer': true});
+
+            },10)
+
+        });
 
         $scope.$on('submit', function(event, html){
             $scope.submit(html)

@@ -61,6 +61,8 @@
 
             $scope.replyToMessage = function(){
                 $scope.isSelectPost = $scope.post;
+                $rootScope.$broadcast('reply',{'post':$scope.post} );
+
             }
         }
 
