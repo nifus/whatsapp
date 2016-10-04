@@ -23,18 +23,15 @@
 
 
             $rootScope.$on('textField', function (event, options) {
-                console.log(options)
                 resize(options)
             });
 
 
             $rootScope.$on('smiles', function (event, options) {
-                console.log(options)
                 resize(options)
             });
 
             $rootScope.$on('answer', function (event, options) {
-                console.log(options)
                 resize(options)
             });
 

@@ -52,12 +52,19 @@
 
             $scope.createChat = function (contact) {
                 chatFactory.createByContact($scope.user, contact).then(function (response) {
-                    $scope.chat = response;
-                    $scope.user.chats.push(response);
+                    if ( response.success!=false){
+                        $scope.user.chats.push(response);
+                    }else if(response.chat_id){
+                        $scope.chat = $scope.user.chats.filter( function(chat){
+                            if (chat.id==response.chat_id){
+                                return true;
+                            }
+                            return false;
+                        })[0]
+                    }
                 });
                 $scope.contact_list = false;
-
-            }
+            };
 
             $scope.saveProfile = function(data){
                 $scope.user.update(data).then(function(response){

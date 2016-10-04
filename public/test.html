@@ -2,36 +2,69 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <script src="components/jquery/dist/jquery.min.js"></script>
 
+    <script src="components/angular/angular.js"></script>
 
-    <style>
-        #parent {position: relative;height:200px;background-color: #0a9ec7}
-        .child {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            height: 80px;
-            margin: auto;
-
-        }
-
-
-    </style>
+    <script src="components/rangy/rangy-core.min.js"></script>
+    <script src="components/rangy/rangy-selectionsaverestore.min.js"></script>
     </head>
-<body>
+<body ng-app="app" ng-controller="contrl">
 
-<div id="parent">
-    <div class="child" >
-        <div>
-            <button style="position: absolute;left:10px">11</button>
-            <button style="position: absolute;right:10px">11</button>
-            <div style="width: 50%;background-color:green;margin-left:auto;margin-right:auto;height:80px">text</div>
-        </div>
-    </div>
-</div>
+    <div contenteditable="true" style="height:50px;background-color:lightgrey" ng-bind-html="content|to_trusted"  ng-model="content" ></div>
 
 </body>
+
+<script>
+    angular.module('app',[]).filter('to_trusted', ['$sce', function ($sce) {
+        return function (text) {
+            return $sce.trustAsHtml(text);
+        };
+    }]).directive('contenteditable', ['$sce','$filter','$timeout', function($sce,$filter,$timeout) {
+        return {
+            restrict: 'A', // only activate on element attribute
+            require: '?ngModel', // get a hold of NgModelController
+            link: function(scope, element, attrs, ngModel) {
+                if (!ngModel) return; // do nothing if no ng-model
+
+                // Specify how UI should be updated
+                ngModel.$render = function() {
+                    element.html( $sce.getTrustedHtml(ngModel.$viewValue || ''));
+                };
+
+                // Listen for change events to enable binding
+                element.on('blur keyup change', function() {
+                    scope.$evalAsync(read);
+                });
+                read(); // initialize
+
+                // Write data to the model
+                function read() {
+                    var html = element.html();
+                    // When we clear the content editable the browser leaves a <br> behind
+                    // If strip-br attribute is provided then we strip this out
+                    if ( attrs.stripBr && html == '<br>' ) {
+                        html = '';
+                    }
+                    var textbox = document.getElementById("textbox");
+                    var savedSelection = saveSelection(textbox);    //Rangy save selection
+                    ngModel.$setViewValue(html);
+                    //Timeout is necessary as it gives time for dom to refresh
+                    $timeout(function(){
+                        if(html.indexOf("<a href") > -1){
+                            //Check if savedSelection value exceeds than element text length
+                            var len = element.text().length;
+                            if(savedSelection.end > len){savedSelection.start = len; savedSelection.end = len}
+                            restoreSelection(textbox, savedSelection);  //Rangy restore selection
+                        }
+                    },0);
+
+                }
+            }
+        };
+    }]).controller('contrl', function($scope){
+
+        $scope.content = 'test';
+    })
+</script>
 </html>

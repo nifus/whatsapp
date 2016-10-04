@@ -122,6 +122,19 @@ class ChatController extends Controller
                 throw new \Exception('no user');
             }
             $data = $request->all();
+            $request_members = $data['members'];
+            array_push($request_members, $user->id );
+            $chats = $user->Chats()->where('is_group',0)->get();
+
+            foreach( $chats as  $chat ){
+                $members = $chat->Members()->pluck('id')->toArray();
+                //dd(array_diff($request_members,$members));
+                if ( array_diff($request_members,$members)==[] ){
+                    return response()->json(['success'=>false,'chat_id'=>$chat->id]);
+                }
+
+            }
+            dd(1);
             $chat = Chat::createNewChat($user->id,$data['members']);
             $chat = Chat::with('Members')->with('LastPost')->find($chat->id);
 

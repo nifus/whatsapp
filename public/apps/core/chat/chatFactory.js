@@ -35,7 +35,11 @@
         function createByContact(author,contact) {
             return $http.post(window.SERVER+'/chats',{members:[contact.id]}).then(
                 function(response){
-                    return  new chatService(response.data.chat )
+                    if ( response.data.success==true){
+                        return  {chat: new chatService(response.data.chat), success: true}
+                    }else{
+                        return  response.data
+                    }
                 }
             )
 

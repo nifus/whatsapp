@@ -71,7 +71,7 @@
         return function (text) {
             return $sce.trustAsHtml(text);
         };
-    }]).directive('contenteditable', ['$sce', function($sce) {
+    }]).directive('contenteditable', ['$sce','$filter','$timeout', function($sce,$filter,$timeout) {
         return {
             restrict: 'A', // only activate on element attribute
             require: '?ngModel', // get a hold of NgModelController
@@ -80,7 +80,7 @@
 
                 // Specify how UI should be updated
                 ngModel.$render = function() {
-                    element.html($sce.getTrustedHtml(ngModel.$viewValue || ''));
+                    element.html( $sce.getTrustedHtml(ngModel.$viewValue || ''));
                 };
 
                 // Listen for change events to enable binding
@@ -94,10 +94,22 @@
                     var html = element.html();
                     // When we clear the content editable the browser leaves a <br> behind
                     // If strip-br attribute is provided then we strip this out
-                    if (attrs.stripBr && html === '<br>') {
+                    if ( attrs.stripBr && html == '<br>' ) {
                         html = '';
                     }
+                    var textbox = document.getElementById("textbox");
+                    var savedSelection = saveSelection(textbox);    //Rangy save selection
                     ngModel.$setViewValue(html);
+                    //Timeout is necessary as it gives time for dom to refresh
+                    $timeout(function(){
+                        if(html.indexOf("<a href") > -1){
+                            //Check if savedSelection value exceeds than element text length
+                            var len = element.text().length;
+                            if(savedSelection.end > len){savedSelection.start = len; savedSelection.end = len}
+                            restoreSelection(textbox, savedSelection);  //Rangy restore selection
+                        }
+                    },0);
+
                 }
             }
         };
@@ -105,4 +117,75 @@
 
 })(angular, window);
 
+var saveSelection, restoreSelection;
+window.onload = function() {
+    rangy.init();
+}
 
+if (window.getSelection && document.createRange) {
+    saveSelection = function(containerEl) {
+        var range = window.getSelection().getRangeAt(0);
+        var preSelectionRange = range.cloneRange();
+        preSelectionRange.selectNodeContents(containerEl);
+        preSelectionRange.setEnd(range.startContainer, range.startOffset);
+        var start = preSelectionRange.toString().length;
+
+        return {
+            start: start,
+            end: start + range.toString().length
+        }
+    };
+
+    restoreSelection = function(containerEl, savedSel) {
+        var charIndex = 0, range = document.createRange();
+        range.setStart(containerEl, 0);
+        range.collapse(true);
+        var nodeStack = [containerEl], node, foundStart = false, stop = false;
+
+        while (!stop && (node = nodeStack.pop())) {
+            if (node.nodeType == 3) {
+                var nextCharIndex = charIndex + node.length;
+                if (!foundStart && savedSel.start >= charIndex && savedSel.start <= nextCharIndex) {
+                    range.setStart(node, savedSel.start - charIndex);
+                    foundStart = true;
+                }
+                if (foundStart && savedSel.end >= charIndex && savedSel.end <= nextCharIndex) {
+                    range.setEnd(node, savedSel.end - charIndex);
+                    stop = true;
+                }
+                charIndex = nextCharIndex;
+            } else {
+                var i = node.childNodes.length;
+                while (i--) {
+                    nodeStack.push(node.childNodes[i]);
+                }
+            }
+        }
+
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+} else if (document.selection) {
+    saveSelection = function(containerEl) {
+        var selectedTextRange = document.selection.createRange();
+        var preSelectionTextRange = document.body.createTextRange();
+        preSelectionTextRange.moveToElementText(containerEl);
+        preSelectionTextRange.setEndPoint("EndToStart", selectedTextRange);
+        var start = preSelectionTextRange.text.length;
+
+        return {
+            start: start,
+            end: start + selectedTextRange.text.length
+        }
+    };
+
+    restoreSelection = function(containerEl, savedSel) {
+        var textRange = document.body.createTextRange();
+        textRange.moveToElementText(containerEl);
+        textRange.collapse(true);
+        textRange.moveEnd("character", savedSel.end);
+        textRange.moveStart("character", savedSel.start);
+        textRange.select();
+    };
+}
