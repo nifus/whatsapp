@@ -23,6 +23,7 @@
 
         var configPromise = configFactory.get().then(function (response) {
             $scope.env.config = response;
+            console.log(response)
         });
         $scope.promises.push(configPromise);
 

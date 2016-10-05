@@ -36,7 +36,7 @@ class ConfigController extends Controller
             }
             $data = $request->all();
 
-            file_put_contents( public_path('config.json'), json_encode(['intro', $data['intro']]) );
+            file_put_contents( public_path('config.json'), json_encode( (object) ['intro'=> $data['intro']]) );
 
             return response()->json(['success'=>true]);
 
