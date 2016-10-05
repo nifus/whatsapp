@@ -24,14 +24,13 @@
             $scope.env.waiting = true;
 
             userFactory.login({login: login, password: password}, function (answer) {
+
                 $scope.env.waiting = false;
-                $cookies.put('session', answer.data.user.remember_token, {expires: moment().add(2, 'month').toDate()});
+                $cookies.put('session', answer.user.remember_token, {expires: moment().add(2, 'month').toDate()});
                 if (answer.error != undefined) {
                     $scope.env.error = answer.error
                 } else {
                     window.location.reload(true);
-                    $state.go('chat');
-
                 }
             })
         }

@@ -111,7 +111,8 @@
         function login(credentials, callback) {
             $auth.login(credentials).then(function (response) {
                 $rootScope.$broadcast('login');
-                callback({success: true, data: response.data});
+
+                callback({success: true, user: new userService(response.data.user) });
             }).catch(function (response) {
                 callback({success: false, error: response.data.error})
             });
