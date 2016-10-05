@@ -940,6 +940,21 @@ div.textarea img :focus {
 .i08{
 	background-position: -3306px -3359px
 }
+.i09{
+	background-position: -2390px -2393px;
+
+}
+.i10{
+	background-position: -3867px -3952px;
+	float: right;
+	cursor: pointer;
+	position: absolute;
+	right: 10%;
+	top: 30%;
+}
+
+
+
 [contenteditable=true]:empty:before{
 	content: attr(placeholder);
 	display: block; /* For Firefox */

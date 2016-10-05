@@ -27,6 +27,7 @@
         };
         function initPage(deferred) {
             $scope.user = $scope.$parent.env.user;
+            $scope.config = $scope.$parent.env.config;
             return deferred.promise;
         }
 

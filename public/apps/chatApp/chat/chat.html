@@ -178,10 +178,8 @@
             </div>
 
         </div>
-        <div ng-show="!env.chat" style="height: 100%">
-            <h2 style="text-align: center">Добро пожаловать к нам в чат</h2>
-            <div style="text-align: center"><img src="http://s0.tchkcdn.com/fun/g2/s/1/1/0/5/5105/49333_10cb.jpeg"
-                                                 alt=""></div>
+        <div ng-show="!env.chat" style="height: 100%;padding:20px">
+            <div style="text-align: center" ng-bind-html="config.intro|to_trusted"></div>
 
         </div>
     </div>
@@ -259,6 +257,7 @@
                             <option value="">Добавить участника</option>
                         </select>
                                 <span class="input-group-btn">
+
         <button
                 ng-click="addMember(model.selected_member)"
                 ng-disabled="!model.selected_member" class="btn btn-default" type="button"><span class="glyphsmile glyphsmile-plus" aria-hidden="true"></span>&nbsp;</button>
@@ -272,7 +271,8 @@
                             <div class="list-group-item " style="text-align: left;" ng-repeat="member in env.chat.members track by $index">
                                 <img ng-src="{{member.AvatarSrc}}" class="img-circle" width="50" >
                                 <span ng-show="env.chat.isAdmin(member.id)" class="badge" style="position: absolute;right: 10%;top: 35%;">admin</span>
-                                <span ng-show="!env.chat.isAdmin(member.id) && env.chat.isAdmin(user.id)" class="glyphsmile glyphsmile-remove" aria-hidden="true" style="float: right;cursor: pointer;position: absolute;right: 10%;top: 35%;" ng-click="removeMember(member)"></span>
+                                    <button ng-show="!env.chat.isAdmin(member.id) && env.chat.isAdmin(user.id)" class="icon i10" ng-click="removeMember(member)"></button>
+
                                 {{member.name}}
                             </div>
 
