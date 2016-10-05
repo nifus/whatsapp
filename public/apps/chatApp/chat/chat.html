@@ -3,7 +3,7 @@
         <left user="user" chat="env.chat" style="height:100%"></left>
     </div>
     <div id="center" ng-class="{'full-center':env.show_add_info==false}">
-        <div ng-show="env.chat" style="height: 100%">
+        <div ng-show="env.chat" class="main-chatBg" >
             <div class="chat-info">
 
                 <img ng-click="openInfoBlock(env.chat.getUser(user.id))" ng-src="{{env.chat.ChatAvatar}}"
