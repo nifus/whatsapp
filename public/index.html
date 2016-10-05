@@ -33,8 +33,8 @@
 </head>
 
 <body ng-app="chatApp" ng-controller="mainController" >
-<div id="background"></div>
-<div   ui-view></div>
+<div id="background" ui-sref-active="chat"></div>
+<div   ui-view ></div>
 
 
 <script src="components/angular/angular.js"></script>
@@ -48,7 +48,8 @@
 <script src="components/angular-scroll-glue/src/scrollglue.js"></script>
 <script src="components/rangy/rangy-core.min.js"></script>
 <script src="components/rangy/rangy-selectionsaverestore.min.js"></script>
-
+<script src="components/ckeditor/ckeditor.js"></script>
+<script src="components/angular-ckeditor/angular-ckeditor.min.js"></script>
 
 <script src="apps/core/core.js"></script>
 <script src="apps/core/cacheService.js"></script>
@@ -78,6 +79,7 @@
 
 <script src="apps/chatApp/users/userListController.js"></script>
 <script src="apps/chatApp/users/userFormController.js"></script>
+<script src="apps/chatApp/config/configController.js"></script>
 
 
 <script src="apps/directives/upload/upload.js"></script>

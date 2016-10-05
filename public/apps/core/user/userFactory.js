@@ -42,7 +42,11 @@
             var cache  = cacheService(
                 function(){
                     $http.get(window.SERVER+'/backend/user/get-auth').success( function(response){
-                        cache.end( userService(response) );
+                        if (response.success==false){
+                            cache.end( null );
+                        }else{
+                            cache.end( userService(response) );
+                        }
                     }).error( function(response){
                         cache.end( null );
                     })

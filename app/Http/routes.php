@@ -44,7 +44,11 @@ Route::get('signout', ['as' => 'signout', 'uses' => 'User\SignOutController@inde
 
     });
 
-Route::group(['prefix' => 'posts'], function () {
-    Route::delete('/{id}', 'Api\ChatController@removePost')->where('id', '[0-9]*');
-    Route::put('/{id}', 'Api\ChatController@updatePost')->where('id', '[0-9]*');
-});
+    Route::group(['prefix' => 'posts'], function () {
+        Route::delete('/{id}', 'Api\ChatController@removePost')->where('id', '[0-9]*');
+        Route::put('/{id}', 'Api\ChatController@updatePost')->where('id', '[0-9]*');
+    });
+
+    Route::group(['prefix' => 'backend/config'], function () {
+        Route::put('/', 'Api\ConfigController@update');
+    });

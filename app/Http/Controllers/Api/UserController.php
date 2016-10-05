@@ -81,6 +81,7 @@ class UserController extends Controller
     public function getAuth()
     {
         try{
+
             $user = JWTAuth::parseToken()->authenticate();
             if ( is_null($user) ){
                 throw new \Exception('no user');
@@ -90,9 +91,14 @@ class UserController extends Controller
                 JWTAuth::invalidate(JWTAuth::getToken());
                 throw new \Exception('no user');
             }
+
+            if ($user->remember_token!=$_COOKIE['session']){
+                throw new \Exception('no user');
+            }
+
             return response()->json($user->toArray()  );
         }catch( \Exception $e ){
-            return response()->json( null );
+            return response()->json( ['success'=>false] );
         }
     }
 
@@ -209,7 +215,7 @@ class UserController extends Controller
         //event( new SignInSuccessEvent($credentials['email']) );
         $user->updateLastLogin();
 
-        return response()->json(compact('token'));
+        return response()->json(['token'=>$token,'user'=>$user->toArray()]);
     }
 
     public function updateToken(){

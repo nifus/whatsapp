@@ -1,6 +1,6 @@
 (function (angular, window) {
     'use strict';
-    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies','naif.base64','cfp.hotkeys','luegg.directives']).
+    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies','naif.base64','cfp.hotkeys','luegg.directives','ckeditor']).
     config(function ($stateProvider, $urlRouterProvider, $authProvider) {
 
         var href = window.location.href;
@@ -37,6 +37,10 @@
             url: '/users/create',
             templateUrl: 'apps/chatApp/users/userForm.html',
             controller: 'userFormController'
+        }).state('config', {
+            url: '/config',
+            templateUrl: 'apps/chatApp/config/config.html',
+            controller: 'configController'
         })
 
 

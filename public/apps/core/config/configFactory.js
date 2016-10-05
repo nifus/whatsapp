@@ -10,14 +10,13 @@
 
         return {
             update:update,
-            getAll:getAll,
-            getCurrencyList:getCurrencyList
+            get:get,
         };
 
         function update(configs){
             var cache  = cacheService(
                 function(){
-                    $http.post(window.SERVER+'/backend/config', configs).success(function (response) {
+                    $http.put('/backend/config', configs).success(function (response) {
                         cache.end( response );
                     }).error( function(response){
                         cache.end( null );
@@ -26,10 +25,10 @@
             );
             return cache.promise;
         }
-        function getAll(){
+        function get(){
             var cache  = cacheService(
                 function(){
-                    $http.get(window.SERVER+'/backend/config').success(function (answer) {
+                    $http.get('/config.json').success(function (answer) {
                         cache.end( answer );
                     }).error(function (data, code) {
                         cache.end({success: false, error: data.error});
@@ -38,18 +37,7 @@
             );
             return cache.promise;
         }
-        function getCurrencyList(){
-            var cache  = cacheService(
-                function(){
-                    $http.get(window.SERVER+'/backend/config/currency').success(function (answer) {
-                        cache.end( answer );
-                    }).error(function (data, code) {
-                        cache.end({success: false, error: data.error});
-                    })
-                }, 'config_getcurrency', 1
-            );
-            return cache.promise;
-        }
+
 
 
 

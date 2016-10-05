@@ -1,0 +1,46 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a ui-sref="users" >Пользователи</a></li>
+                <li><a ui-sref="config" >Настройки</a></li>
+
+                <li><a href="#" ng-click="logout()" >Выход</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div style="margin: 30px">
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Настройки
+        </div>
+        <div class="panel-body">
+            <div>
+                <form name="userForm">
+
+
+
+                    <div class="form-group">
+                        <div ckeditor="options" ng-model="config.intro" ></div>
+
+
+                       <!-- <input type="text" ng-model="env.model.avatar" class="form-control">-->
+                    </div>
+
+
+                    <button type="button" ng-click="save( config )" class="btn btn-default">Сохранить
+                    </button>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

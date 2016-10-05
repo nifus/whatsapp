@@ -24,14 +24,14 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password', 'group_id', 'is_deletedd', 'avatar', 'can_mass_messages', 'can_upload_files', 'last_login', 'history', 'can_edit_myself', 'last_action', 'login'];
+    protected $fillable = ['name', 'email', 'password', 'group_id', 'is_deletedd', 'avatar', 'can_mass_messages', 'can_upload_files', 'last_login', 'history', 'can_edit_myself', 'last_action', 'login','remember_token'];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['password'];
 
 
     public function toArray()
@@ -177,7 +177,8 @@ class User extends Authenticatable
     public function updateLastLogin()
     {
         $date = new \DateTime();
-        $this->update(['last_login' => $date->format('Y-m-d H:i:s')]);
+        $rand = md5( time().rand(0,10000));
+        $this->update(['last_login' => $date->format('Y-m-d H:i:s'),'remember_token'=>$rand]);
     }
 
     public function updateLastAction()

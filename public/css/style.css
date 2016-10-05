@@ -13,6 +13,7 @@ body, html{
 	position: absolute;
 	background-color: rgb(0, 150, 136);
 	top: 0;
+	display: none;
 }
 
 #main {
@@ -939,4 +940,7 @@ div.textarea img :focus {
 	content: attr(placeholder);
 	display: block; /* For Firefox */
 	color: darkgrey;
+}
+.show{
+	display: block;
 }
