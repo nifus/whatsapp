@@ -179,7 +179,7 @@ div.button span{
 	border-radius: 80px;
 	cursor: pointer;
 }
-
+.main-chatBg{height: 100%;   background-color: #e5ddd5;     background: url(/image/bg-correct.png) #e5ddd5; background-repeat: repeat repeat;}
 .link{
 	cursor: pointer;
 }
@@ -188,15 +188,19 @@ div.button span{
 	white-space:pre-wrap;
 }
 .messages{
-	background-image: url(http://1.bp.blogspot.com/-P5uqUWLgZmA/UtQDdtahipI/AAAAAAAAF3E/IgvARwfxAlw/s1600/seamless-stone-background.jpg);
+	 
 	overflow-y:auto;
 	height:92%;
-	width:100%
+	width:100%;
+	
+    
+	
 }
 .post{
 	padding:10px;
 	 background-color:white;border-radius: 8px;margin:10px;
-	max-width:70%
+	max-width:70%;
+	box-shadow: 0 1px .5px rgba(0,0,0,.13);
 }
 .post-menu{
 	padding-right:20px;
