@@ -118,7 +118,9 @@ body, html{
 	font-weight: bold;
 	font-size: 19px;
 }
-
+div.image img{
+	width:200px
+}
 
 #add-image div.image-preview{
 	text-align: center;
