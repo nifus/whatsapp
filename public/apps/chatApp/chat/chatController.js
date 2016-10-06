@@ -2,9 +2,9 @@
     'use strict';
     angular.module('chatApp').controller('chatController', chatController);
 
-    chatController.$inject = ['$scope',  'hotkeys','postService','$timeout','$rootScope'];
+    chatController.$inject = ['$scope','postService','$timeout','$rootScope','$filter'];
 
-    function chatController($scope, hotkeys, postService,$timeout, $rootScope) {
+    function chatController($scope, postService,$timeout, $rootScope,$filter) {
 
         $scope.more = false;
         $scope.env = {
@@ -44,6 +44,9 @@
             if ( value==true ){
                 $scope.env.start +=30;
                 $scope.env.chat.getPosts($scope.env.start).then(function (response) {
+                   // console.log(response)
+                    //response = $filter('orderBy')(response,'id');
+
                     for( var i in response ){
                         $scope.env.chat.posts.unshift(response[i])
                     }
@@ -131,12 +134,12 @@
 
             if (  $scope.user.history=='1' ){
                 chat.getPosts().then(function (response) {
+                    response = $filter('orderBy')(response,'id');
                     chat.posts = response;
                     if (chat.posts.length>0){
-                        $scope.env.first_post_id = chat.posts[0].id;
+                        $scope.env.first_post_id = chat.posts[ chat.posts.length-1 ].id;
                         $timeout(function(){
                             $('div.messages').scrollTop( document.getElementById('post-'+$scope.env.first_post_id).offsetTop );
-
                         },100)
 
                     }
@@ -270,55 +273,7 @@
             })
         };
 
-        /*hotkeys.add({
-            combo: 'enter',
-            action: 'keydown',
-            description: 'This one goes to 11',
-            callback: function () {
-                var message = $scope.env.message;
-                $timeout(function(){
-                    $scope.env.message = null;
-                },100);
 
-                if ( $scope.env.edit_post ){
-                    $scope.env.edit_post.update(message).then(function (response) {
-                        if (response.success == false) {
-                            alertify.error(response.error);
-                        } else {
-                            for( var i in $scope.env.chat.posts){
-                                if ( $scope.env.chat.posts[i].id==response.post.id ){
-                                    $scope.env.chat.posts[i].message = response.post.message;
-                                }
-                            }
-                           // $scope.env.chat.posts.push(response.post);
-                            $scope.env.edit_post = null;
-                            alertify.success('Сообщение изменено')
-                        }
-                    })
-                }else{
-                    var reply = null;
-                    if ( $scope.env.selected_post ){
-                        reply = $scope.env.selected_post.id;
-                    }
-                    $scope.env.chat.addPost(message, reply).then(function (response) {
-                        if (response.success == false) {
-                            alertify.error(response.error);
-                        } else {
-                            $scope.env.chat.posts.push(response.post);
-                            $scope.env.chat.LastPost = response.post;
-                            $scope.env.chat.updated_at = response.chat.updated_at;
-
-                            $scope.env.selected_post = null;
-                            $timeout(function(){
-                                $('div.messages').scrollTop( document.getElementById('post-'+response.post.id).offsetTop );
-                            },100)
-                        }
-                    })
-                }
-
-            },
-            allowIn: ['textarea']
-        });*/
 
         $scope.smilesDialog = function(){
             $scope.env.show_smiles = !$scope.env.show_smiles;
@@ -402,7 +357,8 @@
         $scope.$on('delete', function(event, html){
             var count = $scope.env.chat.posts.length;
             $scope.env.chat.LastPost = null;
-            for(var i=0;i<count;i++){
+
+            for(var i=count-1;i>=0;i--){
                 if ( $scope.env.chat.posts[i].is_deleted=='0' ){
                     $scope.env.chat.LastPost =$scope.env.chat.posts[i];
                     break;

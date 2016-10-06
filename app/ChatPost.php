@@ -128,7 +128,7 @@ class ChatPost extends Model
         $sql = self::where('chat_id',$chat_id)
             ->where('is_deleted','0')
             ->where('is_system',0)
-            ->orderBy('created_at','DESC')->limit(1);
+            ->orderBy('id','DESC')->limit(1);
         if ( !is_null($date) ){
             $sql = $sql->where('created_at','>',$date);
         }
@@ -139,7 +139,7 @@ class ChatPost extends Model
 
     static function getPosts($chat_id, $start, $limit, $date=null){
 
-        $sql = self::where('chat_id',$chat_id)->where('is_deleted','0')->orderBy('created_at','DESC')->skip($start)->take($limit);
+        $sql = self::where('chat_id',$chat_id)->where('is_deleted','0')->orderBy('id','DESC')->skip($start)->take($limit);
         if (!is_null($date)){
             $sql = $sql->where('created_at','>',$date);
         }

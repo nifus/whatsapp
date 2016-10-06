@@ -134,7 +134,7 @@ class ChatController extends Controller
                 }
 
             }
-            dd(1);
+
             $chat = Chat::createNewChat($user->id,$data['members']);
             $chat = Chat::with('Members')->with('LastPost')->find($chat->id);
 
