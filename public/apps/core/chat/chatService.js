@@ -1,12 +1,25 @@
 (function (angular, window) {
     'use strict';
     angular.module('core').service('chatService', chatService);
-    chatService.$inject = ['postFactory', '$http', 'userFactory'];
+    chatService.$inject = ['postFactory', '$http', 'userFactory','$filter'];
 
-    function chatService(postFactory, $http, userFactory) {
+    function chatService(postFactory, $http, userFactory, $filter) {
         return function (data) {
             var Object = data;
             Object.waiting = false;
+
+
+
+            Object.setLastPost = function(last_post){
+                Object.LastPost = last_post;
+                if (last_post!=null){
+                    var message = last_post.message.replace(/<[^>]+>/gm, '');
+                    Object.LastPost.cut_message =  $filter('limitTo')(message,50);
+                    console.log(Object.LastPost.message)
+                    console.log(Object.LastPost.cut_message)
+                }
+            };
+            Object.setLastPost(data.LastPost);
 
             Object.addMember = function (user) {
                 return $http.post('/chats/' + Object.id + '/' + user.id).then(function (response) {

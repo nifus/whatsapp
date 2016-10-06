@@ -100,7 +100,7 @@
                     alertify.error(response.error);
                 } else {
                     $scope.env.chat.posts.push(response.post);
-                    $scope.env.chat.LastPost = response.post;
+                    $scope.env.chat.setLastPost(response.post);
                     $scope.env.chat.updated_at = response.chat.updated_at;
                     $scope.closeImageDialog();
                     $scope.env.upload = {
@@ -146,7 +146,8 @@
                 });
             }else{
                 chat.posts = [];
-                chat.LastPost = null
+                $scope.env.chat.setLastPost(null);
+
             }
 
 
@@ -335,7 +336,8 @@
                         alertify.error(response.error);
                     } else {
                         $scope.env.chat.posts.push(response.post);
-                        $scope.env.chat.LastPost = response.post;
+                        $scope.env.chat.setLastPost(response.post);
+
                         $scope.env.chat.updated_at = response.chat.updated_at;
 
                         $scope.env.selected_post = null;
@@ -356,7 +358,7 @@
 
         $scope.$on('delete', function(event, html){
             var count = $scope.env.chat.posts.length;
-            $scope.env.chat.LastPost = null;
+            $scope.env.chat.setLastPost(null);
 
             for(var i=count-1;i>=0;i--){
                 if ( $scope.env.chat.posts[i].is_deleted=='0' ){
