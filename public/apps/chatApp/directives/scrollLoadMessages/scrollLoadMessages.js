@@ -21,11 +21,8 @@
                     //  add class to end element
                 var bottom = element[0].scrollHeight - element[0].clientHeight;
                 if ( value<bottom-30 ){
-                    console.log('add')
                     last_element.addClass('scroll')
                 }else{
-                    console.log('remove')
-
                     last_element.removeClass('scroll')
                 }
 

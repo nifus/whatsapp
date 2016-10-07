@@ -124,7 +124,11 @@
                         html = '';
                     }
                     var textbox = document.getElementById("textbox");
+
                     var savedSelection = saveSelection(textbox);    //Rangy save selection
+                    if (savedSelection==null){
+                        return;
+                    }
                     ngModel.$setViewValue(html);
                     //Timeout is necessary as it gives time for dom to refresh
                     $timeout(function(){
@@ -149,17 +153,25 @@ window.onload = function() {
 }
 
 if (window.getSelection && document.createRange) {
-    saveSelection = function(containerEl) {
-        var range = window.getSelection().getRangeAt(0);
-        var preSelectionRange = range.cloneRange();
-        preSelectionRange.selectNodeContents(containerEl);
-        preSelectionRange.setEnd(range.startContainer, range.startOffset);
-        var start = preSelectionRange.toString().length;
 
-        return {
-            start: start,
-            end: start + range.toString().length
+    saveSelection = function(containerEl) {
+        if (containerEl==null){
+            return null;
         }
+        //console.log(window.getSelection().getRangeAt(0))
+        if ( window.getSelection().rangeCount!=0){
+            var range = window.getSelection().getRangeAt(0);
+            var preSelectionRange = range.cloneRange();
+            preSelectionRange.selectNodeContents(containerEl);
+            preSelectionRange.setEnd(range.startContainer, range.startOffset);
+            var start = preSelectionRange.toString().length;
+
+            return {
+                start: start,
+                end: start + range.toString().length
+            }
+        }
+
     };
 
     restoreSelection = function(containerEl, savedSel) {

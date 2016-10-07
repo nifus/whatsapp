@@ -15,8 +15,6 @@
                 if (last_post!=null){
                     var message = last_post.message.replace(/<[^>]+>/gm, '');
                     Object.LastPost.cut_message =  $filter('limitTo')(message,50);
-                    console.log(Object.LastPost.message)
-                    console.log(Object.LastPost.cut_message)
                 }
             };
             Object.setLastPost(data.LastPost);

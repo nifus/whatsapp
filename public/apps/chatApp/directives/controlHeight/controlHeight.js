@@ -54,14 +54,10 @@
                 var set_input =textarea_height+2;
 
                 if (options.smiles==true){
-                    console.log('smile=true')
                     set_message-=smiles_height;
                     set_input+=smiles_height;
                 }
                 if (options.answer==true){
-                    console.log('answer=true')
-                    console.log(reply_height)
-
                     set_message-=(reply_height+20);
                     set_input+=(reply_height+20);
                 }
