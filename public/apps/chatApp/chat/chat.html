@@ -142,7 +142,7 @@
 									
 									
 									
-  <div control-caret class="textarea inputotext-forma f-blok" ng-model="env.message" contenteditable="true" ng-bind-html="env.message|to_trusted" placeholder="Введите сообщение"></div>
+  <div control-caret class="textarea inputotext-forma f-blok" id="textbox" ng-model="env.message" contenteditable="true" ng-bind-html="env.message|to_trusted" placeholder="Введите сообщение"></div>
 <div class="right-block-send f-blok">  
                             <button ng-click="submit(env.message)"  class="icon"  ></button>
 </div>
@@ -182,7 +182,6 @@
         </div>
         <div ng-show="!env.chat" style="height: 100%;padding:20px">
             <div style="text-align: center" ng-bind-html="config.intro|to_trusted"></div>
-
         </div>
     </div>
     <div id="right" ng-show="env.show_add_info==true">

@@ -11,8 +11,9 @@
 
         function controlCaretLink($scope,element) {
             var position = 0;
-            var node = null;
+            var node = element[0];
             var parent = null;
+            setCaret(node,position);
             element.on('keydown', function(e){
 
                 //e.stopPropagation();
@@ -25,11 +26,9 @@
 
                 if (e.ctrlKey==false && e.keyCode==13){
                     $rootScope.$broadcast('submit',element[0].innerHTML);
-                    element[0].innerHTML = ''
+                    element[0].innerHTML = '';
                     e.preventDefault();
-
                 }
-
             });
 
             element.on('keyup', function(){

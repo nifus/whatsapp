@@ -297,6 +297,7 @@
         });
 
         $scope.$on('submit', function(event, html){
+
             $scope.submit(html)
         });
 
@@ -305,12 +306,7 @@
         };
 
         $scope.submit = function(message){
-            // $scope.env.messageconsole.log(html)
-
-            $timeout(function(){
-                $scope.env.message = null;
-            },100);
-
+            
             if ( $scope.env.edit_post ){
                 $scope.env.edit_post.update(message).then(function (response) {
                     if (response.success == false) {
@@ -347,14 +343,13 @@
                     }
                 })
             }
+            $timeout(function(){
+                $scope.env.message = null;
+            },100);
             $scope.env.message = null;
             $rootScope.$broadcast('answer',{'smiles':$scope.env.show_smiles,'answer': false});
             $scope.env.selected_post = null
-
-
-
-
-        }
+        };
 
         $scope.$on('delete', function(event, html){
             var count = $scope.env.chat.posts.length;

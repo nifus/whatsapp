@@ -171,7 +171,6 @@ if (window.getSelection && document.createRange) {
                 end: start + range.toString().length
             }
         }
-
     };
 
     restoreSelection = function(containerEl, savedSel) {
