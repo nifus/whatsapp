@@ -8,6 +8,7 @@ body, html{
 }
 
 
+
 #background{
 	width: 100%;
 	height: 20%;
@@ -296,10 +297,10 @@ div.input div.textarea{
 	width: 92%;
 }
 #input div.author{
-	float:left;width:98%;color:#35cd96;padding:5px;
+	float:left;width:96%;color:#35cd96;padding:5px;
 }
 #input div.close{
-	float:left;width:2%;
+	float:left;width:4%;
 }
 #input div.message{
 	clear:both;white-space:nowrap;overflow: hidden;padding:5px;
@@ -966,3 +967,13 @@ div.textarea img :focus {
 .show{
 	display: block;
 }
+
+.left-icons-block{float: left; width: 3%; position: relative;     min-width: 24px;}
+.left-icons-block .icon{top: 10px;
+    position: absolute;
+    right: 0;}
+.right-block-send{width: 3%;     float: right;     position: relative;     min-width: 24px;}
+.right-block-send .icon{background-position: -3282px -3335px;position: absolute;top: 10px;}
+
+.inputotext-forma{width: 92% !important; float: left; margin-left: 4%}
+.f-blok{}
