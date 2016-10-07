@@ -36,6 +36,13 @@
 
     <div
             style="height:91%"
+            ng-show="dialog=='contactList'"
+            ng-include="'apps/chatApp/directives/leftSide/contactList/contactList.html'">
+
+    </div>
+
+    <div
+            style="height:91%"
             ng-controller="contactsController"
             ng-show="dialog=='contacts'"
             ng-include="'apps/chatApp/directives/leftSide/contacts/contacts.html'">
@@ -49,4 +56,6 @@
             ng-include="'apps/chatApp/directives/leftSide/group/group.html'">
 
     </div>
+
+
 </div>

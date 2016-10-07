@@ -24,7 +24,7 @@
 
 
             $scope.openContactList = function () {
-                $scope.contact_list = true;
+                $scope.dialog = 'contactList';
             };
 
             $scope.openGroupDialog = function () {
@@ -51,6 +51,7 @@
             };
 
             $scope.createChat = function (contact) {
+                $scope.dialog = 'contacts'
                 chatFactory.createByContact($scope.user, contact).then(function (response) {
                     if ( response.success!=false){
                         $scope.user.chats.push(response.chat);
