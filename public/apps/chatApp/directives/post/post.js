@@ -12,7 +12,8 @@
                 post:'=',
                 user:'=',
                 isSelectPost:'=',
-                isEditPost:'='
+                isEditPost:'=',
+                isLastPost:'='
             }
         };
 

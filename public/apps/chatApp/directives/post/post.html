@@ -1,6 +1,6 @@
 <div>
     <div class="post" id="post-{{post.id}}"
-         ng-class="{'myself':post.isMyselfMessage(user.id),'from_me':!post.isMyselfMessage(user.id),'system':post.is_system==1 }">
+         ng-class="{'myself':post.isMyselfMessage(user.id),'from_me':!post.isMyselfMessage(user.id),'system':post.is_system==1,'last':true===isLastPost }">
 
         <div class="message" ng-show="post.is_deleted=='1'">Сообщение удалено</div>
 

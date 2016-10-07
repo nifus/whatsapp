@@ -13,8 +13,24 @@
 
         function scrollLoadMessagesLink($scope,element) {
             var last =   0;
+
             element.bind("scroll", function() {
                 var value = element.scrollTop();
+                var last_element = element.find('div.last');
+
+                    //  add class to end element
+                var bottom = element[0].scrollHeight - element[0].clientHeight;
+                if ( value<bottom-30 ){
+                    console.log('add')
+                    last_element.addClass('scroll')
+                }else{
+                    console.log('remove')
+
+                    last_element.removeClass('scroll')
+                }
+
+
+
                 if (value<10 && $scope.env.loading===false && value<last ){
                     $scope.env.loading = true;
                     $scope.$apply()
