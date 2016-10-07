@@ -53,7 +53,8 @@
             $scope.createChat = function (contact) {
                 chatFactory.createByContact($scope.user, contact).then(function (response) {
                     if ( response.success!=false){
-                        $scope.user.chats.push(response);
+                        $scope.user.chats.push(response.chat);
+                        $scope.chat = response.chat;
                     }else if(response.chat_id){
                         $scope.chat = $scope.user.chats.filter( function(chat){
                             if (chat.id==response.chat_id){

@@ -193,15 +193,13 @@ class User extends Authenticatable
         foreach($names as $name){
             $name= trim($name);
             $user = User::findByLogin($name);
-            if ( is_null($user) ){
+            if ( is_null($user) || $this->id==$user->id ){
                 continue;
             }
             array_push($contact_ids, $user->id);
            // $user->addNewContact($this->id);
         }
         $this->Contacts()->sync($contact_ids);
-
-
         return true;
     }
 

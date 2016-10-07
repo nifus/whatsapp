@@ -31,7 +31,6 @@
             if (value){
                 $scope.env.chats = value;
                 $scope.env.source_chats = value;
-
             }
         });
 

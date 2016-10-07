@@ -138,7 +138,10 @@ class ChatController extends Controller
             $chat = Chat::createNewChat($user->id,$data['members']);
             $chat = Chat::with('Members')->with('LastPost')->find($chat->id);
 
-            return response()->json(['success'=>true,'chat'=>$chat->toArray()]);
+            $data = array_merge($chat->toArray(),
+                ['ChatAvatar' => $chat->getAvatar($user->id)]
+            );
+            return response()->json(['success'=>true,'chat'=>$data]);
 
         }catch( \Exception $e ){
             return response()->json(['success'=>false,'error'=>$e->getMessage()]);
@@ -184,6 +187,7 @@ class ChatController extends Controller
         }
         $posts = $chat->getPosts($data['start'],$data['count'], $user->id);
         $chat->readPosts4User($user->id);
+
 
         return response()->json(['success'=>true,'posts'=>$posts->toArray()]);
 

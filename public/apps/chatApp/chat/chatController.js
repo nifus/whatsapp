@@ -306,7 +306,7 @@
         };
 
         $scope.submit = function(message){
-            
+
             if ( $scope.env.edit_post ){
                 $scope.env.edit_post.update(message).then(function (response) {
                     if (response.success == false) {
