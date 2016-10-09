@@ -20,6 +20,32 @@ class ChatController extends Controller
         $this->middleware('jwt.auth', []);
     }
 
+    public function chatStatus($chat_id){
+        try{
+            $user = JWTAuth::parseToken()->authenticate();
+            if ( is_null($user) ){
+                throw new \Exception('no user');
+            }
+            if ( $user->is_delete=='1' ){
+                JWTAuth::invalidate(JWTAuth::getToken());
+                throw new \Exception('no user');
+            }
+            $chat = chat::find($chat_id);
+            $data = $chat->toArray();
+            $data['CountUnreadMessages'] = ChatPost::getCountUnreadPosts($chat->id, $user->id);
+            $data['LastPost'] = Chat::getLastPost($chat->id, $user->id);
+            $data['success'] = true;
+
+
+            return response()->json($data);
+
+        }catch( \Exception $e ){
+            return response()->json(['success'=>false,'error'=>$e->getMessage()]);
+
+        }
+    }
+
+
     public function search($key){
         try{
             $user = JWTAuth::parseToken()->authenticate();

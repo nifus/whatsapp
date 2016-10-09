@@ -2,9 +2,9 @@
     'use strict';
     angular.module('chatApp').controller('mainController', mainController);
 
-    mainController.$inject = ['$scope', '$q', 'userFactory', '$state', 'chatFactory', 'configFactory'];
+    mainController.$inject = ['$scope', '$q', 'userFactory', '$state', 'chatFactory', 'configFactory' ,'socket','ngAudio'];
 
-    function mainController($scope, $q, userFactory, $state, chatFactory, configFactory) {
+    function mainController($scope, $q, userFactory, $state, chatFactory, configFactory, socket,ngAudio) {
         $scope.env = {
             loading: true,
             config: [],
@@ -19,8 +19,17 @@
         $scope.loaded = false;
         $scope.init = [];
         $scope.counter = 0;
-
-
+        $scope.sound = ngAudio.load("audio/im.mp3");
+        socket.on('reload', function (msg) {
+            var chat_id = msg.chat;
+            $scope.env.user.chats.filter( function(chat){
+                if (chat.id==chat_id){
+                    console.log(chat);
+                    chat.updateInformation();
+                    $scope.sound.play()
+                }
+            })
+        });
         var configPromise = configFactory.get().then(function (response) {
             $scope.env.config = response;
         });

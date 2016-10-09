@@ -1,14 +1,24 @@
 (function (angular, window) {
     'use strict';
     angular.module('core').service('chatService', chatService);
-    chatService.$inject = ['postFactory', '$http', 'userFactory','$filter'];
+    chatService.$inject = ['postFactory', '$http', 'userFactory','$filter','socket'];
 
-    function chatService(postFactory, $http, userFactory, $filter) {
+    function chatService(postFactory, $http, userFactory, $filter, socket) {
         return function (data) {
             var Object = data;
             Object.waiting = false;
 
 
+            Object.updateInformation = function () {
+                return $http.get('/chats/' + Object.id + '/status' ).then(function (response) {
+                    if (response.data.success == true) {
+                        Object.setLastPost(response.data.LastPost);
+                        Object.updated_at = response.data.updated_at;
+                        Object.CountUnreadMessages = response.data.CountUnreadMessages;
+                    }
+                    return response.data;
+                })
+            };
 
             Object.setLastPost = function(last_post){
                 Object.LastPost = last_post;
@@ -22,15 +32,12 @@
             Object.addMember = function (user) {
                 return $http.post('/chats/' + Object.id + '/' + user.id).then(function (response) {
                     if (response.data.success == true) {
-
                         user.pivot = {
                             is_admin: "0",
                             sound: "1"
                         };
                         Object.members.push(user)
-
                     }
-
                     return response.data;
                 })
             };
@@ -157,6 +164,7 @@
             };
 
             Object.addPost = function (message, reply) {
+                socket.emit('message', Object.id);
                 return postFactory.addPost(message, reply, Object.id);
             };
 

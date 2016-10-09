@@ -1,6 +1,6 @@
 (function (angular, window) {
     'use strict';
-    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64', 'cfp.hotkeys', 'luegg.directives', 'ckeditor','ngSanitize']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
+    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64', 'cfp.hotkeys', 'luegg.directives', 'ckeditor','ngSanitize','btford.socket-io','ngAudio']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
 
 
         window.SERVER = 'http://' + window.location.host;
@@ -40,6 +40,14 @@
         })
 
 
+    }).factory('socket', function (socketFactory) {
+        var myIoSocket = io.connect('http://192.168.1.7:3002');
+
+        var mySocket = socketFactory({
+            ioSocket: myIoSocket
+        });
+
+        return mySocket;
     }).run(['userFactory', '$state', '$rootScope', function (userFactory, $state, $rootScope) {
         moment.locale('ru');
 
@@ -104,7 +112,7 @@
                     element.html($sce.getTrustedHtml(ngModel.$viewValue || ''));
                 };
                 scope.$watch(function(){return ngModel.$viewValue}, function(value){
-                    console.log(value)
+                    //console.log(value)
                 });
 
                 // Listen for change events to enable binding
@@ -148,78 +156,10 @@ window.onload = function () {
     rangy.init();
 }
 /*
- if (window.getSelection && document.createRange) {
+var socket = io('http://192.168.1.7:3002');
 
- saveSelection = function(containerEl) {
- if (containerEl==null){
- //  return null;
- }
- //console.log(window.getSelection().getRangeAt(0))
- if ( window.getSelection().rangeCount!=0){
- var range = window.getSelection().getRangeAt(0);
- var preSelectionRange = range.cloneRange();
- preSelectionRange.selectNodeContents(containerEl);
- preSelectionRange.setEnd(range.startContainer, range.startOffset);
- var start = preSelectionRange.toString().length;
+socket.on('reload', function(msg){
+    alert(msg)
+    console.log(msg)
+});*/
 
- return {
- start: start,
- end: start + range.toString().length
- }
- }
- };
-
- restoreSelection = function(containerEl, savedSel) {
- var charIndex = 0, range = document.createRange();
- range.setStart(containerEl, 0);
- range.collapse(true);
- var nodeStack = [containerEl], node, foundStart = false, stop = false;
-
- while (!stop && (node = nodeStack.pop())) {
- if (node.nodeType == 3) {
- var nextCharIndex = charIndex + node.length;
- if (!foundStart && savedSel.start >= charIndex && savedSel.start <= nextCharIndex) {
- range.setStart(node, savedSel.start - charIndex);
- foundStart = true;
- }
- if (foundStart && savedSel.end >= charIndex && savedSel.end <= nextCharIndex) {
- range.setEnd(node, savedSel.end - charIndex);
- stop = true;
- }
- charIndex = nextCharIndex;
- } else {
- var i = node.childNodes.length;
- while (i--) {
- nodeStack.push(node.childNodes[i]);
- }
- }
- }
-
- var sel = window.getSelection();
- sel.removeAllRanges();
- sel.addRange(range);
- }
- } else if (document.selection) {
- saveSelection = function(containerEl) {
- var selectedTextRange = document.selection.createRange();
- var preSelectionTextRange = document.body.createTextRange();
- preSelectionTextRange.moveToElementText(containerEl);
- preSelectionTextRange.setEndPoint("EndToStart", selectedTextRange);
- var start = preSelectionTextRange.text.length;
-
- return {
- start: start,
- end: start + selectedTextRange.text.length
- }
- };
-
- restoreSelection = function(containerEl, savedSel) {
- var textRange = document.body.createTextRange();
- textRange.moveToElementText(containerEl);
- textRange.collapse(true);
- textRange.moveEnd("character", savedSel.end);
- textRange.moveStart("character", savedSel.start);
- textRange.select();
- };
- }
- */
