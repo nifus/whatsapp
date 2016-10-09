@@ -4,11 +4,12 @@
     config(function ($stateProvider, $urlRouterProvider, $authProvider) {
 
         var href = window.location.href;
-        if (href.indexOf('chat.dev') == -1) {
-            window.SERVER = 'http://chat.bunzya.ru';
-        } else {
-            window.SERVER = 'http://chat.dev';
-        }
+        console.log(window.location.host)
+        //if (href.indexOf('chat.dev') == -1) {
+        //    window.SERVER = 'http://chat.bunzya.ru';
+        //} else {
+            window.SERVER = 'http://'+window.location.host;
+        //}
 
        // $authProvider.httpInterceptor = false;
         $authProvider.loginUrl = window.SERVER+'/backend/user/authenticate';
