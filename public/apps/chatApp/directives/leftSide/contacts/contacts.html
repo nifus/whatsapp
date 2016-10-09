@@ -1,7 +1,6 @@
-
 <div class="left-search">
     <div class="center-search">
-        <input type="text" class="form-control" ng-model="env.chat"  placeholder="Поиск или новый чат">
+        <input type="text" class="form-control" ng-model="env.chat" placeholder="Поиск или новый чат">
     </div>
 </div>
 
@@ -10,16 +9,20 @@
 
     <div class="persona" ng-show="env.search_activated && env.chats.length>0"><h3>Чаты</h3></div>
 
-    <div class="persona" ng-repeat="ch in env.chats|orderBy:'-updated_at'" ng-click="openChat(ch)" ng-class="{'selected':chat.id==ch.id}">
+    <div class="persona" ng-repeat="ch in env.chats|orderBy:'-updated_at'" ng-click="openChat(ch)"
+         ng-class="{'selected':chat.id==ch.id}">
         <div class="foto"><img ng-src="{{ch.ChatAvatar}}" class="img-circle" width="50"></div>
         <div class="detalle-contacto">
             <div class="nombre-contacto">{{ch.getChatName(user.id)}}</div>
-            <div class="mensaje-contacto" ng-show="!ch.LastPost.message && ch.LastPost.type=='image'"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Фото </div>
-            <div class="mensaje-contacto" ng-show="ch.LastPost.message" ng-bind-html="ch.LastPost.cut_message|to_trusted "> </div>
+            <div class="mensaje-contacto" ng-show="!ch.LastPost.message && ch.LastPost.type=='image'"><span
+                    class="glyphicon glyphicon-camera" aria-hidden="true"></span> Фото
+            </div>
+            <div class="mensaje-contacto" ng-show="ch.LastPost.message"
+                 ng-bind-html="ch.LastPost.cut_message|to_trusted "></div>
 
         </div>
 
-        <div class="additional" >
+        <div class="additional">
             {{ch.LastPost.Time}} <br>
             <span class="badge" ng-show="ch.CountUnreadMessages>0">{{ch.CountUnreadMessages}}</span>
         </div>
@@ -27,7 +30,8 @@
 
     <div class="persona" ng-show="env.search_activated && env.contacts.length>0 "><h3>Контакты</h3></div>
 
-    <div class="persona" ng-repeat="contact in env.contacts" ng-show="env.search_activated" ng-click="createChat(contact)">
+    <div class="persona" ng-repeat="contact in env.contacts" ng-show="env.search_activated"
+         ng-click="createChat(contact)">
 
         <div class="foto"><img ng-src="{{contact.AvatarSrc}}"
                                class="img-circle" width="50"></div>
@@ -39,7 +43,7 @@
 
     <div class="persona" ng-show="env.search_activated && env.search_result.length>0 "><h3>Сообщения</h3></div>
 
-    <div class="persona" ng-repeat="post in env.search_result"  ng-click="openChat(contact)">
+    <div class="persona" ng-repeat="post in env.search_result" ng-click="env.chat='';openChat( getChat(post.chat_id),post.id  )">
 
 
         <div class="detalle-contacto">
@@ -48,7 +52,9 @@
         </div>
     </div>
 
-    <div class="persona" ng-show="env.search_activated && env.contacts.length==0 && env.chats.length==0 && env.search_result.length==0">Ничего не
+    <div class="persona"
+         ng-show="env.search_activated && env.contacts.length==0 && env.chats.length==0 && env.search_result.length==0">
+        Ничего не
         найдено
     </div>
 </div>

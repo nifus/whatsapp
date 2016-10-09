@@ -40,13 +40,13 @@
 
         };
 
-        $scope.$watch('env.loading', function(value){
-            if ( value==true ){
+        $rootScope.$on('scroll_up', function(){
+            console.log('event: scroll_up')
+            if ($scope.env.loading == false ){
+                console.log('loading up')
+                $scope.env.loading = true;
                 $scope.env.start +=30;
                 $scope.env.chat.getPosts($scope.env.start).then(function (response) {
-                   // console.log(response)
-                    //response = $filter('orderBy')(response,'id');
-
                     for( var i in response ){
                         $scope.env.chat.posts.unshift(response[i])
                     }
@@ -58,6 +58,28 @@
                 });
             }
         });
+
+        $rootScope.$on('scroll_down', function(){
+           // console.log('event: scroll_down')
+            if ($scope.env.loading == false ){
+             //   console.log('loading down')
+                $scope.env.loading = true;
+
+                //$scope.env.start +=30;
+                $scope.env.chat.getPostsDown($scope.env.first_post_id).then(function (response) {
+
+                    for( var i in response ){
+                        $scope.env.chat.posts.push(response[i])
+                    }
+                    if (response.length>0){
+                        $('div.messages').scrollTop( document.getElementById('post-'+$scope.env.first_post_id).offsetTop );
+                        $scope.env.first_post_id = response[response.length-1].id;
+                    }
+                    $scope.env.loading = false;
+                });
+            }
+        });
+
 
         $scope.closeImageDialog = function(){
             $scope.env.imageDialog = false;
@@ -131,15 +153,20 @@
             if (!chat) {
                 return;
             }
-
             if (  $scope.user.history=='1' ){
-                chat.getPosts().then(function (response) {
+                var promise = chat.start_post ?  chat.getPostsAroundId(chat.start_post) : chat.getPosts();
+                promise.then(function (response) {
                     response = $filter('orderBy')(response,'id');
                     chat.posts = response;
                     if (chat.posts.length>0){
                         $scope.env.first_post_id = chat.posts[ chat.posts.length-1 ].id;
+
                         $timeout(function(){
-                            $('div.messages').scrollTop( document.getElementById('post-'+$scope.env.first_post_id).offsetTop );
+                            if (chat.start_post ){
+                                $('div.messages').scrollTop( document.getElementById('post-'+chat.start_post).offsetTop );
+                            }else{
+                                $('div.messages').scrollTop( document.getElementById('post-'+$scope.env.first_post_id).offsetTop );
+                            }
                         },100)
 
                     }

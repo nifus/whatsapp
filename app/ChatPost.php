@@ -138,13 +138,49 @@ class ChatPost extends Model
     }
 
     static function getPosts($chat_id, $start, $limit, $date=null){
-
         $sql = self::where('chat_id',$chat_id)->where('is_deleted','0')->orderBy('id','DESC')->skip($start)->take($limit);
         if (!is_null($date)){
             $sql = $sql->where('created_at','>',$date);
         }
-
         return $sql->get();
+    }
+
+    static function getPostsAroundId($chat_id, $post_id, $limit, $date=null){
+        $sql = self::where('chat_id',$chat_id)
+            ->where('is_deleted','0')
+            ->where('id','<=',$post_id)
+            ->orderBy('id','DESC')
+            ->skip(0)
+            ->take(15);
+        if (!is_null($date)){
+            $sql = $sql->where('created_at','>',$date);
+        }
+        $after = $sql->get();
+
+        $sql = self::where('chat_id',$chat_id)
+            ->where('is_deleted','0')
+            ->where('id','>',$post_id)
+            ->orderBy('id','ASC')
+            ->skip(0)
+            ->take(15);
+        if (!is_null($date)){
+            $sql = $sql->where('created_at','>',$date);
+        }
+        $before = $sql->get();
+        return array_merge($before->reverse()->toArray(),$after->toArray());
+    }
+
+    static function getPostsDown($chat_id, $post_id, $limit, $date=null){
+        $sql = self::where('chat_id',$chat_id)
+            ->where('is_deleted','0')
+            ->where('id','>',$post_id)
+            ->orderBy('id','ASC')
+            ->skip(0)
+            ->take($limit);
+        if (!is_null($date)){
+            $sql = $sql->where('created_at','>',$date);
+        }
+        return $sql->get()->reverse()->toArray();
     }
 
     static function addTextPost($chat, $message, $reply_to, $user, $is_system=0){

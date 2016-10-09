@@ -45,13 +45,36 @@
             };
 
 
-            $scope.openChat = function (chat) {
+            $scope.openChat = function (chat, post_id) {
+                chat.start_post = post_id;
                 $scope.chat = chat;
                 $scope.chat.CountUnreadMessages = 0;
+                //console.log(chat)
+                /*var posts = $scope.chat.posts;
+                if (posts!=undefined && posts.length>0){
+                    for( var i in posts ){
+                        if ( posts[i].id==post_id){
+                            console.log('ID!!!')
+                            break;
+                        }
+                    }
+                }*/
+
+            };
+            $scope.getChat = function (chat_id) {
+                var result = $scope.user.chats.filter( function(chat){
+                    if (chat_id==chat.id){
+                        return true;
+                    }
+                    return false
+                });
+                if (result[0]!=undefined){
+                    return result[0];
+                }
             };
 
             $scope.createChat = function (contact) {
-                $scope.dialog = 'contacts'
+                $scope.dialog = 'contacts';
                 chatFactory.createByContact($scope.user, contact).then(function (response) {
                     if ( response.success!=false){
                         $scope.user.chats.push(response.chat);

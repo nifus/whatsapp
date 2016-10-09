@@ -10,6 +10,8 @@
 
         return {
             getPosts: getPosts,
+            getPostsAroundId: getPostsAroundId,
+            getPostsDown: getPostsDown,
             addPost: addPost,
             addImagePost: addImagePost,
             addDocumentPost: addDocumentPost
@@ -55,8 +57,24 @@
                 }
                 return result;
             })
-
-
+        }
+        function getPostsAroundId(id,post_id) {
+            return $http.post( '/chats/'+id+'/around/'+post_id,{count:30}).then(function (response) {
+                var result = [];
+                for (var i in response.data.posts) {
+                    result.push( new postService(response.data.posts[i]) );
+                }
+                return result;
+            })
+        }
+        function getPostsDown(id,post_id) {
+            return $http.post( '/chats/'+id+'/down/'+post_id,{count:30}).then(function (response) {
+                var result = [];
+                for (var i in response.data.posts) {
+                    result.push( new postService(response.data.posts[i]) );
+                }
+                return result;
+            })
         }
 
 

@@ -118,7 +118,22 @@ class Chat extends Model
             ->where('user_id', $user_id)->first();
 
         return ChatPost::getPosts($this->id, $start, $limit, $rec->clear_date);
+    }
 
+    public function getPostsAroundId($post_id,$limit,$user_id){
+        $rec = \DB::table('chats_members')
+            ->where('chat_id', $this->id)
+            ->where('user_id', $user_id)->first();
+
+        return ChatPost::getPostsAroundId($this->id, $post_id, $limit, $rec->clear_date);
+    }
+
+    public function getPostsDown($post_id,$limit,$user_id){
+        $rec = \DB::table('chats_members')
+            ->where('chat_id', $this->id)
+            ->where('user_id', $user_id)->first();
+
+        return ChatPost::getPostsDown($this->id, $post_id, $limit, $rec->clear_date);
     }
 
     public function updateLastPost($post_id=null){

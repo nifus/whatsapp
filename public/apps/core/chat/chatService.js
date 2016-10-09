@@ -149,6 +149,12 @@
             Object.getPosts = function (start) {
                 return postFactory.getPosts(Object.id, start)
             };
+            Object.getPostsAroundId = function(post_id){
+                return postFactory.getPostsAroundId(Object.id, post_id)
+            };
+            Object.getPostsDown = function(post_id){
+                return postFactory.getPostsDown(Object.id, post_id)
+            };
 
             Object.addPost = function (message, reply) {
                 return postFactory.addPost(message, reply, Object.id);

@@ -187,10 +187,51 @@ class ChatController extends Controller
         }
         $posts = $chat->getPosts($data['start'],$data['count'], $user->id);
         $chat->readPosts4User($user->id);
-
-
         return response()->json(['success'=>true,'posts'=>$posts->toArray()]);
+    }
 
+    public function loadChatAroundId($chat_id, $post_id, Request $request){
+        $data = $request->all();
+       // $data['start'] = $request['start'];
+        $data['count'] = $request['count'];;
+        $user = JWTAuth::parseToken()->authenticate();
+        if ( is_null($user) ){
+            throw new \Exception('no user');
+        }
+        if ( $user->is_delete=='1' ){
+            JWTAuth::invalidate(JWTAuth::getToken());
+            throw new \Exception('no user');
+        }
+
+        $chat = Chat::find($chat_id);
+        if ( !$chat->canAccess($user->id) ){
+            throw new \Exception('no cht');
+        }
+        $posts = $chat->getPostsAroundId($post_id,$data['count'], $user->id);
+        //$chat->readPosts4User($user->id);
+        return response()->json(['success'=>true,'posts'=>$posts]);
+    }
+
+    public function loadChatDown($chat_id, $post_id, Request $request){
+        $data = $request->all();
+       // $data['start'] = $request['start'];
+        $data['count'] = $request['count'];;
+        $user = JWTAuth::parseToken()->authenticate();
+        if ( is_null($user) ){
+            throw new \Exception('no user');
+        }
+        if ( $user->is_delete=='1' ){
+            JWTAuth::invalidate(JWTAuth::getToken());
+            throw new \Exception('no user');
+        }
+
+        $chat = Chat::find($chat_id);
+        if ( !$chat->canAccess($user->id) ){
+            throw new \Exception('no cht');
+        }
+        $posts = $chat->getPostsDown($post_id,$data['count'], $user->id);
+       // $chat->readPosts4User($user->id);
+        return response()->json(['success'=>true,'posts'=>$posts]);
     }
 
 

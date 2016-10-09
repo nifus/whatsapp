@@ -31,6 +31,8 @@ Route::get('signout', ['as' => 'signout', 'uses' => 'User\SignOutController@inde
     Route::group(['prefix' => 'chats'], function () {
         Route::post('/', 'Api\ChatController@store');
         Route::post('/{id}', 'Api\ChatController@loadChat')->where('id', '[0-9]*');
+        Route::post('/{id}/around/{post_id}', 'Api\ChatController@loadChatAroundId')->where('id', '[0-9]*')->where('post_id','[0-9]*');
+        Route::post('/{id}/down/{post_id}', 'Api\ChatController@loadChatDown')->where('id', '[0-9]*')->where('post_id','[0-9]*');
         Route::put('/{id}', 'Api\ChatController@updateChat')->where('id', '[0-9]*');
         Route::get('/search/{key}', 'Api\ChatController@search');
 

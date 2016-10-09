@@ -1,7 +1,7 @@
 (function (angular) {
     'use strict';
 
-    function scrollLoadMessagesDirective() {
+    function scrollLoadMessagesDirective($rootScope) {
         return {
             restrict: 'A',
             //controller: scrollLoadMessagesDirective,
@@ -28,9 +28,12 @@
 
 
 
-                if (value<10 && $scope.env.loading===false && value<last ){
-                    $scope.env.loading = true;
-                    $scope.$apply()
+                if (value<10  && value<last ){
+                    $rootScope.$broadcast('scroll_up');
+                }
+
+                if (value==(element[0].scrollHeight - element[0].clientHeight) ){
+                    $rootScope.$broadcast('scroll_down');
                 }
                 last =  element.scrollTop();
             });
