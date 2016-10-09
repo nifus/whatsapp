@@ -35,6 +35,7 @@ class ChatController extends Controller
             $data['CountUnreadMessages'] = ChatPost::getCountUnreadPosts($chat->id, $user->id);
             $data['LastPost'] = Chat::getLastPost($chat->id, $user->id);
             $data['success'] = true;
+            $data['Posts'] = ChatPost::getPosts($chat->id,0,$data['CountUnreadMessages']);
 
 
             return response()->json($data);

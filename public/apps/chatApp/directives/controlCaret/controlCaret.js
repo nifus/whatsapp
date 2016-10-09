@@ -15,8 +15,11 @@
             var parent = null;
             setCaret(node,position);
             var savedSelection = null;
+            var sel = null;
+
             element.on('keydown', function(e){
-                savedSelection = rangy.saveSelection();
+                //savedSelection = rangy.saveSelection();
+                sel  = rangy.getSelection();
 
                 //e.stopPropagation();
                 if (e.ctrlKey==true && e.keyCode==13){
@@ -34,6 +37,7 @@
 
             element.on('keyup', function(){
                 savedSelection = rangy.saveSelection();
+                //sel  = rangy.getSelection();
 
                 //node = getSelectedNode();
                 //parent = getParentSelectedNode();
@@ -41,7 +45,9 @@
 
             });
             element.on('mouseup', function(){
-                savedSelection = rangy.saveSelection();
+                //savedSelection = rangy.saveSelection();
+                sel  = rangy.getSelection();
+                console.log(sel)
 
                // node = getSelectedNode();
                 //parent = getParentSelectedNode();
@@ -50,10 +56,11 @@
 
             $rootScope.$on('insert_smiles', function (event, html) {
                // var savedSel = rangy.saveSelection();
-                //setCaret(node,position);
+                setCaret(sel.focusNode,sel.focusOffset);
                // setCaret(node,position+1);
-                rangy.restoreSelection(savedSelection);
+               // rangy.restoreSelection(sel);
                 pasteHtmlAtCaret(html);
+                setCaret(sel.focusNode,sel.focusOffset);
 
             });
 

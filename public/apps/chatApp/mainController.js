@@ -24,9 +24,8 @@
             var chat_id = msg.chat;
             $scope.env.user.chats.filter( function(chat){
                 if (chat.id==chat_id){
-                    console.log(chat);
                     chat.updateInformation();
-                    $scope.sound.play()
+                    $scope.sound.play();
                 }
             })
         });

@@ -21,7 +21,6 @@
             var reply_element = element.find('div.reply');
             var messages = element.find('div.messages');
 
-
             $rootScope.$on('textField', function (event, options) {
                 resize(options)
             });
@@ -40,17 +39,22 @@
             });
 
             function resize(options) {
-                var textarea_height = textarea_element[0].offsetHeight;
-                input_element.height(textarea_height+2);
-                around_element.height(textarea_height+2);
-                center_element.height(textarea_height+2);
 
+                var textarea_height = textarea_element[0].offsetHeight;
                 var full_height = element[0].offsetHeight;
                 var smiles_height = (smiles_element[0].offsetHeight>0 ? smiles_element[0].offsetHeight+20 : smiles_element[0].offsetHeight) ;
                 var reply_height = reply_element[0].offsetHeight;
                 var input_height = input_element[0].offsetHeight;
+                if (full_height==0){
+                    return;
+                }
+                input_element.height(textarea_height+2);
+                around_element.height(textarea_height+2);
+                center_element.height(textarea_height+2);
+
 
                 var set_message = full_height-input_height;
+
                 var set_input =textarea_height+2;
 
                 if (options.smiles==true){

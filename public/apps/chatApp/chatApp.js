@@ -105,46 +105,20 @@
             restrict: 'A', // only activate on element attribute
             require: '?ngModel', // get a hold of NgModelController
             link: function (scope, element, attrs, ngModel) {
-                if (!ngModel) return; // do nothing if no ng-model
 
-                // Specify how UI should be updated
-                ngModel.$render = function () {
-                    element.html($sce.getTrustedHtml(ngModel.$viewValue || ''));
-                };
-                scope.$watch(function(){return ngModel.$viewValue}, function(value){
-                    //console.log(value)
-                });
 
-                // Listen for change events to enable binding
-                element.on('blur keyup change', function () {
-                    scope.$evalAsync(read);
-                });
-                read(); // initialize
 
-                // Write data to the model
                 function read() {
-                    var html = element.html();
-                    // When we clear the content editable the browser leaves a <br> behind
-                    // If strip-br attribute is provided then we strip this out
-                    if (attrs.stripBr && html == '<br>') {
-                        html = '';
-                    }
-
-
-                    //var savedSelection = rangy.saveSelection();
-                    //if (savedSelection == null) {
-                    //    return;
-                    //}
-                    ngModel.$setViewValue(html);
-                    //Timeout is necessary as it gives time for dom to refresh
-
-                    $timeout(function () {
-
-                          //  rangy.restoreSelection(savedSelection);  //Rangy restore selection
-
-                    }, 0);
-
+                    ngModel.$setViewValue(element.html());
                 }
+
+                ngModel.$render = function() {
+                    element.html( $sce.getTrustedHtml(ngModel.$viewValue || "") );
+                };
+
+                element.bind("blur keyup change", function() {
+                    scope.$apply(read);
+                });
             }
         };
     }]);

@@ -487,6 +487,7 @@ div.input div.textarea{
  
 .myself{padding: 6px 7px 8px 9px;     background-color: #dcf8c6;
     float: right; position: relative;     margin-right: 4%;}
+
 .myself:after {
 content: '';
     position: absolute;

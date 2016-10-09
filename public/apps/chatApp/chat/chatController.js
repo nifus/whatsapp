@@ -23,7 +23,8 @@
             loading:false,
             start: 0,
             first_post_id: null,
-            show_smiles: false
+            show_smiles: false,
+            download: false
         };
         function initPage(deferred) {
             $scope.user = $scope.$parent.env.user;
@@ -41,9 +42,7 @@
         };
 
         $rootScope.$on('scroll_up', function(){
-            console.log('event: scroll_up')
             if ($scope.env.loading == false ){
-                console.log('loading up')
                 $scope.env.loading = true;
                 $scope.env.start +=30;
                 $scope.env.chat.getPosts($scope.env.start).then(function (response) {
@@ -61,7 +60,7 @@
 
         $rootScope.$on('scroll_down', function(){
            // console.log('event: scroll_down')
-            if ($scope.env.loading == false ){
+            if ($scope.env.loading == false && $scope.env.download==true ){
              //   console.log('loading down')
                 $scope.env.loading = true;
 
@@ -163,6 +162,7 @@
 
                         $timeout(function(){
                             if (chat.start_post ){
+                                $scope.env.download = true;
                                 $('div.messages').scrollTop( document.getElementById('post-'+chat.start_post).offsetTop );
                             }else{
                                 $('div.messages').scrollTop( document.getElementById('post-'+$scope.env.first_post_id).offsetTop );
@@ -371,10 +371,8 @@
                     }
                 })
             }
-            $timeout(function(){
-                $scope.env.message = null;
-            },100);
-            $scope.env.message = null;
+
+            $scope.env.message = '';
             $rootScope.$broadcast('answer',{'smiles':$scope.env.show_smiles,'answer': false});
             $scope.env.selected_post = null
         };

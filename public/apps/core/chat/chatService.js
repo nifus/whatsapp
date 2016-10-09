@@ -15,6 +15,11 @@
                         Object.setLastPost(response.data.LastPost);
                         Object.updated_at = response.data.updated_at;
                         Object.CountUnreadMessages = response.data.CountUnreadMessages;
+                        if ( Object.posts ){
+                            for( var i in response.data.Posts){
+                                Object.posts.push(response.data.Posts[i])
+                            }
+                        }
                     }
                     return response.data;
                 })
