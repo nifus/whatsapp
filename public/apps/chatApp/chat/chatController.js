@@ -138,7 +138,7 @@
 
         $scope.$watch('env.edit_post', function(value){
             if ( value ){
-                $scope.env.message = value.message
+                $scope.env.message = (value.message)
             }
         });
 

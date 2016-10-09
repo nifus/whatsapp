@@ -1,19 +1,14 @@
 (function (angular, window) {
     'use strict';
-    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies','naif.base64','cfp.hotkeys','luegg.directives','ckeditor']).
-    config(function ($stateProvider, $urlRouterProvider, $authProvider) {
+    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64', 'cfp.hotkeys', 'luegg.directives', 'ckeditor','ngSanitize']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
 
-        var href = window.location.href;
-        console.log(window.location.host)
-        //if (href.indexOf('chat.dev') == -1) {
-        //    window.SERVER = 'http://chat.bunzya.ru';
-        //} else {
-            window.SERVER = 'http://'+window.location.host;
-        //}
 
-       // $authProvider.httpInterceptor = false;
-        $authProvider.loginUrl = window.SERVER+'/backend/user/authenticate';
-        $authProvider.signupUrl = window.SERVER+'/backend/user/register';
+        window.SERVER = 'http://' + window.location.host;
+
+
+        // $authProvider.httpInterceptor = false;
+        $authProvider.loginUrl = window.SERVER + '/backend/user/authenticate';
+        $authProvider.signupUrl = window.SERVER + '/backend/user/register';
 
 
         $urlRouterProvider.otherwise('/');
@@ -45,8 +40,7 @@
         })
 
 
-    }).
-    run(['userFactory', '$state', '$rootScope', function (userFactory, $state, $rootScope) {
+    }).run(['userFactory', '$state', '$rootScope', function (userFactory, $state, $rootScope) {
         moment.locale('ru');
 
 
@@ -60,15 +54,15 @@
 
             userFactory.getAuthUser().then(function (user) {
                 /* if (user == null) {
-                    window.location.href = '/'
-                }
+                 window.location.href = '/'
+                 }
 
-                if (value['accessSection'] != undefined) {
-                    if (user == null || !user.hasAccess(value['accessSection'])) {
-                        window.history.back();
-                        return;
-                    }
-                }*/
+                 if (value['accessSection'] != undefined) {
+                 if (user == null || !user.hasAccess(value['accessSection'])) {
+                 window.history.back();
+                 return;
+                 }
+                 }*/
             });
         }, true);
 
@@ -85,7 +79,7 @@
                 var lastspace = value.lastIndexOf(' ');
                 if (lastspace != -1) {
                     //Also remove . and , so its gives a cleaner result.
-                    if (value.charAt(lastspace-1) == '.' || value.charAt(lastspace-1) == ',') {
+                    if (value.charAt(lastspace - 1) == '.' || value.charAt(lastspace - 1) == ',') {
                         lastspace = lastspace - 1;
                     }
                     value = value.substr(0, lastspace);
@@ -98,20 +92,23 @@
         return function (text) {
             return $sce.trustAsHtml(text);
         };
-    }]).directive('contenteditable', ['$sce','$filter','$timeout', function($sce,$filter,$timeout) {
+    }]).directive('contenteditable', ['$sce', '$filter', '$timeout', function ($sce, $filter, $timeout) {
         return {
             restrict: 'A', // only activate on element attribute
             require: '?ngModel', // get a hold of NgModelController
-            link: function(scope, element, attrs, ngModel) {
+            link: function (scope, element, attrs, ngModel) {
                 if (!ngModel) return; // do nothing if no ng-model
 
                 // Specify how UI should be updated
-                ngModel.$render = function() {
-                    element.html( $sce.getTrustedHtml(ngModel.$viewValue || ''));
+                ngModel.$render = function () {
+                    element.html($sce.getTrustedHtml(ngModel.$viewValue || ''));
                 };
+                scope.$watch(function(){return ngModel.$viewValue}, function(value){
+                    console.log(value)
+                });
 
                 // Listen for change events to enable binding
-                element.on('blur keyup change', function() {
+                element.on('blur keyup change', function () {
                     scope.$evalAsync(read);
                 });
                 read(); // initialize
@@ -121,25 +118,23 @@
                     var html = element.html();
                     // When we clear the content editable the browser leaves a <br> behind
                     // If strip-br attribute is provided then we strip this out
-                    if ( attrs.stripBr && html == '<br>' ) {
+                    if (attrs.stripBr && html == '<br>') {
                         html = '';
                     }
-                    var textbox = document.getElementById("textbox");
 
-                    var savedSelection = saveSelection(textbox);    //Rangy save selection
-                    if (savedSelection==null){
-                        return;
-                    }
+
+                    //var savedSelection = rangy.saveSelection();
+                    //if (savedSelection == null) {
+                    //    return;
+                    //}
                     ngModel.$setViewValue(html);
                     //Timeout is necessary as it gives time for dom to refresh
-                    $timeout(function(){
-                        if(html.indexOf("<a href") > -1){
-                            //Check if savedSelection value exceeds than element text length
-                            var len = element.text().length;
-                            if(savedSelection.end > len){savedSelection.start = len; savedSelection.end = len}
-                            restoreSelection(textbox, savedSelection);  //Rangy restore selection
-                        }
-                    },0);
+
+                    $timeout(function () {
+
+                          //  rangy.restoreSelection(savedSelection);  //Rangy restore selection
+
+                    }, 0);
 
                 }
             }
@@ -148,82 +143,83 @@
 
 })(angular, window);
 
-var saveSelection, restoreSelection;
-window.onload = function() {
+//var saveSelection, restoreSelection;
+window.onload = function () {
     rangy.init();
 }
+/*
+ if (window.getSelection && document.createRange) {
 
-if (window.getSelection && document.createRange) {
+ saveSelection = function(containerEl) {
+ if (containerEl==null){
+ //  return null;
+ }
+ //console.log(window.getSelection().getRangeAt(0))
+ if ( window.getSelection().rangeCount!=0){
+ var range = window.getSelection().getRangeAt(0);
+ var preSelectionRange = range.cloneRange();
+ preSelectionRange.selectNodeContents(containerEl);
+ preSelectionRange.setEnd(range.startContainer, range.startOffset);
+ var start = preSelectionRange.toString().length;
 
-    saveSelection = function(containerEl) {
-        if (containerEl==null){
-            return null;
-        }
-        //console.log(window.getSelection().getRangeAt(0))
-        if ( window.getSelection().rangeCount!=0){
-            var range = window.getSelection().getRangeAt(0);
-            var preSelectionRange = range.cloneRange();
-            preSelectionRange.selectNodeContents(containerEl);
-            preSelectionRange.setEnd(range.startContainer, range.startOffset);
-            var start = preSelectionRange.toString().length;
+ return {
+ start: start,
+ end: start + range.toString().length
+ }
+ }
+ };
 
-            return {
-                start: start,
-                end: start + range.toString().length
-            }
-        }
-    };
+ restoreSelection = function(containerEl, savedSel) {
+ var charIndex = 0, range = document.createRange();
+ range.setStart(containerEl, 0);
+ range.collapse(true);
+ var nodeStack = [containerEl], node, foundStart = false, stop = false;
 
-    restoreSelection = function(containerEl, savedSel) {
-        var charIndex = 0, range = document.createRange();
-        range.setStart(containerEl, 0);
-        range.collapse(true);
-        var nodeStack = [containerEl], node, foundStart = false, stop = false;
+ while (!stop && (node = nodeStack.pop())) {
+ if (node.nodeType == 3) {
+ var nextCharIndex = charIndex + node.length;
+ if (!foundStart && savedSel.start >= charIndex && savedSel.start <= nextCharIndex) {
+ range.setStart(node, savedSel.start - charIndex);
+ foundStart = true;
+ }
+ if (foundStart && savedSel.end >= charIndex && savedSel.end <= nextCharIndex) {
+ range.setEnd(node, savedSel.end - charIndex);
+ stop = true;
+ }
+ charIndex = nextCharIndex;
+ } else {
+ var i = node.childNodes.length;
+ while (i--) {
+ nodeStack.push(node.childNodes[i]);
+ }
+ }
+ }
 
-        while (!stop && (node = nodeStack.pop())) {
-            if (node.nodeType == 3) {
-                var nextCharIndex = charIndex + node.length;
-                if (!foundStart && savedSel.start >= charIndex && savedSel.start <= nextCharIndex) {
-                    range.setStart(node, savedSel.start - charIndex);
-                    foundStart = true;
-                }
-                if (foundStart && savedSel.end >= charIndex && savedSel.end <= nextCharIndex) {
-                    range.setEnd(node, savedSel.end - charIndex);
-                    stop = true;
-                }
-                charIndex = nextCharIndex;
-            } else {
-                var i = node.childNodes.length;
-                while (i--) {
-                    nodeStack.push(node.childNodes[i]);
-                }
-            }
-        }
+ var sel = window.getSelection();
+ sel.removeAllRanges();
+ sel.addRange(range);
+ }
+ } else if (document.selection) {
+ saveSelection = function(containerEl) {
+ var selectedTextRange = document.selection.createRange();
+ var preSelectionTextRange = document.body.createTextRange();
+ preSelectionTextRange.moveToElementText(containerEl);
+ preSelectionTextRange.setEndPoint("EndToStart", selectedTextRange);
+ var start = preSelectionTextRange.text.length;
 
-        var sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-    }
-} else if (document.selection) {
-    saveSelection = function(containerEl) {
-        var selectedTextRange = document.selection.createRange();
-        var preSelectionTextRange = document.body.createTextRange();
-        preSelectionTextRange.moveToElementText(containerEl);
-        preSelectionTextRange.setEndPoint("EndToStart", selectedTextRange);
-        var start = preSelectionTextRange.text.length;
+ return {
+ start: start,
+ end: start + selectedTextRange.text.length
+ }
+ };
 
-        return {
-            start: start,
-            end: start + selectedTextRange.text.length
-        }
-    };
-
-    restoreSelection = function(containerEl, savedSel) {
-        var textRange = document.body.createTextRange();
-        textRange.moveToElementText(containerEl);
-        textRange.collapse(true);
-        textRange.moveEnd("character", savedSel.end);
-        textRange.moveStart("character", savedSel.start);
-        textRange.select();
-    };
-}
+ restoreSelection = function(containerEl, savedSel) {
+ var textRange = document.body.createTextRange();
+ textRange.moveToElementText(containerEl);
+ textRange.collapse(true);
+ textRange.moveEnd("character", savedSel.end);
+ textRange.moveStart("character", savedSel.start);
+ textRange.select();
+ };
+ }
+ */

@@ -14,13 +14,14 @@
             var node = element[0];
             var parent = null;
             setCaret(node,position);
+            var savedSelection = null;
             element.on('keydown', function(e){
+                savedSelection = rangy.saveSelection();
 
                 //e.stopPropagation();
                 if (e.ctrlKey==true && e.keyCode==13){
                     parent = getParentSelectedNode();
                     node = pasteHtmlAtCaret('<br>&nbsp;');
-
                     e.preventDefault();
                 }
 
@@ -32,21 +33,27 @@
             });
 
             element.on('keyup', function(){
-                node = getSelectedNode();
-                parent = getParentSelectedNode();
-                position = getCaretPosition(parent);
+                savedSelection = rangy.saveSelection();
+
+                //node = getSelectedNode();
+                //parent = getParentSelectedNode();
+                //position = getCaretPosition(parent);
 
             });
             element.on('mouseup', function(){
-                node = getSelectedNode();
-                parent = getParentSelectedNode();
-                position = getCaretPosition(parent);
+                savedSelection = rangy.saveSelection();
+
+               // node = getSelectedNode();
+                //parent = getParentSelectedNode();
+                //position = getCaretPosition(parent);
             });
 
             $rootScope.$on('insert_smiles', function (event, html) {
-                setCaret(node,position);
+               // var savedSel = rangy.saveSelection();
+                //setCaret(node,position);
+               // setCaret(node,position+1);
+                rangy.restoreSelection(savedSelection);
                 pasteHtmlAtCaret(html);
-                setCaret(node,position+1);
 
             });
 
