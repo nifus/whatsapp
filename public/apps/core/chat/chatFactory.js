@@ -46,12 +46,12 @@
 
         }
 
-        function getByUser(){
+        function getByUser(user_id){
             return $http.get(window.SERVER+'/backend/user/chats').then(
                 function(response){
                     var result = [];
                     for(var i in response.data ){
-                        result.push( new chatService(response.data[i]) )
+                        result.push( new chatService(response.data[i], user_id) )
                     }
                     return result;
                 }

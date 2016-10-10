@@ -9,7 +9,7 @@
 
     <div class="persona" ng-show="env.search_activated && env.chats.length>0"><h3>Чаты</h3></div>
 
-    <div class="persona" ng-repeat="ch in env.chats|orderBy:'-updated_at'" ng-click="openChat(ch)"
+    <div class="persona" ng-repeat="ch in env.chats|orderBy:'-updated_at'" ng-click="$parent.$parent.$parent.openChat(ch, null)"
          ng-class="{'selected':chat.id==ch.id}">
         <div class="foto"><img ng-src="{{ch.ChatAvatar}}" class="img-circle" width="50"></div>
         <div class="detalle-contacto">
@@ -43,7 +43,7 @@
 
     <div class="persona" ng-show="env.search_activated && env.search_result.length>0 "><h3>Сообщения</h3></div>
 
-    <div class="persona" ng-repeat="post in env.search_result" ng-click="env.chat='';openChat( getChat(post.chat_id),post.id  )">
+    <div class="persona" ng-repeat="post in env.search_result" ng-click="env.chat='';$parent.$parent.openChat( getChat(post.chat_id),post.id  )">
 
 
         <div class="detalle-contacto">

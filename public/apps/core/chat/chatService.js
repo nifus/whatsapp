@@ -1,16 +1,24 @@
 (function (angular, window) {
     'use strict';
     angular.module('core').service('chatService', chatService);
-    chatService.$inject = ['postFactory', '$http', 'userFactory','$filter','socket'];
+    chatService.$inject = ['postFactory', '$http', 'userFactory', '$filter', '$q'];
 
-    function chatService(postFactory, $http, userFactory, $filter, socket) {
-        return function (data) {
+    function chatService(postFactory, $http, userFactory, $filter, $q) {
+        return function (data, user_id) {
             var Object = data;
             Object.waiting = false;
+            Object.start_post = null;   // номер POST ID который должен открываться при загрузке чата
+            Object.first_post_id = null;    //  номер первого ID
+            Object.last_post_id = null;    //  номер последнего ID
+            Object.is_posts_loading = false; // флаг подгрузки сообщений в чат
+            Object.is_posts_loaded = false; // все сообщения загружены в чат
+            Object.posts_start = 0; // точка на которой закончились грузиться сообщения
+            Object.posts = [];
+            Object.current_user_id = user_id;
 
             Object.needPlayMusic = function (user_id) {
-                for( var i in Object.members ){
-                    if (Object.members[i].id==user_id && Object.members[i].pivot.sound==1){
+                for (var i in Object.members) {
+                    if (Object.members[i].id == user_id && Object.members[i].pivot.sound == 1) {
                         return true;
                     }
                 }
@@ -18,12 +26,12 @@
             };
 
             Object.updateInformation = function () {
-                return $http.get('/chats/' + Object.id + '/status' ).then(function (response) {
+                return $http.get('/chats/' + Object.id + '/status').then(function (response) {
                     if (response.data.success == true) {
                         Object.setLastPost(response.data.LastPost);
                         Object.updated_at = response.data.updated_at;
                         Object.CountUnreadMessages = response.data.CountUnreadMessages;
-                        if (Object.posts){
+                        if (Object.posts) {
                             Object.posts.push(response.data.LastPost)
                         }
                     }
@@ -31,11 +39,13 @@
                 })
             };
 
-            Object.setLastPost = function(last_post){
+            Object.setLastPost = function (last_post) {
                 Object.LastPost = last_post;
-                if (last_post!=null){
+                if (last_post != null) {
                     var message = last_post.message.replace(/<[^>]+>/gm, '');
-                    Object.LastPost.cut_message =  $filter('limitTo')(message,50);
+                    Object.LastPost.cut_message = $filter('limitTo')(message, 50);
+                    Object.last_post_id = last_post.id;
+
                 }
             };
             Object.setLastPost(data.LastPost);
@@ -97,6 +107,8 @@
                     return names.join(', ');
                 }
             };
+            Object.current_name = Object.name=='' ? Object.getChatName(user_id) :Object.name ;
+
 
             Object.getChatAvatar = function (user_id) {
                 //console.log(Object.avatar)
@@ -164,18 +176,63 @@
                 }
             };
 
-            Object.getPosts = function (start) {
-                return postFactory.getPosts(Object.id, start)
+            Object.loadPosts = function () {
+                var defer = $q.defer();
+                var promise = Object.start_post ? Object.getPostsAroundId(Object.start_post) : Object.getFirstPosts();
+                promise.then(function (response) {
+                    var length = Object.posts.length;
+                    Object.first_post_id = length > 0 ? Object.posts[Object.posts.length - 1].id : null;
+                    Object.last_post_id = length > 0 ? Object.posts[Object.posts.length - 1].id : null;
+                    Object.is_posts_loaded = length < 30 ? true : false;
+                    defer.resolve(response);
+                });
+                return defer.promise
             };
-            Object.getPostsAroundId = function(post_id){
+
+
+            Object.getFirstPosts = function () {
+                Object.is_posts_loading = true;
+                Object.posts_start = 0;
+                var defer = $q.defer();
+                postFactory.getPosts(Object.id, Object.posts_start).then(function (response) {
+                    Object.is_posts_loaded = response.length < 30 ? true : false;
+                    Object.posts = $filter('orderBy')(response, 'id');
+                    Object.is_posts_loading = false;
+                    defer.resolve(response);
+                });
+                return defer.promise
+            };
+
+            Object.getUpPosts = function () {
+                Object.is_posts_loading = true;
+                Object.posts_start += 30;
+                var defer = $q.defer();
+                postFactory.getPosts(Object.id, Object.posts_start).then(function (response) {
+                    Object.is_posts_loaded = response.length < 30 ? true : false;
+                    for (var i in response) {
+                        Object.posts.unshift(response[i])
+                    }
+                    Object.is_posts_loading = false;
+                    defer.resolve(response);
+                });
+                return defer.promise
+            };
+            Object.getPostsAroundId = function (post_id) {
                 return postFactory.getPostsAroundId(Object.id, post_id)
             };
-            Object.getPostsDown = function(post_id){
+            Object.getPostsDown = function (post_id) {
                 return postFactory.getPostsDown(Object.id, post_id)
             };
 
             Object.addPost = function (message, reply) {
-                return postFactory.addPost(message, reply, Object.id);
+                var defer = $q.defer();
+                postFactory.addPost(message, reply, Object.id).then(function (response) {
+                    Object.posts.push(response.post);
+                    Object.setLastPost(response.post);
+                    Object.updated_at = response.chat.updated_at;
+                    defer.resolve(response);
+                });
+                return defer.promise
             };
 
 

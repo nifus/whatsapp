@@ -1,6 +1,6 @@
 (function (angular, window) {
     'use strict';
-    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64', 'cfp.hotkeys', 'luegg.directives', 'ckeditor','ngSanitize','btford.socket-io','ngAudio']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
+    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64', 'cfp.hotkeys', 'luegg.directives', 'ckeditor', 'ngSanitize', 'btford.socket-io', 'ngAudio', 'ngScrollbars']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
 
 
         window.SERVER = 'http://' + window.location.host;
@@ -41,7 +41,7 @@
 
 
     }).factory('socket', function (socketFactory) {
-        var myIoSocket = io.connect(window.SERVER+':3000');
+        var myIoSocket = io.connect(window.SERVER + ':3000');
         var mySocket = socketFactory({
             ioSocket: myIoSocket
         });
@@ -105,16 +105,15 @@
             link: function (scope, element, attrs, ngModel) {
 
 
-
                 function read() {
                     ngModel.$setViewValue(element.html());
                 }
 
-                ngModel.$render = function() {
-                    element.html( $sce.getTrustedHtml(ngModel.$viewValue || "") );
+                ngModel.$render = function () {
+                    element.html($sce.getTrustedHtml(ngModel.$viewValue || ""));
                 };
 
-                element.bind("blur keyup change", function() {
+                element.bind("blur keyup change", function () {
                     scope.$apply(read);
                 });
             }
@@ -128,10 +127,10 @@ window.onload = function () {
     rangy.init();
 }
 /*
-var socket = io('http://192.168.1.7:3002');
+ var socket = io('http://192.168.1.7:3002');
 
-socket.on('reload', function(msg){
-    alert(msg)
-    console.log(msg)
-});*/
+ socket.on('reload', function(msg){
+ alert(msg)
+ console.log(msg)
+ });*/
 

@@ -17,6 +17,10 @@
             var savedSelection = null;
             var sel = null;
 
+            $rootScope.$on('open_chat', function(){
+                element.focus();
+            });
+
             element.on('keydown', function(e){
                 //savedSelection = rangy.saveSelection();
                 sel  = rangy.getSelection();

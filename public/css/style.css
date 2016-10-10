@@ -978,3 +978,7 @@ div.textarea img :focus {
 
 .inputotext-forma{width: 92% !important; float: left; margin-left: 4%}
 .f-blok{}
+
+#intro{
+	height: 100%;padding:20px;text-align: center
+}

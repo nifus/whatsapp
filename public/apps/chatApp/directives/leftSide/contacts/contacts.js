@@ -27,6 +27,8 @@
             }
         });
         $scope.$watch('user.chats', function (value) {
+
+
             if (value) {
                 $scope.env.chats = value;
                 $scope.env.source_chats = value;
@@ -43,8 +45,9 @@
                 value = value.toLowerCase();
                 if ($scope.env.chat != '') {
                     $scope.env.search_activated = true;
+
                     $scope.env.chats = $scope.env.source_chats.filter(function (chat) {
-                        if (chat.name.toLowerCase().indexOf(value) != -1) {
+                        if (chat.current_name.toLowerCase().indexOf(value) != -1) {
                             return true;
                         }
 

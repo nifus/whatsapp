@@ -155,8 +155,10 @@ class ChatController extends Controller
 
             $chat = Chat::createNewGroup($user->id, $data);
             $chat = Chat::with('Members')->with('LastPost')->find($chat->id);
-
-            return response()->json(['success'=>true,'chat'=>$chat->toArray()]);
+            $data = array_merge($chat->toArray(),
+                ['ChatAvatar' => $chat->getAvatar($user->id)]
+            );
+            return response()->json(['success'=>true,'chat'=>$data]);
 
         }catch( \Exception $e ){
             return response()->json(['success'=>false,'error'=>$e->getMessage()]);

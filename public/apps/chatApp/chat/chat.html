@@ -1,50 +1,47 @@
 <div id="main">
     <div id="left">
-        <left user="user" chat="env.chat" style="height:100%"></left>
+        <left user="user" chat="chat" style="height:100%"></left>
     </div>
+
     <div id="center" ng-class="{'full-center':env.show_add_info==false}">
-        <div ng-show="env.chat" class="main-chatBg" >
+        <div ng-show="chat" class="main-chatBg">
             <div class="chat-info">
 
-                <img ng-click="openInfoBlock(env.chat.getUser(user.id))" ng-src="{{env.chat.ChatAvatar}}"
+                <img ng-click="openInfoBlock(chat.getUser(user.id))" ng-src="{{chat.ChatAvatar}}"
                      class="img-circle link" style="margin-right:30px;float:left">
 
-                <div class="chat-legend" >
-                    <a ng-click="openInfoBlock(env.chat.getUser(user.id))"  class="link username-link">{{env.chat.getChatName(user.id)}}</a>
-
-                    <p style="font-size: 12px">{{env.chat.status}}</p>
+                <div class="chat-legend">
+                    <a ng-click="openInfoBlock(chat.getUser(user.id))" class="link username-link">{{chat.getChatName(user.id)}}</a>
+                    <p style="font-size: 12px">{{chat.status}}</p>
                 </div>
 
 
-                <ul class="nav navbar-nav navbar-right chat-legend-btns" >
+                <ul class="nav navbar-nav navbar-right chat-legend-btns">
 
                     <li ng-show="user.can_upload_files=='1'" style="padding: 15px;">
                         <upload ng-model="upload_image" hide-result="true" number-of-files="1">
                             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                                aria-expanded="false" style="height:40px;display: inline">
-                                <button class="icon i04" ></button></a>
+                                <button class="icon i04"></button>
+                            </a>
                         </upload>
-
                     </li>
 
                     <li class="dropdown">
-
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false" style="height:40px">
-
-                            <button class="icon i03" ></button>
-
-
+                            <button class="icon i03"></button>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="link" ng-click="openInfoBlock()">{{env.chat.is_group==1 ? 'Информация о группе' : 'Информация о контакте'}}</a></li>
-                            <li><a ng-show="env.chat.IsEnabledSound(user.id)" ng-click="disableSound(env.chat, user.id)"
+                            <li><a class="link" ng-click="openInfoBlock()">{{chat.is_group==1 ? 'Информация о группе' :
+                                'Информация о контакте'}}</a></li>
+                            <li><a ng-show="chat.IsEnabledSound(user.id)" ng-click="disableSound(chat, user.id)"
                                    class="link">Без звука</a></li>
-                            <li><a ng-show="env.chat.IsDisabledSound(user.id)" ng-click="enableSound(env.chat, user.id)"
+                            <li><a ng-show="chat.IsDisabledSound(user.id)" ng-click="enableSound(chat, user.id)"
                                    class="link">Вкл. звук</a></li>
-                            <li><a ng-show="user.can_edit_myself=='1'" ng-click="clearChat(env.chat)" class="link">Очистить
+                            <li><a ng-show="user.can_edit_myself=='1'" ng-click="clearChat(chat)" class="link">Очистить
                                 чат</a></li>
-                            <li><a ng-show="user.can_edit_myself=='1'" ng-click="deleteChat(env.chat)" class="link">Удалить
+                            <li><a ng-show="user.can_edit_myself=='1'" ng-click="deleteChat(chat)" class="link">Удалить
                                 чат</a></li>
                         </ul>
                     </li>
@@ -53,109 +50,180 @@
 
             <div control-height style="height: 94%">
 
-                <img ng-show="env.loading==true" src="/image/loading-circle.gif" style="width:50px;    position: absolute;
+                <img ng-show="chat.is_posts_loading==true" src="/image/loading-circle.gif" style="width:50px;    position: absolute;
     width: 50px;
     margin: 20px;
     left: 55%;" alt="">
-                <div class="messages"  scroll-load-messages >
-
-                    <post ng-repeat="post in env.chat.posts" post="post" is-last-post="$index==env.chat.posts.length-1"
+                <div class="messages" scroll-load-messages>
+                    <post ng-repeat="post in chat.posts" post="post" is-last-post="$index==chat.posts.length-1"
                           is-select-post="env.selected_post" is-edit-post="env.edit_post" user="user"></post>
                 </div>
 
-                <div class="input" id="input"  style="position: relative"  >
+                <div class="input" id="input" style="position: relative">
 
-                    <div class="reply" ng-show="env.selected_post"  >
-                        <div class="author" >{{env.selected_post.user_id==user.id ? "Вы" : env.selected_post.User.name}}</div>
+                    <div class="reply" ng-show="env.selected_post">
+                        <div class="author">{{env.selected_post.user_id==user.id ? "Вы" :
+                            env.selected_post.User.name}}
+                        </div>
 
-                        <div class="close"><button ng-click="cancelReply()" class="icon i06"></button></div>
-                        <div class="message"  ng-show="!env.selected_post.message && env.selected_post.type=='image'"> <span class="glyphsmile glyphsmile-camera" aria-hidden="true"></span> Фото</div>
-                        <div class="message"   ng-show="env.selected_post.message " ng-bind-html="env.selected_post.message|to_trusted"> </div>
+                        <div class="close">
+                            <button ng-click="cancelReply()" class="icon i06"></button>
+                        </div>
+                        <div class="message" ng-show="!env.selected_post.message && env.selected_post.type=='image'">
+                            <span class="glyphsmile glyphsmile-camera" aria-hidden="true"></span> Фото
+                        </div>
+                        <div class="message" ng-show="env.selected_post.message "
+                             ng-bind-html="env.selected_post.message|to_trusted"></div>
                     </div>
 
 
-                    <div ng-show="env.show_smiles" class="smiles"  style="padding:10px;clear:both">
-                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s01\' />')" class="smile s01" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s02\' />')" class="smile s02" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s03\'/>')" class="smile s03" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s04\'/>')" class="smile s04" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s05\'/>')" class="smile s05" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s06\'/>')" class="smile s06" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s07\'/>')" class="smile s07" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s08\'/>')" class="smile s08" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s09\'/>')" class="smile s09" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s10\'/>')" class="smile s10" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s11\'/>')" class="smile s11" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s12\'/>')" class="smile s12"  ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s13\'/>')" class="smile s13" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s14\'/>')" class="smile s14" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s15\'/>')" class="smile s15" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s16\'/>')" class="smile s16" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s17\'/>')" class="smile s17" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s18\'/>')" class="smile s18" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s19\'/>')" class="smile s19" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s20\'/>')" class="smile s20" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s21\'/>')" class="smile s21" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s22\'/>')" class="smile s22" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s23\'/>')" class="smile s23" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s24\'/>')" class="smile s24" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s25\'/>')" class="smile s25" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s26\'/>')" class="smile s26" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s27\'/>')" class="smile s27" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s28\'/>')" class="smile s28" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s29\'/>')" class="smile s29" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s30\'/>')" class="smile s30" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s31\'/>')" class="smile s31" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s32\'/>')" class="smile s32" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s33\'/>')" class="smile s33" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s34\'/>')" class="smile s34" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s35\'/>')" class="smile s35" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s36\'/>')" class="smile s36" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s37\'/>')" class="smile s37" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s38\'/>')" class="smile s38" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s39\'/>')" class="smile s39" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s40\'/>')" class="smile s40" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s41\'/>')" class="smile s41" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s42\'/>')" class="smile s42" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s43\'/>')" class="smile s43" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s44\'/>')" class="smile s44" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s45\'/>')" class="smile s45" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s46\'/>')" class="smile s46" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s47\'/>')" class="smile s47" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s48\'/>')" class="smile s48" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s49\'/>')" class="smile s49" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s50\'/>')" class="smile s50" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s51\'/>')" class="smile s51" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s52\'/>')" class="smile s52" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s53\'/>')" class="smile s53" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s54\'/>')" class="smile s54" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s55\'/>')" class="smile s55" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s56\'/>')" class="smile s56" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s57\'/>')" class="smile s57" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s58\'/>')" class="smile s58" ></span>
-                        <span  ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s59\'/>')" class="smile s59" ></span>
+                    <div ng-show="env.show_smiles" class="smiles" style="padding:10px;clear:both">
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s01\' />')"
+                              class="smile s01"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s02\' />')"
+                              class="smile s02"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s03\'/>')"
+                              class="smile s03"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s04\'/>')"
+                              class="smile s04"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s05\'/>')"
+                              class="smile s05"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s06\'/>')"
+                              class="smile s06"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s07\'/>')"
+                              class="smile s07"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s08\'/>')"
+                              class="smile s08"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s09\'/>')"
+                              class="smile s09"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s10\'/>')"
+                              class="smile s10"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s11\'/>')"
+                              class="smile s11"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s12\'/>')"
+                              class="smile s12"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s13\'/>')"
+                              class="smile s13"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s14\'/>')"
+                              class="smile s14"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s15\'/>')"
+                              class="smile s15"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s16\'/>')"
+                              class="smile s16"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s17\'/>')"
+                              class="smile s17"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s18\'/>')"
+                              class="smile s18"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s19\'/>')"
+                              class="smile s19"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s20\'/>')"
+                              class="smile s20"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s21\'/>')"
+                              class="smile s21"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s22\'/>')"
+                              class="smile s22"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s23\'/>')"
+                              class="smile s23"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s24\'/>')"
+                              class="smile s24"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s25\'/>')"
+                              class="smile s25"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s26\'/>')"
+                              class="smile s26"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s27\'/>')"
+                              class="smile s27"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s28\'/>')"
+                              class="smile s28"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s29\'/>')"
+                              class="smile s29"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s30\'/>')"
+                              class="smile s30"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s31\'/>')"
+                              class="smile s31"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s32\'/>')"
+                              class="smile s32"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s33\'/>')"
+                              class="smile s33"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s34\'/>')"
+                              class="smile s34"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s35\'/>')"
+                              class="smile s35"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s36\'/>')"
+                              class="smile s36"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s37\'/>')"
+                              class="smile s37"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s38\'/>')"
+                              class="smile s38"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s39\'/>')"
+                              class="smile s39"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s40\'/>')"
+                              class="smile s40"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s41\'/>')"
+                              class="smile s41"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s42\'/>')"
+                              class="smile s42"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s43\'/>')"
+                              class="smile s43"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s44\'/>')"
+                              class="smile s44"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s45\'/>')"
+                              class="smile s45"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s46\'/>')"
+                              class="smile s46"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s47\'/>')"
+                              class="smile s47"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s48\'/>')"
+                              class="smile s48"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s49\'/>')"
+                              class="smile s49"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s50\'/>')"
+                              class="smile s50"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s51\'/>')"
+                              class="smile s51"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s52\'/>')"
+                              class="smile s52"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s53\'/>')"
+                              class="smile s53"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s54\'/>')"
+                              class="smile s54"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s55\'/>')"
+                              class="smile s55"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s56\'/>')"
+                              class="smile s56"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s57\'/>')"
+                              class="smile s57"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s58\'/>')"
+                              class="smile s58"></span>
+                        <span ng-click="setSmile('<img src=\'image/pixel.png\' class=\'smile s59\'/>')"
+                              class="smile s59"></span>
 
                     </div>
 
                     <div style="position: relative;height: 50px;" class="around">
-                        <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;width: 100%;height: 50px;margin: auto;" class="center">
-<div class="">
-<div class="left-icons-block f-blok"><button ng-class="{'i01' : !env.show_smiles,  'i02':env.show_smiles}" ng-click="smilesDialog()" class="icon" ></button> </div>
-									
-									
-									
-  <div control-caret class="textarea inputotext-forma f-blok" id="textbox" ng-model="env.message" contenteditable="true"  placeholder="Введите сообщение"></div>
-<div class="right-block-send f-blok">  
-                            <button ng-click="submit(env.message)"  class="icon"  ></button>
-</div>
-                          
-                        </div></div>
+                        <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;width: 100%;height: 50px;margin: auto;"
+                             class="center">
+                            <div class="">
+                                <div class="left-icons-block f-blok">
+                                    <button ng-class="{'i01' : !env.show_smiles,  'i02':env.show_smiles}"
+                                            ng-click="smilesDialog()" class="icon"></button>
+                                </div>
+
+
+                                <div control-caret class="textarea inputotext-forma f-blok" id="textbox"
+                                     ng-model="env.message" contenteditable="true"
+                                     placeholder="Введите сообщение"></div>
+                                <div class="right-block-send f-blok">
+                                    <button ng-click="submit(env.message)" class="icon"></button>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
 
                 </div>
 
             </div>
-            <div id="add-image" ng-show="env.imageDialog==true" >
+            <div id="add-image" ng-show="env.imageDialog==true">
                 <div class="header">
                     <button ng-click="closeImageDialog()" class="icon i07"></button>
                     <span>Просмотр</span>
@@ -163,56 +231,52 @@
 
 
                 <div class="image-preview">
-                    <img ng-show="env.upload.image.filetype.indexOf('image')!=-1"    ng-src="data:{{env.upload.image.filetype}};base64,{{env.upload.image.base64}}" alt="">
+                    <img ng-show="env.upload.image.filetype.indexOf('image')!=-1"
+                         ng-src="data:{{env.upload.image.filetype}};base64,{{env.upload.image.base64}}" alt="">
                     <img ng-show="env.upload.image.filetype.indexOf('image')==-1" src="/image/attachement.png" alt="">
                 </div>
 
-                <div  class="control">
+                <div class="control">
                     <div class="input">
-                        <input type="text"  placeholder="Добавить подпись" ng-model="env.upload.message">
+                        <input type="text" placeholder="Добавить подпись" ng-model="env.upload.message">
                     </div>
 
 
-                    <div  class="button">
-                        <button ng-show="env.upload.image.filetype.indexOf('image')!=-1" ng-click="addImagePost(env.upload)"  class="icon i08"></button>
-                        <button ng-show="env.upload.image.filetype.indexOf('image')==-1" ng-click="addDocumentPost(env.upload)" class="icon i08"></button>
+                    <div class="button">
+                        <button ng-show="env.upload.image.filetype.indexOf('image')!=-1"
+                                ng-click="addImagePost(env.upload)" class="icon i08"></button>
+                        <button ng-show="env.upload.image.filetype.indexOf('image')==-1"
+                                ng-click="addDocumentPost(env.upload)" class="icon i08"></button>
                     </div>
 
                 </div>
             </div>
 
         </div>
-        <div ng-show="!env.chat" style="height: 100%;padding:20px">
-            <div style="text-align: center" ng-bind-html="config.intro|to_trusted"></div>
-        </div>
+        <div ng-show="!chat" id="intro" ng-bind-html="config.intro|to_trusted"></div>
     </div>
     <div id="right" ng-show="env.show_add_info==true">
         <div class="info-contact">
-
-
             <ul class="nav navbar-nav ">
                 <li class="info-legend">
-
-
                     <a class="link" ng-click="closeProfile()"><span
                             class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                     <div class="info-text">
-
-                        {{env.chat.is_group==0 ? 'Информация о контакте' : 'Информация о группе'}}
-                        <p>{{env.chat.is_group==0 ? env.chat.status : 'Создана '+
-                            env.chat.created_at }} </p>
+                        {{chat.is_group==0 ? 'Информация о контакте' : 'Информация о группе'}}
+                        <p>{{chat.is_group==0 ? chat.status : 'Создана '+
+                            chat.created_at }} </p>
                     </div>
 
                 </li>
 
             </ul>
         </div>
-        <div class="right-contact-info"  ng-show="env.chat.is_group==0">
+        <div class="right-contact-info" ng-show="chat.is_group==0">
             <img style="width: 150px" ng-src="{{env.add_info.AvatarSrc}}" alt="">
             <div><strong>Login:</strong> {{env.add_info.login}}</div>
         </div>
 
-        <div class="right-group-info"  ng-show="env.chat.is_group==1">
+        <div class="right-group-info" ng-show="chat.is_group==1">
             <form>
                 <div class="form-group" style="text-align: center">
 
@@ -232,11 +296,13 @@
                         <div class="panel-body">
                             <div class="input-group">
 
-                            <input type="text" class="form-control" placeholder="Тема" ng-model="model.name" ng-change="changeChatName(model.name)">
+                                <input type="text" class="form-control" placeholder="Тема" ng-model="model.name"
+                                       ng-change="changeChatName(model.name)">
                                 <span class="input-group-btn">
         <button
                 ng-click="changeChatName(model.name)"
-                ng-disabled="model.name==''" class="btn btn-default" type="button"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;</button>
+                ng-disabled="model.name==''" class="btn btn-default" type="button"><span class="glyphicon glyphicon-ok"
+                                                                                         aria-hidden="true"></span>&nbsp;</button>
       </span>
 
                             </div>
@@ -253,17 +319,18 @@
     overflow: auto">
                         <div style="margin-bottom: 20px">
                             <div class="input-group">
-                            <select
+                                <select
 
-                                    ng-model="model.selected_member" class="form-control"
-                                    ng-options="contact.name  for contact in model.members track by contact.id">
-                            <option value="">Добавить участника</option>
-                        </select>
+                                        ng-model="model.selected_member" class="form-control"
+                                        ng-options="contact.name  for contact in model.members track by contact.id">
+                                    <option value="">Добавить участника</option>
+                                </select>
                                 <span class="input-group-btn">
 
         <button
                 ng-click="addMember(model.selected_member)"
-                ng-disabled="!model.selected_member" class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;</button>
+                ng-disabled="!model.selected_member" class="btn btn-default" type="button"><span
+                class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;</button>
       </span>
 
                             </div>
@@ -271,11 +338,13 @@
 
                         <div class="list-group">
 
-                            <div class="list-group-item " style="text-align: left;" ng-repeat="member in env.chat.members track by $index">
-                                <img ng-src="{{member.AvatarSrc}}" class="img-circle" width="50" >
-                                <span ng-show="env.chat.isAdmin(member.id)" class="badge" style="position: absolute;right: 10%;top: 35%;">admin</span>
-                                    <button ng-show="!env.chat.isAdmin(member.id) && env.chat.isAdmin(user.id)" class="icon i10" ng-click="removeMember(member)"></button>
-
+                            <div class="list-group-item " style="text-align: left;"
+                                 ng-repeat="member in chat.members track by $index">
+                                <img ng-src="{{member.AvatarSrc}}" class="img-circle" width="50">
+                                <span ng-show="chat.isAdmin(member.id)" class="badge"
+                                      style="position: absolute;right: 10%;top: 35%;">admin</span>
+                                <button ng-show="!chat.isAdmin(member.id) && chat.isAdmin(user.id)"
+                                        class="icon i10" ng-click="removeMember(member)"></button>
                                 {{member.name}}
                             </div>
 
@@ -284,7 +353,8 @@
                 </div>
 
 
-                <button ng-show="env.chat.isAdmin(user.id)" style="width: 100%" type="button" class="btn btn-danger" ng-click="deleteChat(env.chat)">
+                <button ng-show="chat.isAdmin(user.id)" style="width: 100%" type="button" class="btn btn-danger"
+                        ng-click="deleteChat(chat)">
                     Удалить чат
                 </button>
 

@@ -9,7 +9,7 @@
         $scope.more = false;
         $scope.env = {
             agents: [],
-            chat: undefined,
+
             show_add_info: false,
             chat_posts: [],
             message: null,
@@ -26,9 +26,22 @@
             show_smiles: false,
             download: false
         };
+
+
+        $scope.config = {
+            autoHideScrollbar: false,
+            theme: 'light',
+            advanced:{
+                updateOnContentResize: true
+            },
+            position: "bottom",
+            scrollInertia: 0
+        };
+
         function initPage(deferred) {
             $scope.user = $scope.$parent.env.user;
             $scope.config = $scope.$parent.env.config;
+            //$scope.env.chat = $scope.$parent.env.chat;
             return deferred.promise;
         }
 
@@ -41,22 +54,7 @@
 
         };
 
-        $rootScope.$on('scroll_up', function(){
-            if ($scope.env.loading == false ){
-                $scope.env.loading = true;
-                $scope.env.start +=30;
-                $scope.env.chat.getPosts($scope.env.start).then(function (response) {
-                    for( var i in response ){
-                        $scope.env.chat.posts.unshift(response[i])
-                    }
-                    if (response.length>0){
-                        $('div.messages').scrollTop( document.getElementById('post-'+$scope.env.first_post_id).offsetTop );
-                        $scope.env.first_post_id = response[0].id;
-                    }
-                    $scope.env.loading = false;
-                });
-            }
-        });
+
 
         $rootScope.$on('scroll_down', function(){
            // console.log('event: scroll_down')
@@ -148,7 +146,8 @@
             }
         },true);
 
-        $scope.$watch('env.chat', function (chat) {
+        /* $scope.$watch('chat', function (value) {
+            console.log(value)
             if (!chat) {
                 return;
             }
@@ -176,10 +175,8 @@
                 $scope.env.chat.setLastPost(null);
 
             }
-
-
             chat.getChatStatus($scope.user.id);
-        });
+        });*/
 
         $scope.addMember = function(member){
             $scope.model.selected_member = null;
@@ -355,19 +352,16 @@
                 if ( $scope.env.selected_post ){
                     reply = $scope.env.selected_post.id;
                 }
-                $scope.env.chat.addPost(message, reply).then(function (response) {
+                $scope.chat.addPost(message, reply).then(function (response) {
                     if (response.success == false) {
                         alertify.error(response.error);
                     } else {
-                        $scope.env.chat.posts.push(response.post);
-                        $scope.env.chat.setLastPost(response.post);
-
-                        $scope.env.chat.updated_at = response.chat.updated_at;
-
                         $scope.env.selected_post = null;
-                        $timeout(function(){
-                            $('div.messages').scrollTop( document.getElementById('post-'+response.post.id).offsetTop );
-                        },100)
+
+                        $scope.$emit('messages:scroll_down');
+                        //$timeout(function(){
+                       //     $('div.messages').scrollTop( document.getElementById('post-'+response.post.id).offsetTop );
+                        //},100)
                     }
                 })
             }

@@ -6,7 +6,6 @@
             replace: true,
             restrict: 'E',
             controller: leftController,
-            link: leftLink,
             templateUrl: 'apps/chatApp/directives/leftSide/left.html',
             scope: {
                 user: '=',
@@ -14,14 +13,17 @@
             }
         };
 
-        leftController.$inject = ['$scope', 'userFactory', 'chatFactory', '$q', 'socket'];
+        leftController.$inject = ['$scope', 'userFactory', 'chatFactory', 'socket'];
 
-        function leftLink($scope, element) {
-        }
 
-        function leftController($scope, userFactory, chatFactory, $q, socket) {
+
+        function leftController($scope, userFactory, chatFactory,  socket) {
             $scope.dialog = 'contacts';
 
+
+            $scope.openChat = function (chat, post_id) {
+                $scope.$parent.$parent.loadChat(chat, post_id);
+            };
 
             $scope.openContactList = function () {
                 $scope.dialog = 'contactList';
@@ -45,22 +47,8 @@
             };
 
 
-            $scope.openChat = function (chat, post_id) {
-                chat.start_post = post_id;
-                $scope.chat = chat;
-                $scope.chat.CountUnreadMessages = 0;
-                //console.log(chat)
-                /*var posts = $scope.chat.posts;
-                 if (posts!=undefined && posts.length>0){
-                 for( var i in posts ){
-                 if ( posts[i].id==post_id){
-                 console.log('ID!!!')
-                 break;
-                 }
-                 }
-                 }*/
 
-            };
+
             $scope.getChat = function (chat_id) {
                 var result = $scope.user.chats.filter(function (chat) {
                     if (chat_id == chat.id) {
@@ -74,19 +62,22 @@
             };
 
             $scope.createChat = function (contact) {
+
                 $scope.dialog = 'contacts';
                 chatFactory.createByContact($scope.user, contact).then(function (response) {
                     if (response.success != false) {
                         $scope.user.chats.push(response.chat);
-                        $scope.chat = response.chat;
-                        socket.emit('chat', response.chat.id, [$scope.user.id, contact.id]);
+                        //$scope.chat = ;
+                        $scope.$parent.$parent.loadChat(response.chat, null);
+                        //socket.emit('chat', response.chat.id, [$scope.user.id, contact.id]);
                     } else if (response.chat_id) {
-                        $scope.chat = $scope.user.chats.filter(function (chat) {
+                        var chat = $scope.user.chats.filter(function (chat) {
                             if (chat.id == response.chat_id) {
                                 return true;
                             }
                             return false;
-                        })[0]
+                        })[0];
+                        $scope.$parent.$parent.loadChat(chat, null);
                     }
                 });
                 $scope.contact_list = false;
