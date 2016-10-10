@@ -60,10 +60,10 @@
 
                     <ul class="dropdown-menu" >
                         <li><a ng-click="replyToMessage()" class="link">Ответить</a></li>
-                        <li><a ng-show="user.can_edit_myself=='1' && post.type=='text'" ng-click="edit()" class="link">Редактировать</a>
+                        <li><a ng-show="user.can_edit_myself=='1' && post.type=='text' && post.user_id==user.id" ng-click="edit()" class="link">Редактировать</a>
                         </li>
-                        <li><a ng-show="user.can_edit_myself=='1'" ng-click="remove()" class="link"
-                               ng-show="post.user_id==user.id">Удалить</a></li>
+                        <li><a ng-show="user.can_edit_myself=='1' && post.user_id==user.id" ng-click="remove()" class="link"
+                               >Удалить</a></li>
                     </ul>
                 </li>
             </ul>

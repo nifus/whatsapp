@@ -4,7 +4,6 @@
     function scrollLoadMessagesDirective($rootScope, $timeout) {
         return {
             restrict: 'A',
-            //controller: scrollLoadMessagesDirective,
             link: scrollLoadMessagesLink,
 
         };

@@ -12,7 +12,7 @@
 
                 <div class="chat-legend">
                     <a ng-click="openInfoBlock(chat.getUser(user.id))" class="link username-link">{{chat.getChatName(user.id)}}</a>
-                    <p style="font-size: 12px">{{chat.status}}</p>
+                    <p style="font-size: 12px" ng-hide="chat.is_group==1 && chat.author!=user.id">{{chat.status}}</p>
                 </div>
 
 
@@ -33,7 +33,7 @@
                             <button class="icon i03"></button>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="link" ng-click="openInfoBlock()">{{chat.is_group==1 ? 'Информация о группе' :
+                            <li><a class="link" ng-click="openInfoBlock()" ng-hide="chat.is_group==1 && chat.author!=user.id">{{chat.is_group==1 ? 'Информация о группе' :
                                 'Информация о контакте'}}</a></li>
                             <li><a ng-show="chat.IsEnabledSound(user.id)" ng-click="disableSound(chat, user.id)"
                                    class="link">Без звука</a></li>
@@ -202,14 +202,16 @@
                     <div style="position: relative;height: 50px;" class="around">
                         <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;width: 100%;height: 50px;margin: auto;"
                              class="center">
-                            <div class="">
+                            <div ng-hide="chat.is_group==1 && chat.author!=user.id">
                                 <div class="left-icons-block f-blok">
                                     <button ng-class="{'i01' : !env.show_smiles,  'i02':env.show_smiles}"
                                             ng-click="smilesDialog()" class="icon"></button>
                                 </div>
 
 
-                                <div control-caret class="textarea inputotext-forma f-blok" id="textbox"
+                                <div
+
+                                        control-caret class="textarea inputotext-forma f-blok" id="textbox"
                                      ng-model="env.message" contenteditable="true"
                                      placeholder="Введите сообщение"></div>
                                 <div class="right-block-send f-blok">

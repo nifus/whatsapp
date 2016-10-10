@@ -253,13 +253,12 @@ div.button span{
     font-family: Roboto, sans-serif;}
 div.input{
 	padding:10px;
-	height:62px;
-
+	height:67px;
 	background-color:#f5f1ee
 }
-div.input textarea{
-	height:50px
-}
+
+
+
 div.input div.textarea:focus{
 	border: none;
 	outline: none;

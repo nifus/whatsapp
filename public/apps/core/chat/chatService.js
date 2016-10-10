@@ -237,11 +237,25 @@
 
 
             Object.addImagePost = function (image, message, reply) {
-                return postFactory.addImagePost(image, message, reply, Object.id);
+                var defer = $q.defer();
+                 postFactory.addImagePost(image, message, reply, Object.id).then(function (response) {
+                     Object.posts.push(response.post);
+                     Object.setLastPost(response.post);
+                     Object.updated_at = response.chat.updated_at;
+                     defer.resolve(response);
+                 });
+                return defer.promise
             };
 
             Object.addDocumentPost = function (document, message, reply) {
-                return postFactory.addDocumentPost(document, message, reply, Object.id);
+                var defer = $q.defer();
+                 postFactory.addDocumentPost(document, message, reply, Object.id).then(function (response) {
+                    Object.posts.push(response.post);
+                    Object.setLastPost(response.post);
+                    Object.updated_at = response.chat.updated_at;
+                    defer.resolve(response);
+                });
+                return defer.promise
             };
 
             Object.clearChat = function () {

@@ -89,22 +89,20 @@
             if ( $scope.env.selected_post ){
                 reply = $scope.env.selected_post.id;
             }
-            $scope.env.chat.addImagePost(model.image, model.message, reply).then(function (response) {
+            $scope.chat.addImagePost(model.image, model.message, reply).then(function (response) {
                 if (response.success == false) {
                     alertify.error(response.error);
                 } else {
-                    $scope.env.chat.posts.push(response.post);
-                    $scope.env.chat.LastPost = response.post;
-                    $scope.env.chat.updated_at = response.chat.updated_at;
+                    //$scope.chat.posts.push(response.post);
+                    //$scope.env.chat.LastPost = response.post;
+                    //$scope.env.chat.updated_at = response.chat.updated_at;
 
                     $scope.closeImageDialog();
                     $scope.env.upload = {
                         image: null,
                         message:null
                     };
-                    $timeout(function(){
-                        $('div.messages').scrollTop( document.getElementById('post-'+response.post.id).offsetTop );
-                    },10)
+                    $scope.$emit('messages:scroll_down');
                 }
             })
         };
@@ -114,21 +112,16 @@
             if ( $scope.env.selected_post ){
                 reply = $scope.env.selected_post.id;
             }
-            $scope.env.chat.addDocumentPost(model.image, model.message, reply).then(function (response) {
+            $scope.chat.addDocumentPost(model.image, model.message, reply).then(function (response) {
                 if (response.success == false) {
                     alertify.error(response.error);
                 } else {
-                    $scope.env.chat.posts.push(response.post);
-                    $scope.env.chat.setLastPost(response.post);
-                    $scope.env.chat.updated_at = response.chat.updated_at;
                     $scope.closeImageDialog();
                     $scope.env.upload = {
                         image: null,
                         message:null
                     };
-                    $timeout(function(){
-                        $('div.messages').scrollTop( document.getElementById('post-'+response.post.id).offsetTop );
-                    },100)
+                    $scope.$emit('messages:scroll_down');
                 }
             })
         };
@@ -357,11 +350,7 @@
                         alertify.error(response.error);
                     } else {
                         $scope.env.selected_post = null;
-
                         $scope.$emit('messages:scroll_down');
-                        //$timeout(function(){
-                       //     $('div.messages').scrollTop( document.getElementById('post-'+response.post.id).offsetTop );
-                        //},100)
                     }
                 })
             }
@@ -372,15 +361,7 @@
         };
 
         $scope.$on('delete', function(event, html){
-            var count = $scope.env.chat.posts.length;
-            $scope.env.chat.setLastPost(null);
 
-            for(var i=count-1;i>=0;i--){
-                if ( $scope.env.chat.posts[i].is_deleted=='0' ){
-                    $scope.env.chat.LastPost =$scope.env.chat.posts[i];
-                    break;
-                }
-            }
         });
     }
 })();
