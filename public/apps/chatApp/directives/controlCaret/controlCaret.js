@@ -13,7 +13,7 @@
             var position = 0;
             var node = element[0];
             var parent = null;
-            setCaret(node,position);
+           // setCaret(node,position);
             var savedSelection = null;
             var sel = null;
 
@@ -25,7 +25,6 @@
                 //savedSelection = rangy.saveSelection();
                 sel  = rangy.getSelection();
 
-                //e.stopPropagation();
                 if (e.ctrlKey==true && e.keyCode==13){
                     parent = getParentSelectedNode();
                     node = pasteHtmlAtCaret('<br>&nbsp;');
@@ -40,8 +39,8 @@
             });
 
             element.on('keyup', function(){
-                savedSelection = rangy.saveSelection();
-                //sel  = rangy.getSelection();
+                //savedSelection = rangy.saveSelection();
+                sel  = rangy.getSelection();
 
                 //node = getSelectedNode();
                 //parent = getParentSelectedNode();

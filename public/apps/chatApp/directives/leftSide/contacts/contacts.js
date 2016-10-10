@@ -45,12 +45,10 @@
                 value = value.toLowerCase();
                 if ($scope.env.chat != '') {
                     $scope.env.search_activated = true;
-
                     $scope.env.chats = $scope.env.source_chats.filter(function (chat) {
                         if (chat.current_name.toLowerCase().indexOf(value) != -1) {
                             return true;
                         }
-
                         if (chat.login != undefined && chat.login.toLowerCase().indexOf(value) != -1) {
                             return true;
                         }
@@ -75,8 +73,6 @@
                 $scope.env.contacts = $scope.env.source_contacts;
                 $scope.env.chats = [];
             }
-
-            //console.log($scope.env.chat)
         };
 
         function search(value) {
@@ -100,7 +96,6 @@
                 $scope.showContactList(value);
                 search(value);
             }
-
         });
 
         function strip(html)

@@ -1,6 +1,6 @@
 (function (angular, window) {
     'use strict';
-    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64', 'cfp.hotkeys', 'luegg.directives', 'ckeditor', 'ngSanitize', 'btford.socket-io', 'ngAudio', 'ngScrollbars']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
+    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64', 'cfp.hotkeys', 'luegg.directives', 'ckeditor', 'ngSanitize', 'btford.socket-io', 'ngAudio', 'ngScrollbars','contenteditable']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
 
 
         window.SERVER = 'http://' + window.location.host;
@@ -98,27 +98,7 @@
         return function (text) {
             return $sce.trustAsHtml(text);
         };
-    }]).directive('contenteditable', ['$sce', '$filter', '$timeout', function ($sce, $filter, $timeout) {
-        return {
-            restrict: 'A', // only activate on element attribute
-            require: '?ngModel', // get a hold of NgModelController
-            link: function (scope, element, attrs, ngModel) {
-
-
-                function read() {
-                    ngModel.$setViewValue(element.html());
-                }
-
-                ngModel.$render = function () {
-                    element.html($sce.getTrustedHtml(ngModel.$viewValue || ""));
-                };
-
-                element.bind("blur keyup change", function () {
-                    scope.$apply(read);
-                });
-            }
-        };
-    }]);
+    }])
 
 })(angular, window);
 
