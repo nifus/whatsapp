@@ -8,6 +8,14 @@
             var Object = data;
             Object.waiting = false;
 
+            Object.needPlayMusic = function (user_id) {
+                for( var i in Object.members ){
+                    if (Object.members[i].id==user_id && Object.members[i].pivot.sound==1){
+                        return true;
+                    }
+                }
+                return false;
+            };
 
             Object.updateInformation = function () {
                 return $http.get('/chats/' + Object.id + '/status' ).then(function (response) {
@@ -15,10 +23,8 @@
                         Object.setLastPost(response.data.LastPost);
                         Object.updated_at = response.data.updated_at;
                         Object.CountUnreadMessages = response.data.CountUnreadMessages;
-                        if ( Object.posts ){
-                            for( var i in response.data.Posts){
-                                Object.posts.push(response.data.Posts[i])
-                            }
+                        if (Object.posts){
+                            Object.posts.push(response.data.LastPost)
                         }
                     }
                     return response.data;
@@ -169,7 +175,6 @@
             };
 
             Object.addPost = function (message, reply) {
-                socket.emit('message', Object.id);
                 return postFactory.addPost(message, reply, Object.id);
             };
 

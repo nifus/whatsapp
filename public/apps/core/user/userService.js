@@ -7,6 +7,7 @@
         return function (data) {
             var Object = data;
             Object.waiting = false;
+            Object.chats = Object.chats==undefined ? [] : Object.chats;
 
 
 

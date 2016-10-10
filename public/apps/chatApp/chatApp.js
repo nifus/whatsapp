@@ -41,12 +41,10 @@
 
 
     }).factory('socket', function (socketFactory) {
-        var myIoSocket = io.connect('http://192.168.1.7:3002');
-
+        var myIoSocket = io.connect(window.SERVER+':3000');
         var mySocket = socketFactory({
             ioSocket: myIoSocket
         });
-
         return mySocket;
     }).run(['userFactory', '$state', '$rootScope', function (userFactory, $state, $rootScope) {
         moment.locale('ru');

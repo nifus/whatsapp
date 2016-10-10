@@ -5,23 +5,28 @@ var io = require('socket.io')(http);
 
 
 io.on('connection', function(socket){
-    //console.log('a user connected');
-    //socket.broadcast.emit('reload',{ chat: 'privet' });
-    //socket.emit('reload',{ chat: 'privet' });
+    console.log('a user connected');
+
 
     socket.on('disconnect', function(){
-       // console.log('user disconnected');
+        console.log('user disconnected');
     });
 
-    socket.on('message', function(chat){
-        //console.log('message '+chat);
-       // io.emit('some event', { chat: chat });
-        socket.broadcast.emit('reload',{ chat: chat });
-      //  socket.emit('reload',{ chat: chat });
-
+    socket.on('message', function(obj){
+        console.log('message '+obj.post_id+' to chat '+obj.chat_id);
+        socket.broadcast.emit('reload',obj);
     });
+
+    socket.on('chat', function(chat, users){
+        console.log('create_chat ');
+        console.log(chat);
+        console.log(users);
+        socket.broadcast.emit('create_chat',{ chat: chat, users:users });
+    });
+
+
 });
 
-http.listen(3002, function(){
-    //console.log('listening on *:3001');
+http.listen(3000, function(){
+    console.log('listening on *:3000');
 });

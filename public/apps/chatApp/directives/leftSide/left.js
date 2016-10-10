@@ -14,12 +14,12 @@
             }
         };
 
-        leftController.$inject = ['$scope', 'userFactory', 'chatFactory', '$q'];
+        leftController.$inject = ['$scope', 'userFactory', 'chatFactory', '$q', 'socket'];
 
         function leftLink($scope, element) {
         }
 
-        function leftController($scope, userFactory, chatFactory, $q) {
+        function leftController($scope, userFactory, chatFactory, $q, socket) {
             $scope.dialog = 'contacts';
 
 
@@ -51,24 +51,24 @@
                 $scope.chat.CountUnreadMessages = 0;
                 //console.log(chat)
                 /*var posts = $scope.chat.posts;
-                if (posts!=undefined && posts.length>0){
-                    for( var i in posts ){
-                        if ( posts[i].id==post_id){
-                            console.log('ID!!!')
-                            break;
-                        }
-                    }
-                }*/
+                 if (posts!=undefined && posts.length>0){
+                 for( var i in posts ){
+                 if ( posts[i].id==post_id){
+                 console.log('ID!!!')
+                 break;
+                 }
+                 }
+                 }*/
 
             };
             $scope.getChat = function (chat_id) {
-                var result = $scope.user.chats.filter( function(chat){
-                    if (chat_id==chat.id){
+                var result = $scope.user.chats.filter(function (chat) {
+                    if (chat_id == chat.id) {
                         return true;
                     }
                     return false
                 });
-                if (result[0]!=undefined){
+                if (result[0] != undefined) {
                     return result[0];
                 }
             };
@@ -76,12 +76,13 @@
             $scope.createChat = function (contact) {
                 $scope.dialog = 'contacts';
                 chatFactory.createByContact($scope.user, contact).then(function (response) {
-                    if ( response.success!=false){
+                    if (response.success != false) {
                         $scope.user.chats.push(response.chat);
                         $scope.chat = response.chat;
-                    }else if(response.chat_id){
-                        $scope.chat = $scope.user.chats.filter( function(chat){
-                            if (chat.id==response.chat_id){
+                        socket.emit('chat', response.chat.id, [$scope.user.id, contact.id]);
+                    } else if (response.chat_id) {
+                        $scope.chat = $scope.user.chats.filter(function (chat) {
+                            if (chat.id == response.chat_id) {
                                 return true;
                             }
                             return false;
@@ -91,8 +92,8 @@
                 $scope.contact_list = false;
             };
 
-            $scope.saveProfile = function(data){
-                $scope.user.update(data).then(function(response){
+            $scope.saveProfile = function (data) {
+                $scope.user.update(data).then(function (response) {
                     if (response.success == false) {
                         alertify.error(response.error);
                     } else {
@@ -102,15 +103,21 @@
                 })
             };
 
-            $scope.saveGroup = function(data){
+            $scope.saveGroup = function (data) {
                 var save_data = angular.copy(data);
-                chatFactory.createGroup(save_data).then(function(response){
+                chatFactory.createGroup(save_data).then(function (response) {
                     if (response.success == false) {
                         alertify.error(response.error);
                     } else {
                         alertify.success('Группа создана');
                         $scope.openContacts();
                         $scope.user.chats.push(response.chat);
+                        var users = [];
+                        for( var i in data.contacts ){
+                            users.push( data.contacts[i].id )
+                        }
+                        socket.emit('chat', response.chat.id, users);
+
                     }
                 })
 

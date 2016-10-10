@@ -4,12 +4,13 @@
 
     angular.module('core')
         .factory('chatFactory', chatFactory);
-    chatFactory.$inject = ['chatService', '$http'];
+    chatFactory.$inject = ['chatService', '$http','$q'];
 
-    function chatFactory(chatService, $http) {
+    function chatFactory(chatService, $http, $q) {
 
         return {
             getByUser:getByUser,
+            getById:getById,
             createByContact: createByContact,
             createGroup: createGroup
         };
@@ -55,6 +56,22 @@
                     return result;
                 }
             )
+        }
+
+        function getById(id){
+            var deferred = $q.defer();
+            $http.get(window.SERVER+'/chats/'+id).then(
+                function(response){
+                    deferred.resolve(new chatService(response.data));
+                },
+                function(error){
+                    console.log(error);
+                    deferred.reject({success: false, error: error.data});
+
+                }
+            );
+
+            return deferred.promise;
         }
 
 

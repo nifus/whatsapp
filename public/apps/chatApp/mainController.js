@@ -2,33 +2,55 @@
     'use strict';
     angular.module('chatApp').controller('mainController', mainController);
 
-    mainController.$inject = ['$scope', '$q', 'userFactory', '$state', 'chatFactory', 'configFactory' ,'socket','ngAudio'];
+    mainController.$inject = ['$scope', '$q', 'userFactory', '$state', 'chatFactory', 'configFactory', 'socket', 'ngAudio'];
 
-    function mainController($scope, $q, userFactory, $state, chatFactory, configFactory, socket,ngAudio) {
+    function mainController($scope, $q, userFactory, $state, chatFactory, configFactory, socket, ngAudio) {
         $scope.env = {
-            loading: true,
             config: [],
             user: null,
             currency: []
         };
 
-
         $scope.promises = [];
         $scope.initPromises = [];
-        $scope.user = null;
         $scope.loaded = false;
         $scope.init = [];
         $scope.counter = 0;
         $scope.sound = ngAudio.load("audio/im.mp3");
-        socket.on('reload', function (msg) {
-            var chat_id = msg.chat;
-            $scope.env.user.chats.filter( function(chat){
-                if (chat.id==chat_id){
+
+
+        socket.on('reload', function (obj) {
+            console.log(obj);
+            var chat_id = obj.chat_id;
+            $scope.env.user.chats.filter(function (chat) {
+                if (chat.id == chat_id) {
                     chat.updateInformation();
-                    $scope.sound.play();
+                    if (chat.needPlayMusic($scope.env.user.id)) {
+                        $scope.sound.play();
+                    }
                 }
             })
         });
+
+        socket.on('create_chat', function (response) {
+            console.log('new chat');
+            console.log(response);
+            for( var i in response.users){
+                if ( response.users[i] == $scope.env.user.id ){
+                    chatFactory.getById(response.chat).then(function(chat){
+                        console.log(chat)
+                        console.log($scope.env.user.chats)
+                        $scope.env.user.chats.push(chat);
+                        $scope.sound.play();
+                    },function(error){
+                        //console.log(error)
+                    });
+                    break;
+                }
+            }
+        });
+
+
         var configPromise = configFactory.get().then(function (response) {
             $scope.env.config = response;
         });
@@ -48,12 +70,10 @@
 
             user.getAllContacts().then(function (contacts) {
                 user.contacts = contacts;
-                //$scope.env.source_contacts = contacts;
             });
             if (user.history == '1') {
                 chatFactory.getByUser().then(function (chats) {
                     user.chats = chats;
-                    //$scope.env.source_chats = chats;
                 });
             } else {
                 user.chats = [];
@@ -61,12 +81,9 @@
 
         });
         $scope.promises.push(userPromise);
-        /*userFactory.refresh().then(function(){
 
-         });*/
 
         $q.all($scope.promises).then(function () {
-            // console.log('mainController loaded');
             $scope.loaded = true;
             execute();
         });
@@ -80,7 +97,6 @@
 
 
         function execute() {
-
             for (var i in $scope.init) {
                 var deferred = $q.defer();
                 var promise = $scope.init[i](deferred, $scope.env);
@@ -91,11 +107,10 @@
 
         $scope.$watchCollection('initPromises', function (value) {
             if (value != undefined && value.length > 0) {
-                $scope.loading = true;
+                $scope.loaded = true;
 
                 $scope.defer = $q.all($scope.initPromises).then(function () {
-                    console.log('page loaded');
-                    $scope.loading = false;
+                    $scope.loaded = false;
                     $scope.initPromises = [];
                 });
             }
@@ -104,7 +119,6 @@
 
         $scope.logout = function () {
             userFactory.logout();
-
         }
     }
 })();

@@ -18,7 +18,7 @@
             } else {
                 $scope.hideContactList();
             }
-        })
+        });
 
         $scope.$watch('user.contacts', function (value) {
             if (value) {
@@ -90,8 +90,6 @@
                     result.post[i].message =  message[1] +'<strong>' + message[2] + '</strong>' + message[3]
                 }
             })
-
-
         }
 
         $scope.$watch('env.chat', function (value) {

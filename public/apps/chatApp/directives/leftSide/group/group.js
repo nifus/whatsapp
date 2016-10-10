@@ -4,8 +4,8 @@
     angular.module('chatApp').
     controller('groupController', groupController);
 
-    groupController.$inject = ['$scope', 'chatFactory'];
-    function groupController($scope, chatFactory) {
+    groupController.$inject = ['$scope'];
+    function groupController($scope) {
         $scope.env= {
             contacts: []
         };
