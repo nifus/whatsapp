@@ -5,11 +5,13 @@ body, html{
 	margin:0px;
 	padding:0px;
 	font-family:"Open Sans", sans-serif;
+
 }
 
 
 
-#background{
+
+#background{  
 	width: 100%;
 	height: 20%;
 	position: absolute;
@@ -981,3 +983,8 @@ div.textarea img :focus {
 #intro{
 	height: 100%;padding:20px;text-align: center
 }
+
+
+.from_me .dropdown-menu{    left: 0 !important; }
+.from_me.last .dropdown-menu{    left: 0 !important;   top: -100px;}
+.myself.last .dropdown-menu{top: -100px;}
