@@ -180,10 +180,10 @@
                 }
                 return false;
             });
-            $scope.env.chat.addMember(member).then( function(response){
+            $scope.chat.addMember(member).then( function(response){
                 if (response.success==true){
                     alertify.success('Пользователь добавлен');
-                    $scope.env.chat.posts.push( new postService(response.post) );
+                    $scope.chat.posts.push( new postService(response.post) );
 
                 }else{
                     alertify.error(response.error);
@@ -200,10 +200,10 @@
             $scope.env.show_add_info=true;
             $scope.env.add_info = user;
 
-            $scope.model = angular.copy($scope.env.chat);
+            $scope.model = angular.copy($scope.chat);
             $scope.model.members = $scope.user.contacts.filter( function(contact){
-                for( var i in $scope.env.chat.members ){
-                    if ( contact.id == $scope.env.chat.members[i].id ){
+                for( var i in $scope.chat.members ){
+                    if ( contact.id == $scope.chat.members[i].id ){
                         return false;
                     }
                 }
@@ -212,12 +212,12 @@
         };
 
         $scope.changeChatAvatar = function(value){
-            $scope.env.chat.updateAvatar(value)
+            $scope.chat.updateAvatar(value)
         }
 
         $scope.changeChatName = function(value){
             if ( value!=''){
-                $scope.env.chat.updateName(value)
+                $scope.chat.updateName(value)
             }
         };
 
@@ -259,7 +259,7 @@
                 } else {
                     alertify.success('Чат удален');
                     $scope.closeInfoBlock();
-                    $scope.env.chat = null;
+                    $scope.chat = null;
                     $scope.user.chats = $scope.user.chats.filter( function(el){
                         if (el.id==chat.id){
                             return false;
@@ -281,10 +281,10 @@
         $scope.removeMember = function(user){
             $scope.model.members.push(user)
 
-            $scope.env.chat.removeMember(user.id).then( function(response){
+            $scope.chat.removeMember(user.id).then( function(response){
                 if (response.success==true){
                     alertify.success('Пользователь удален');
-                    $scope.env.chat.posts.push( new postService(response.post) )
+                    $scope.chat.posts.push( new postService(response.post) )
                 }else{
                     alertify.error(response.error);
                 }
@@ -330,9 +330,9 @@
                     if (response.success == false) {
                         alertify.error(response.error);
                     } else {
-                        for( var i in $scope.env.chat.posts){
-                            if ( $scope.env.chat.posts[i].id==response.post.id ){
-                                $scope.env.chat.posts[i].message = response.post.message;
+                        for( var i in $scope.chat.posts){
+                            if ( $scope.chat.posts[i].id==response.post.id ){
+                                $scope.chat.posts[i].message = response.post.message;
                             }
                         }
                         // $scope.env.chat.posts.push(response.post);
