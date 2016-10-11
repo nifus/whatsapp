@@ -130,11 +130,9 @@
 
 
         socket.on('server:signin', function (user_id) {
-            console.log('server:signin')
-            console.log(user_id)
-           if ( user_id==$scope.user.id ){
-                alert('Вашей сессии хана')
-           }
+            if (user_id == $scope.user.id) {
+                window.location.reload(true)
+            }
         });
 
         socket.on('create_chat', function (response) {
