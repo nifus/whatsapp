@@ -312,6 +312,9 @@
             $rootScope.$broadcast('textField',{'smiles':$scope.env.show_smiles,'answer': $scope.env.selected_post ? true : false});
         });
 
+        $(window).resize(function () {
+            $rootScope.$broadcast('textField',{'smiles':$scope.env.show_smiles,'answer': $scope.env.selected_post ? true : false});
+        });
 
         $scope.$on('reply', function(event, post){
            // $scope.env.selected_post = post;
@@ -322,7 +325,8 @@
 
         $scope.$on('submit', function(event, html){
 
-            $scope.submit(html)
+            $scope.submit(html);
+
         });
 
         $scope.setSmile = function(text){
@@ -364,7 +368,12 @@
 
             $scope.env.message = '';
             $rootScope.$broadcast('answer',{'smiles':$scope.env.show_smiles,'answer': false});
-            $scope.env.selected_post = null
+            $scope.env.selected_post = null;
+            $timeout(function(){
+                $rootScope.$broadcast('textField',{'smiles':$scope.env.show_smiles,'answer': $scope.env.selected_post ? true : false});
+
+            },10)
+
         };
 
         $scope.$on('delete', function(event, html){

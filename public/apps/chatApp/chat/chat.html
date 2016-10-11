@@ -55,7 +55,7 @@
     margin: 20px;
     left: 55%;" alt="">
                 <div class="messages" scroll-load-messages>
-                    {{env.message|json}}
+                    
                     <post ng-repeat="post in chat.posts" post="post"  chat="chat" is-last-post="$index==chat.posts.length-1"
                           is-select-post="env.selected_post" is-edit-post="env.edit_post" user="user"></post>
                 </div>
