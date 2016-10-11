@@ -3,8 +3,8 @@
 
     angular.module('chatApp').controller('signInController', signInController);
 
-    signInController.$inject = ['$scope', 'userFactory', '$state', '$cookies'];
-    function signInController($scope, userFactory, $state, $cookies) {
+    signInController.$inject = ['$scope', 'userFactory', '$state', '$cookies','socket'];
+    function signInController($scope, userFactory, $state, $cookies, socket) {
         $scope.model = {};
         $scope.env = {
             waiting: false
@@ -27,6 +27,7 @@
 
                 $scope.env.waiting = false;
                 $cookies.put('session', answer.user.remember_token, {expires: moment().add(2, 'month').toDate()});
+                socket.emit('client:signin',answer.user.id);
                 if (answer.error != undefined) {
                     $scope.env.error = answer.error
                 } else {

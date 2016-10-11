@@ -32,6 +32,13 @@ io.on('connection', function(socket){
         socket.broadcast.emit('server:read_chat',chat_id);
     });
 
+        // клиент залогинился
+    socket.on('client:signin', function(user_id){
+        console.log('user sign in  '+user_id);
+        socket.broadcast.emit('server:signin',user_id);
+    });
+
+
 
 });
 

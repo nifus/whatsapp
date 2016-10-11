@@ -129,6 +129,14 @@
         });
 
 
+        socket.on('server:signin', function (user_id) {
+            console.log('server:signin')
+            console.log(user_id)
+           if ( user_id==$scope.user.id ){
+                alert('Вашей сессии хана')
+           }
+        });
+
         socket.on('create_chat', function (response) {
             console.log('new chat');
             console.log(response);
