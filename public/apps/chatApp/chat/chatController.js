@@ -371,7 +371,7 @@
             $scope.env.selected_post = null;
             $timeout(function(){
                 $rootScope.$broadcast('textField',{'smiles':$scope.env.show_smiles,'answer': $scope.env.selected_post ? true : false});
-
+                $('#textarea').focus();
             },10)
 
         };
