@@ -102,15 +102,8 @@
 
 })(angular, window);
 
-//var saveSelection, restoreSelection;
 window.onload = function () {
     rangy.init();
 }
-/*
- var socket = io('http://192.168.1.7:3002');
 
- socket.on('reload', function(msg){
- alert(msg)
- console.log(msg)
- });*/
 

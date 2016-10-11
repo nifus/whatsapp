@@ -70,10 +70,8 @@
                             if (chat.start_post) {
                                 $scope.$emit('messages:scroll_to', chat.start_post);
                                 $scope.env.download = true;
-                                // $('div.messages').scrollTop( document.getElementById('post-'+chat.start_post).offsetTop );
                             } else {
                                 $scope.$emit('messages:scroll_down', chat.last_post_id);
-                                //$('div.messages').scrollTop( document.getElementById('post-'+$scope.env.first_post_id).offsetTop );
                             }
                             $scope.$emit('open_chat', {});
                         }, 10)
@@ -81,8 +79,7 @@
                 })
             } else {
                 chat.posts = [];
-                $scope.env.chat.setLastPost(null);
-
+                $scope.chat.setLastPost(null);
             }
             chat.getChatStatus($scope.user.id);
 
@@ -91,13 +88,20 @@
         };
 
 
+        socket.on('client:read_chat', function (chat) {
+            console.log('client:read_chat')
+            console.log(chat)
+        });
+
         socket.on('reload', function (obj) {
             console.log('new message')
             var chat_id = obj.chat_id;
             $scope.env.user.chats.filter(function (chat) {
-                console.log(obj)
                 if (chat.id == chat_id) {
-                    chat.updateInformation().then(function(response){
+
+                    var current_chat = ($scope.chat && chat.id==$scope.chat.id) ? true : false;
+                    console.log( current_chat)
+                    chat.updateInformation(current_chat).then(function(response){
                         $scope.$emit('messages:scroll_down', chat.last_post_id);
                     });
                     if (chat.needPlayMusic($scope.env.user.id)) {

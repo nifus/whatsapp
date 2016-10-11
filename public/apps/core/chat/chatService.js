@@ -1,9 +1,9 @@
 (function (angular, window) {
     'use strict';
     angular.module('core').service('chatService', chatService);
-    chatService.$inject = ['postFactory', '$http', 'userFactory', '$filter', '$q'];
+    chatService.$inject = ['postFactory', '$http', 'userFactory', '$filter', '$q', 'socket'];
 
-    function chatService(postFactory, $http, userFactory, $filter, $q) {
+    function chatService(postFactory, $http, userFactory, $filter, $q, socket) {
         return function (data, user_id) {
             var Object = data;
             Object.waiting = false;
@@ -25,16 +25,23 @@
                 return false;
             };
 
-            Object.updateInformation = function () {
+            Object.readChat = function(){
+                return $http.put('/chats/' + Object.id + '/read').then(function () {
+                    socket.emit('client:read_chat',Object.id);
+                })
+            };
+
+            Object.updateInformation = function (is_current_chat) {
                 return $http.get('/chats/' + Object.id + '/status').then(function (response) {
                     if (response.data.success == true) {
                         Object.setLastPost(response.data.LastPost);
                         Object.updated_at = response.data.updated_at;
-                        Object.CountUnreadMessages = response.data.CountUnreadMessages;
+                        Object.CountUnreadMessages = true===is_current_chat ? 0 :response.data.CountUnreadMessages;
                         if (Object.posts) {
                             Object.posts.push(response.data.LastPost)
                         }
                     }
+                    Object.readAllMessages();
                     return response.data;
                 })
             };

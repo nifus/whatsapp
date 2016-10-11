@@ -23,10 +23,12 @@
                 //  нужно промотать в самый низ
             $rootScope.$on('messages:scroll_down', function(value, last_post_id){
                 $('#post-'+last_post_id).ready(function () {
-                    element.scrollTop(element[0].scrollHeight);
+
                     $('div.messages').scrollTo('#post-'+last_post_id);
+                    element.scrollTop(element[0].scrollHeight);
                     $timeout(function(){
                         $('div.messages').scrollTo('#post-'+last_post_id);
+                        element.scrollTop(element[0].scrollHeight);
                     },20)
                 })
             });

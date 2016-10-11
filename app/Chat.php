@@ -172,6 +172,10 @@ class Chat extends Model
         return $post;
     }
 
+    public function read4user($user_id){
+        ChatPost::readPosts4User($this->id, $user_id);
+    }
+
 
     public function updateSound($user, $flag)
     {

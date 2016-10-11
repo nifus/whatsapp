@@ -12,16 +12,24 @@ io.on('connection', function(socket){
         console.log('user disconnected');
     });
 
+        //  новое сообщение
     socket.on('message', function(obj){
         console.log('message '+obj.post_id+' to chat '+obj.chat_id);
         socket.broadcast.emit('reload',obj);
     });
 
+        //  Новый чат
     socket.on('chat', function(chat, users){
         console.log('create_chat ');
         console.log(chat);
         console.log(users);
         socket.broadcast.emit('create_chat',{ chat: chat, users:users });
+    });
+
+        // чтение сообщений в чате
+    socket.on('client:read_chat', function(chat_id){
+        console.log('read chat '+chat_id);
+        socket.broadcast.emit('server:read_chat',chat_id);
     });
 
 
