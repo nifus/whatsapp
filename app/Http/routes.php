@@ -33,7 +33,7 @@ Route::get('signout', ['as' => 'signout', 'uses' => 'User\SignOutController@inde
         Route::post('/{id}', 'Api\ChatController@loadChat')->where('id', '[0-9]*');
         Route::get('/{id}', 'Api\ChatController@getById')->where('id', '[0-9]*');
         Route::get('/{id}/status', 'Api\ChatController@chatStatus')->where('id', '[0-9]*');
-        Route::get('/{id}/read', 'Api\ChatController@chatRead')->where('id', '[0-9]*');
+        Route::put('/{id}/read', 'Api\ChatController@chatRead')->where('id', '[0-9]*');
         Route::post('/{id}/around/{post_id}', 'Api\ChatController@loadChatAroundId')->where('id', '[0-9]*')->where('post_id','[0-9]*');
         Route::post('/{id}/down/{post_id}', 'Api\ChatController@loadChatDown')->where('id', '[0-9]*')->where('post_id','[0-9]*');
         Route::put('/{id}', 'Api\ChatController@updateChat')->where('id', '[0-9]*');

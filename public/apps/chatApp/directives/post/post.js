@@ -38,6 +38,7 @@
         }
         function postDirective($scope, $state, userFactory, chatFactory,$q) {
 
+
             $scope.remove = function(){
                 alertify.confirm("Удалить сообщение?", function (e) {
                     if (e) {

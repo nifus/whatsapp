@@ -36,6 +36,7 @@
         <div class="image" ng-show="post.type=='document' &&  post.is_deleted=='0'">
             <a target="_blank" ng-href="{{post.document}}"><img  src="/image/attachement.png" alt=""></a>
             <div class="message" ng-bind-html="post.message|to_trusted"></div>
+
         </div>
 
         <div  class="time time-show"
@@ -46,9 +47,9 @@
 
                 <li class="time">{{post.Time}}</li>
                 <li class="status">
-                <span ng-show="post.is_read==1" style="color: #00aced" class="glyphicon glyphicon-ok"
+                <span ng-show="post.is_read==1 " style="color: #00aced" class="glyphicon glyphicon-ok"
                       aria-hidden="true"></span>
-                    <span ng-show="post.is_read==0 && post.is_sent==1" class="glyphicon glyphicon-ok"
+                    <span ng-show="post.is_read==0" class="glyphicon glyphicon-ok"
                           aria-hidden="true"></span>
                     <span ng-show="post.is_sent==0" class="glyphicon glyphicon-time" aria-hidden="true"></span>
 

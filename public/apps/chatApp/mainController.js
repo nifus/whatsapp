@@ -2,7 +2,7 @@
     'use strict';
     angular.module('chatApp').controller('mainController', mainController);
 
-    mainController.$inject = ['$scope', '$q', 'userFactory', '$state', 'chatFactory', 'configFactory', 'socket', 'ngAudio', '$timeout','$rootScope'];
+    mainController.$inject = ['$scope', '$q', 'userFactory', '$state', 'chatFactory', 'configFactory', 'socket', 'ngAudio', '$timeout', '$rootScope'];
 
     function mainController($scope, $q, userFactory, $state, chatFactory, configFactory, socket, ngAudio, $timeout, $rootScope) {
         $scope.env = {
@@ -18,7 +18,18 @@
         $scope.loaded = false;
         $scope.init = [];
         $scope.counter = 0;
+        $scope.user_off = false;
 
+
+        window.onblur = function () {
+            $scope.user_off = true
+        }
+        window.onfocus = function () {
+            $scope.user_off = false;
+            if ($scope.chat) {
+                $scope.chat.hasRead();
+            }
+        }
 
         var configPromise = configFactory.get().then(function (response) {
             $scope.env.config = response;
@@ -76,7 +87,8 @@
                             $scope.$emit('open_chat', {});
                         }, 10)
                     }
-                })
+                });
+                chat.hasRead()
             } else {
                 chat.posts = [];
                 $scope.chat.setLastPost(null);
@@ -88,21 +100,26 @@
         };
 
 
-        socket.on('client:read_chat', function (chat) {
-            console.log('client:read_chat')
-            console.log(chat)
+        socket.on('server:read_chat', function (chat_id) {
+            $scope.user.chats.filter(function (chat) {
+                if (chat_id == chat.id) {
+                    chat.readChat()
+                }
+            });
         });
 
         socket.on('reload', function (obj) {
-            console.log('new message')
             var chat_id = obj.chat_id;
             $scope.env.user.chats.filter(function (chat) {
                 if (chat.id == chat_id) {
-
-                    var current_chat = ($scope.chat && chat.id==$scope.chat.id) ? true : false;
-                    console.log( current_chat)
-                    chat.updateInformation(current_chat).then(function(response){
+                    var current_chat = ($scope.chat && chat.id == $scope.chat.id) ? true : false;
+                    chat.updateInformation(current_chat).then(function (response) {
                         $scope.$emit('messages:scroll_down', chat.last_post_id);
+                        if (current_chat && $scope.user_off == false) {
+                            chat.hasRead();
+                        }
+
+
                     });
                     if (chat.needPlayMusic($scope.env.user.id)) {
                         $scope.env.sound.play();
@@ -110,6 +127,7 @@
                 }
             })
         });
+
 
         socket.on('create_chat', function (response) {
             console.log('new chat');
@@ -131,7 +149,6 @@
 
         //  в верхней позиции
         $rootScope.$on('messages:scroll_top', function () {
-            console.log('messages:scroll_top')
             if ($scope.chat.is_posts_loading != false || $scope.chat.is_posts_loaded == true) {
                 // сообщения уже грузятся или загрузились все
                 return false;

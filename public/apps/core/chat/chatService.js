@@ -13,8 +13,11 @@
             Object.is_posts_loading = false; // флаг подгрузки сообщений в чат
             Object.is_posts_loaded = false; // все сообщения загружены в чат
             Object.posts_start = 0; // точка на которой закончились грузиться сообщения
+            //Object.last_read_date = null; // время когда этот чат читали последний раз
             Object.posts = [];
             Object.current_user_id = user_id;
+
+
 
             Object.needPlayMusic = function (user_id) {
                 for (var i in Object.members) {
@@ -26,6 +29,12 @@
             };
 
             Object.readChat = function(){
+                for( var i in Object.posts ){
+                    Object.posts[i].is_read = 1;
+                }
+            };
+
+            Object.hasRead = function(){
                 return $http.put('/chats/' + Object.id + '/read').then(function () {
                     socket.emit('client:read_chat',Object.id);
                 })
@@ -41,7 +50,11 @@
                             Object.posts.push(response.data.LastPost)
                         }
                     }
-                    Object.readAllMessages();
+                    //if( true===is_current_chat ){
+
+                    //    Object.hasRead();
+                   // }
+
                     return response.data;
                 })
             };
