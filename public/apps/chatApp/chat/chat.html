@@ -231,22 +231,22 @@
 
 
                 <div class="image-preview">
-                    <img ng-show="env.upload.image.filetype.indexOf('image')!=-1"
+                    <img ng-show="env.upload.image.filetype.indexOf('image')!=-1" onload="$('div.input input').focus()"
                          ng-src="data:{{env.upload.image.filetype}};base64,{{env.upload.image.base64}}" alt="">
-                    <img ng-show="env.upload.image.filetype.indexOf('image')==-1" src="/image/attachement.png" alt="">
+                    <img ng-show="env.upload.image.filetype.indexOf('image')==-1" src="/image/attachement.png" alt="" onload="$('div.input input').focus()">
                 </div>
 
                 <div class="control">
                     <div class="input">
-                        <input type="text" placeholder="Добавить подпись" ng-model="env.upload.message">
+                        <input type="text" tabindex="1" placeholder="Добавить подпись" ng-model="env.upload.message">
                     </div>
 
 
                     <div class="button">
                         <button ng-show="env.upload.image.filetype.indexOf('image')!=-1"
-                                ng-click="addImagePost(env.upload)" class="icon i08"></button>
+                                ng-click="addImagePost(env.upload)" class="icon i08" tabindex="2" ng-disabled="env.adding_file"></button>
                         <button ng-show="env.upload.image.filetype.indexOf('image')==-1"
-                                ng-click="addDocumentPost(env.upload)" class="icon i08"></button>
+                                ng-click="addDocumentPost(env.upload)" class="icon i08" tabindex="2" ng-disabled="env.adding_file"></button>
                     </div>
 
                 </div>

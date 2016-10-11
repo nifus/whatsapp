@@ -8,8 +8,7 @@
 
         $scope.more = false;
         $scope.env = {
-            agents: [],
-
+            adding_file: false,
             show_add_info: false,
             chat_posts: [],
             message: null,
@@ -85,11 +84,15 @@
 
 
         $scope.addImagePost = function(model){
+
             var reply = null;
             if ( $scope.env.selected_post ){
                 reply = $scope.env.selected_post.id;
             }
+            $scope.env.adding_file = true;
+            model.message = model.message==null ? model.image.filename :  model.message;
             $scope.chat.addImagePost(model.image, model.message, reply).then(function (response) {
+                $scope.env.adding_file = false;
                 if (response.success == false) {
                     alertify.error(response.error);
                 } else {
@@ -112,7 +115,11 @@
             if ( $scope.env.selected_post ){
                 reply = $scope.env.selected_post.id;
             }
+            $scope.env.adding_file = true;
+            model.message = model.message==null ? model.image.filename :  model.message;
             $scope.chat.addDocumentPost(model.image, model.message, reply).then(function (response) {
+                $scope.env.adding_file = false;
+
                 if (response.success == false) {
                     alertify.error(response.error);
                 } else {

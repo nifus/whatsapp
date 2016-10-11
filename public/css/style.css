@@ -169,12 +169,18 @@ div.input input:focus{
 	border-bottom: 1px solid #00bfa5;
 }
 
-div.button{
+div.button button{
 	background-color: #00e676;
 	float: right;
 	border-radius: 40px;
-	padding:20px;
+	padding:25px;
 	margin:20px
+}
+div.button button:hover{
+	background-color: #2ce6a0;
+}
+div.button button[disabled]{
+	opacity: 0.5;
 }
 
 div.button span{
@@ -944,7 +950,7 @@ div.textarea img :focus {
 	background-position: -3979px -4064px;
 }
 .i08{
-	background-position: -3306px -3359px
+	background-position: -3290px -3347px
 }
 .i09{
 	background-position: -2390px -2393px;
