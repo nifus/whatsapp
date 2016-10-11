@@ -42,7 +42,7 @@
         <div  class="time time-show"
              ng-show="post.is_deleted=='0' && post.is_system==0">
 
-            <ul class="nav navbar-nav navbar-right post-menu" ng-mouseenter="expression">
+            <ul class="nav navbar-nav navbar-right post-menu" ng-mouseenter="expression" >
 
 
                 <li class="time">{{post.Time}}</li>
@@ -55,7 +55,7 @@
 
                 </li>
 
-                <li class="dd-menu">
+                <li class="dd-menu" ng-show="chat.is_group==0 || post.user_id==user.id">
                 <span data-toggle="dropdown" role="button" aria-haspopup="true"
                       aria-expanded="false" class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
 

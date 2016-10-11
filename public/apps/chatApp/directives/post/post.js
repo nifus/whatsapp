@@ -11,6 +11,7 @@
             scope: {
                 post:'=',
                 user:'=',
+                chat:'=',
                 isSelectPost:'=',
                 isEditPost:'=',
                 isLastPost:'='
@@ -23,18 +24,21 @@
 
             var elements = element.find('ul.post-menu');
 
-            element.bind('mouseover', function(){
-                element.find('li.dd-menu').css('display','inline');
-                element.find('li.time').css('visibility','hidden');
-                element.find('li.status').css('display','none');
-            })
+            if ($scope.chat.is_group==0 || $scope.post.user_id==$scope.user.id){
+                element.bind('mouseover', function(){
+                    element.find('li.dd-menu').css('display','inline');
+                    element.find('li.time').css('visibility','hidden');
+                    element.find('li.status').css('display','none');
+                });
 
-            element.bind('mouseout', function(){
-                element.find('li.dd-menu').css('display','none');
-                element.find('li.time').css('visibility','visible')
-                element.find('li.status').css('display','inline');
+                element.bind('mouseout', function(){
+                    element.find('li.dd-menu').css('display','none');
+                    element.find('li.time').css('visibility','visible')
+                    element.find('li.status').css('display','inline');
 
-            })
+                })
+            }
+
         }
         function postDirective($scope, $state, userFactory, chatFactory,$q) {
 
