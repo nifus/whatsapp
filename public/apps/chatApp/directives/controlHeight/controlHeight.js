@@ -20,6 +20,7 @@
             var messages = element.find('div.messages');
 
             $rootScope.$on('textField', function (event, options) {
+                console.log('--textField--')
                 resize(options);
                 $timeout(function(){
                    // resize(options);
@@ -28,6 +29,8 @@
 
 
             $rootScope.$on('smiles', function (event, options) {
+                console.log('--smiles--')
+
                 resize(options);
                 $timeout(function(){
                     //resize(options);
@@ -35,6 +38,8 @@
             });
 
             $rootScope.$on('answer', function (event, options) {
+                console.log('--answer--')
+
                 resize(options);
                 $timeout(function(){
                     //resize(options);
@@ -48,7 +53,7 @@
                 var textarea_height = textarea_element[0].offsetHeight;
                 var full_height = $('div.main-chatBg')[0].offsetHeight-60;
                 var smiles_height = 146;
-                var input_height = input_element[0].offsetHeight;
+                var input_height = $('#textbox')[0].offsetHeight+20;
 
                 console.log('full_height-'+full_height);
                 console.log('input_height-'+input_height);
