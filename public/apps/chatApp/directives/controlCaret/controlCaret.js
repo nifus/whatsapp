@@ -19,6 +19,7 @@
 
             $rootScope.$on('open_chat', function(){
                 element.focus();
+                sel  = rangy.getSelection();
             });
 
             element.on('keydown', function(e){
@@ -50,7 +51,6 @@
             element.on('mouseup', function(){
                 //savedSelection = rangy.saveSelection();
                 sel  = rangy.getSelection();
-                console.log(sel)
 
                // node = getSelectedNode();
                 //parent = getParentSelectedNode();
@@ -58,13 +58,13 @@
             });
 
             $rootScope.$on('insert_smiles', function (event, html) {
-               // var savedSel = rangy.saveSelection();
+
                 setCaret(sel.focusNode,sel.focusOffset);
                // setCaret(node,position+1);
                // rangy.restoreSelection(sel);
                 pasteHtmlAtCaret(html);
-                setCaret(sel.focusNode,sel.focusOffset);
-
+                setCaret(sel.focusNode,sel.focusOffset+1);
+                sel  = rangy.getSelection();
             });
 
 

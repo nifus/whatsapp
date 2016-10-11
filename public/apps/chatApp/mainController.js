@@ -84,9 +84,10 @@
                             } else {
                                 $scope.$emit('messages:scroll_down', chat.last_post_id);
                             }
-                            $scope.$emit('open_chat', {});
                         }, 10)
                     }
+                    $scope.$emit('open_chat', {});
+
                 });
                 chat.hasRead()
             } else {

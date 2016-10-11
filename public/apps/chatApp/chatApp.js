@@ -1,6 +1,6 @@
 (function (angular, window) {
     'use strict';
-    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64', 'cfp.hotkeys', 'luegg.directives', 'ckeditor', 'ngSanitize', 'btford.socket-io', 'ngAudio', 'ngScrollbars','contenteditable']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
+    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64', 'cfp.hotkeys', 'luegg.directives', 'ckeditor', 'ngSanitize', 'btford.socket-io', 'ngAudio', 'ngScrollbars', 'contenteditable']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
 
 
         window.SERVER = 'http://' + window.location.host;
@@ -56,19 +56,8 @@
             if (value == undefined) {
                 return;
             }
-
-
             userFactory.getAuthUser().then(function (user) {
-                /* if (user == null) {
-                 window.location.href = '/'
-                 }
 
-                 if (value['accessSection'] != undefined) {
-                 if (user == null || !user.hasAccess(value['accessSection'])) {
-                 window.history.back();
-                 return;
-                 }
-                 }*/
             });
         }, true);
 
