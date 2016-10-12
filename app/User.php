@@ -24,7 +24,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password', 'group_id', 'is_deletedd', 'avatar', 'can_mass_messages', 'can_upload_files', 'last_login', 'history', 'can_edit_myself', 'last_action', 'login','remember_token'];
+    protected $fillable = ['id','name', 'email', 'password', 'group_id', 'is_deletedd', 'avatar', 'can_mass_messages', 'can_upload_files', 'last_login', 'history', 'can_edit_myself', 'last_action', 'login','remember_token','old_pass'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -205,6 +205,7 @@ class User extends Authenticatable
 
     public function getContacts(){
         $contacts = $this->Contacts;
+
         $back_contacts = $this->BackContacts;
         $ids = [];
         $result = [];
@@ -214,12 +215,14 @@ class User extends Authenticatable
                 array_push($result,$contact);
             }
         }
+
         foreach( $back_contacts as $contact ){
             if ( !in_array($contact->id,$ids) ){
                 array_push($ids, $contact->id);
                 array_push($result,$contact);
             }
         }
+        
         return $result;
     }
 
