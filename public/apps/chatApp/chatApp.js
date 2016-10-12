@@ -2,8 +2,7 @@
     'use strict';
     angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64', 'cfp.hotkeys', 'luegg.directives', 'ckeditor', 'ngSanitize', 'btford.socket-io', 'ngAudio', 'ngScrollbars', 'contenteditable']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
 
-
-        window.SERVER = 'http://' + window.location.host;
+        window.SERVER = window.location.protocol+'//' + window.location.host;
 
 
         // $authProvider.httpInterceptor = false;
