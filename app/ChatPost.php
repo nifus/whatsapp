@@ -116,7 +116,7 @@ class ChatPost extends Model
     }
     public function getTimeAttribute(){
         $date = new \DateTime($this->created_at);
-        return $date->format('H:i');
+        return $date->format('d.m.y H:i');
     }
 
     public function remove(){
