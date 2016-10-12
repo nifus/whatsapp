@@ -166,7 +166,10 @@ class Chat extends Model
         } elseif ($data['type'] == 'document') {
             $post = ChatPost::addDocumentPost($this->id, $data['document'], $data['message'], $data['reply_to'], $user);
         }
-        if ($is_system == 0) {
+        if ( is_null($post)){
+            return null;
+        }
+        if ( $is_system == 0) {
             $this->updateLastPost($post->id);
         }
         return $post;
@@ -288,6 +291,18 @@ class Chat extends Model
         return ChatPost::getLastPost($chat_id, $rec->clear_date);
 
         //}
+    }
+
+    static function getChatWithUsers($user_1, $user_2){
+
+        $chats = Chat::whereIn('author',[$user_1, $user_2])->with('members')->get();
+        foreach($chats as $chat){
+            $members = $chat->Members()->pluck('user_id')->toArray();
+            if ( array_diff([$user_1, $user_2], $members)==[] ){
+                return $chat;
+            }
+        }
+        return null;
     }
 
 }
