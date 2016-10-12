@@ -222,7 +222,7 @@ class User extends Authenticatable
                 array_push($result,$contact);
             }
         }
-        
+
         return $result;
     }
 
