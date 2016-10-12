@@ -63,10 +63,7 @@
             }
         };
 
-        $scope.logout = function(){
-            userFactory.logout();
-            window.location.href='/'
-        }
+
 
     }
 
