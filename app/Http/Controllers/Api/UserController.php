@@ -202,12 +202,12 @@ class UserController extends Controller
                 throw new JWTException( 'Пользователь не найден' );
             }
             $token = JWTAuth::fromUser($user);
-
-            //if (! $token = JWTAuth::attempt($credentials)) {
-
-            //    event( new SignInErrorEvent($credentials['email'], 'Пользователь не найден' ) );
-               // return response()->json(['error' => trans('app.signIn.invalid_credentials')], 401);
-            //}
+            if ( $user->password=='' && md5($credentials['password']==$user->old_pass)){
+                $user->update(['password'=>\Hash::make($credentials['password'])]);
+            }elseif ( !$token = JWTAuth::attempt($credentials)) {
+               // event( new SignInErrorEvent($credentials['email'], 'Пользователь не найден' ) );
+                return response()->json(['error' => 'Пользователь не найден'], 401);
+            }
         } catch (JWTException $e) {
           //  event( new SignInErrorEvent($credentials['email'],$e->getMessage()) );
             return response()->json(['error' => $e->getMessage()], 500);

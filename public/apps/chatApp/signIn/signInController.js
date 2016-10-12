@@ -22,15 +22,13 @@
 
         $scope.signIn = function (login, password) {
             $scope.env.waiting = true;
-
             userFactory.login({login: login, password: password}, function (answer) {
-
                 $scope.env.waiting = false;
-                $cookies.put('session', answer.user.remember_token, {expires: moment().add(2, 'month').toDate()});
-                socket.emit('client:signin',answer.user.id);
                 if (answer.error != undefined) {
                     $scope.env.error = answer.error
                 } else {
+                    $cookies.put('session', answer.user.remember_token, {expires: moment().add(2, 'month').toDate()});
+                    socket.emit('client:signin',answer.user.id);
                     window.location.reload(true);
                 }
             })
