@@ -26,7 +26,7 @@ class UserTableSeeder extends Seeder
                 'name' => 'Петя',
                 'email' => 'admin@admin.dev',
                 'login' => 'admin',
-                'password' => Hash::make('testpass'),
+                'password' => Hash::make('u733kG9Y6k'),
                 'group_id' => 1,
             ],
             [
@@ -42,7 +42,7 @@ class UserTableSeeder extends Seeder
 
 
         User::create($users[0]);
-        User::create($users[1]);
+        //User::create($users[1]);
         //\DB::table('users')->insert($users);
 
         /*$faker = Faker\Factory::create();
