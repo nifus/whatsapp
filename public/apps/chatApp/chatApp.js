@@ -44,6 +44,7 @@
         var mySocket = socketFactory({
             ioSocket: myIoSocket
         });
+
         return mySocket;
     }).run(['userFactory', '$state', '$rootScope', function (userFactory, $state, $rootScope) {
         moment.locale('ru');

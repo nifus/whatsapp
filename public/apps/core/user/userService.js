@@ -10,6 +10,9 @@
             Object.chats = Object.chats==undefined ? [] : Object.chats;
 
 
+            Object.setStatus = function(status){
+                //return $http.put(window.SERVER+'/backend/user/set-status/'+status)
+            };
 
             Object.delete = function(){
                 Object.waiting = true;

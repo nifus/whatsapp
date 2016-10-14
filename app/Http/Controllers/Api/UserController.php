@@ -72,8 +72,20 @@ class UserController extends Controller
         }
     }
 
-    public function getStatus(){
-        return response()->json( ['online'=>true, 'last_active'=>null] );
+    public function setStatus($status){
+        $user = JWTAuth::parseToken()->authenticate();
+        $user->update(['is_online'=>$status=='on' ? 1 : 0]);
+    }
+
+    public function getLastAction($user_id){
+        $user = User::find($user_id);
+        //был(-а) вчера в 17:43
+        if ( is_null($user->last_action) ){
+            return response()->json( ['last_active'=>'Нет активности'] );
+        }
+
+        $date = new \DateTime($user->last_action);
+        return response()->json( ['last_active'=>'был(-а) активен '.$date->format('d.m.Y в h:i')] );
 
     }
 

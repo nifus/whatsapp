@@ -13,11 +13,11 @@
             }
         };
 
-        leftController.$inject = ['$scope', 'userFactory', 'chatFactory', 'socket'];
+        leftController.$inject = ['$scope', 'userFactory', 'chatFactory', 'socket','$timeout'];
 
 
 
-        function leftController($scope, userFactory, chatFactory,  socket) {
+        function leftController($scope, userFactory, chatFactory,  socket, $timeout) {
             $scope.dialog = 'contacts';
 
 
@@ -43,7 +43,10 @@
             };
 
             $scope.logout = function () {
-                userFactory.logout();
+                $scope.user.setStatus('off');
+                $timeout(function(){
+                    userFactory.logout();
+                },10)
             };
 
 

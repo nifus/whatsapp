@@ -8,7 +8,10 @@
         $scope.env = {
             config: [],
             sound: ngAudio.load("audio/im.mp3"),
-            user: null
+            user: null,
+            connected: false,
+            who_is_online:[]
+
         };
 
         $scope.chat = null;
@@ -21,15 +24,24 @@
         $scope.user_off = false;
 
 
+        socket.on('who_is_online', function(array_ids){
+            $scope.env.who_is_online = array_ids;
+            if ($scope.chat!=null ){
+                $scope.chat.setChatStatus($scope.user.id, $scope.env.who_is_online);
+            }
+        });
         window.onblur = function () {
-            $scope.user_off = true
-        }
+            $scope.user_off = true;
+            //$scope.user.setStatus('off');
+        };
         window.onfocus = function () {
             $scope.user_off = false;
+            //$scope.user.setStatus('on');
+
             if ($scope.chat) {
                 $scope.chat.hasRead();
             }
-        }
+        };
 
         var configPromise = configFactory.get().then(function (response) {
             $scope.env.config = response;
@@ -39,6 +51,7 @@
         var userPromise = userFactory.getAuthUser().then(function (user) {
             $scope.env.user = user;
             $scope.user = user;
+
             if (!user) {
                 $state.go('sign_in');
                 return false;
@@ -94,8 +107,8 @@
                 chat.posts = [];
                 $scope.chat.setLastPost(null);
             }
-            chat.getChatStatus($scope.user.id);
 
+            chat.setChatStatus($scope.user.id, $scope.env.who_is_online);
 
             $scope.$emit('load_chat', {chat: chat, post_id: post_id});
         };
@@ -137,13 +150,13 @@
         });
 
         socket.on('create_chat', function (response) {
-            console.log('new chat');
-            console.log(response);
+           // console.log('new chat');
+            //console.log(response);
             for (var i in response.users) {
                 if (response.users[i] == $scope.env.user.id) {
                     chatFactory.getById(response.chat).then(function (chat) {
-                        console.log(chat)
-                        console.log($scope.env.user.chats)
+                        //console.log(chat)
+                        //console.log($scope.env.user.chats)
                         $scope.env.user.chats.push(chat);
                         $scope.env.sound.play();
                     }, function (error) {
@@ -201,6 +214,8 @@
         });
 
         $scope.logout = function () {
+            //$scope.user.setStatus('off');
+
             userFactory.logout();
         }
     }

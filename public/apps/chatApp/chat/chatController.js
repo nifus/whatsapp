@@ -2,9 +2,9 @@
     'use strict';
     angular.module('chatApp').controller('chatController', chatController);
 
-    chatController.$inject = ['$scope','postService','$timeout','$rootScope','$filter'];
+    chatController.$inject = ['$scope','postService','$timeout','$rootScope','$filter','socket'];
 
-    function chatController($scope, postService,$timeout, $rootScope,$filter) {
+    function chatController($scope, postService,$timeout, $rootScope,$filter,socket) {
 
         $scope.more = false;
         $scope.env = {
@@ -23,22 +23,41 @@
             start: 0,
             first_post_id: null,
             show_smiles: false,
-            download: false
+            download: false,
+            connected: true,
         };
 
 
-        $scope.config = {
-            autoHideScrollbar: false,
-            theme: 'light',
-            advanced:{
-                updateOnContentResize: true
-            },
-            position: "bottom",
-            scrollInertia: 0
-        };
+
+        socket.on('disconnect', function(){
+            $scope.env.connected = false;
+            //$scope.user.setStatus('off');
+
+        });
+        socket.on('connect', function(){
+
+            $scope.env.connected = true;
+            if ($scope.user){
+                socket.emit('client:connect', $scope.user.id);
+            }
+        });
+
+
+
+        /*socket.on('server:connected', function(user_id){
+            if (user_id==$scope.env.user.id ){
+                $scope.env.connected = true;
+
+            }
+        });*/
 
         function initPage(deferred) {
+            $scope.env.connected = socket.connect().connected;
+          
             $scope.user = $scope.$parent.env.user;
+            //$scope.user.setStatus('on');
+            socket.emit('client:connect', $scope.user.id);
+
             $scope.config = $scope.$parent.env.config;
             //$scope.env.chat = $scope.$parent.env.chat;
             return deferred.promise;

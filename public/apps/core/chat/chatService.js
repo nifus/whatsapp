@@ -150,7 +150,8 @@
                 }
             };
 
-            Object.getChatStatus = function (user_id) {
+            Object.setChatStatus = function (user_id, who_is_online) {
+
                 Object.status = Object.is_group == 1 ? 'Информация о группе' : 'Информация о пользователе';
 
                 if (Object.is_group == 0) {
@@ -162,13 +163,20 @@
                     });
 
                     if (users.length == 1) {
-                        userFactory.getStatus(users[0].id).then(function (response) {
-                            if (response.data.online === true) {
-                                Object.status = 'online'
-                            } else {
-                                Object.status = 'был(-а): суббота в 08:35';
+                        for( var i in who_is_online){
+                            if (who_is_online[i].user==users[0].id){
+                                Object.status = 'online';
+                                break;
                             }
-                        })
+                        }
+
+                        if ( Object.status!='online' ){
+                            userFactory.getLastActionDate(users[0].id).then(function (response) {
+                                Object.status = response.data.last_active;
+                            })
+                        }
+
+
                     }
                 } else {
                     var names = [];

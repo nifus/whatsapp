@@ -41,15 +41,22 @@ class convert extends Command
     public function handle()
     {
         $users = \DB::table('users_old')->get();
-        \DB::table('users')->truncate();
+       // \DB::table('users')->truncate();
 
+        $clears = [];
 
         foreach($users as $user){
+            if ($user->clears!=''){
+                $user->clears = json_decode($user->clears);
+                $clears[$user->login] = $user->clears ;
+            }
+
+
             $friends = str_replace('[','',$user->friends );
             $friends = str_replace(']','',$friends );
             $friends = explode(',',$friends );
 
-            $user = User::create(
+            /*$user = User::create(
                 [
                     'id'=>$user->id,
                     'old_pass'=>$user->password,
@@ -61,12 +68,13 @@ class convert extends Command
                     'can_upload_files'=>$user->files,
                 ]
             );
-            $user->Contacts()->sync( $friends );
+            $user->Contacts()->sync( $friends );*/
         }
 
-        \DB::table('chats')->truncate();
-        \DB::table('chats_members')->truncate();
-        \DB::table('chats_posts')->truncate();
+
+       // \DB::table('chats')->truncate();
+       // \DB::table('chats_members')->truncate();
+       // \DB::table('chats_posts')->truncate();
 
         $messages = \DB::table('history')->orderBy('date','ASC')->get();
         try{
@@ -74,17 +82,58 @@ class convert extends Command
             foreach($messages as $message){
                 $this->line('Сообщение #'.$message->id);
 
-                $message->from ;
+
                 $from = User::where('login',$message->from)->first();
                 $to = User::where('login',$message->to)->first();
 
                 $chat = Chat::getChatWithUsers($from->id,$to->id);
-                if (is_null($chat)){
+                if ( !is_null($chat) ){
+
+                    $to_login = $to->login;
+                    $flag = false;
+                    $mems = [];
+                    if ( isset($clears[$from->login]) && isset($clears[$from->login]->$to_login) ){
+                        $flag = true;
+                        array_push($mems,['user_id'=>$from->id,'chat_id'=>$chat->id,'clear_date'=>date('Y-m-d H:i:s',$clears[$from->login]->$to_login)]);
+                    }else{
+                        array_push($mems,['user_id'=>$from->id,'chat_id'=>$chat->id]);
+                    }
+                    $from_login = $from->login;
+                    if ( isset($clears[$to->login]) && isset($clears[$to->login]->$from_login) ){
+                        $flag = true;
+                        array_push($mems,['user_id'=>$to->id,'chat_id'=>$chat->id,'clear_date'=>date('Y-m-d H:i:s',$clears[$to->login]->$from_login)]);
+                    }else{
+                        array_push($mems,['user_id'=>$to->id,'chat_id'=>$chat->id]);
+                    }
+                    if ($flag){
+                        $chat->Members()->sync($mems);
+                    }
+
+
+                }
+                /*if (is_null($chat)){
                     $chat = Chat::create([
                         'author'=>$from->id,
                         'is_group'=>0
                     ]);
-                    $chat->Members()->sync([$from->id, $to->id]);
+
+
+                    $to_login = $to->login;
+                    $mems = [];
+                    if ( $clears[$from->login] && $clears[$from->login]->$to_login){
+                        array_push($mems,['user_id'=>$from->id,'chat_id'=>$chat->id,'clear_date'=>date('Y-m-d H:i:s',$clears[$from->login]->$to_login)]);
+                    }else{
+                        array_push($mems,['user_id'=>$from->id,'chat_id'=>$chat->id]);
+                    }
+                    $from_login = $from->login;
+                    if ( $clears[$to->login] && $clears[$to->login]->$from_login){
+                        array_push($mems,['user_id'=>$to->id,'chat_id'=>$chat->id,'clear_date'=>date('Y-m-d H:i:s',$clears[$to->login]->$from_login)]);
+                    }else{
+                        array_push($mems,['user_id'=>$to->id,'chat_id'=>$chat->id]);
+                    }
+
+                    $chat->Members()->sync($mems);
+                    //\DB::table('chats_members')
                     $chat->addPost([
                         'type'=>'text',
                         'message'=>$message->message,
@@ -96,7 +145,7 @@ class convert extends Command
                         'message'=>$message->message,
                         'created_at'=>$message->date,
                     ],$from->id);
-                }
+                }*/
             }
 
         }catch( \Exception $e){

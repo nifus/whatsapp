@@ -10,7 +10,7 @@
 
         return {
             refresh: refresh,
-            getStatus: getStatus,
+            getLastActionDate: getLastActionDate,
             isAuthenticated: isAuthenticated,
             login: login,
             logout: logout,
@@ -21,8 +21,8 @@
             store:store
         };
 
-        function getStatus(user_id){
-            return $http.get(window.SERVER+'/backend/user/get-status/'+user_id)
+        function getLastActionDate(user_id){
+            return $http.get(window.SERVER+'/backend/user/get-last-action/'+user_id)
 
         }
 
