@@ -218,10 +218,10 @@ class Chat extends Model
 
         $this->Members()->sync([]);
         $this->Members()->sync($ids);
-        $user = User::find($user_id);
-        $post = $this->addPost(['message' => 'Пользователь ' . $user->name . ' добавлен в чат', 'type' => 'text', 'is_system' => 1], null);
+        //$user = User::find($user_id);
+       // $post = $this->addPost(['message' => 'Пользователь ' . $user->name . ' добавлен в чат', 'type' => 'text', 'is_system' => 1], null);
 
-        return $post;
+        return null;
     }
 
     public function removeMember($user_id)
@@ -238,9 +238,9 @@ class Chat extends Model
         }
         $this->Members()->sync([]);
         $this->Members()->sync($ids);
-        $user = User::find($user_id);
-        $post = $this->addPost(['message' => 'Пользователь ' . $user->name . ' удален из чата', 'type' => 'text', 'is_system' => 1], null);
-        return $post;
+       // $user = User::find($user_id);
+       // $post = $this->addPost(['message' => 'Пользователь ' . $user->name . ' удален из чата', 'type' => 'text', 'is_system' => 1], null);
+        return null;
     }
 
     static function createNewChat($user_id, $users_ids)

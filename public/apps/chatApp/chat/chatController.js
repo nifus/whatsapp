@@ -209,7 +209,7 @@
             $scope.chat.addMember(member).then( function(response){
                 if (response.success==true){
                     alertify.success('Пользователь добавлен');
-                    $scope.chat.posts.push( new postService(response.post) );
+                   // $scope.chat.posts.push( new postService(response.post) );
 
                 }else{
                     alertify.error(response.error);
@@ -310,7 +310,7 @@
             $scope.chat.removeMember(user.id).then( function(response){
                 if (response.success==true){
                     alertify.success('Пользователь удален');
-                    $scope.chat.posts.push( new postService(response.post) )
+                    //$scope.chat.posts.push( new postService(response.post) )
                 }else{
                     alertify.error(response.error);
                 }

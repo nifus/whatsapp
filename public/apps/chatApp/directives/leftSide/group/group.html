@@ -1,6 +1,6 @@
 <div ng-show="step=='one'">
-    <div class="col-md-12"
-         style="padding: 29px;    padding-bottom: 8px;    padding-top: 50px;background-color: #00bfa5;">
+    <div class=""
+         style="height:11%;padding: 29px;    padding-bottom: 8px;    padding-top: 50px;background-color: #00bfa5;">
 
         <h4 style="color:#FFFFFF"><a ng-click="openContacts()"
                                      style="    padding-right: 50px;color:#FFFFFF;cursor:pointer"> <span
@@ -10,9 +10,7 @@
 
     </div>
 
-    <div class="col-md-12" style="
-    padding: 30px;
-">
+    <div  style="height:89%;padding: 30px;">
 
 
         <div class="form-group">
@@ -26,13 +24,15 @@
             <input type="text" class="form-control" placeholder="Тема группы" ng-model="model.name">
         </div>
 
-        <button ng-disabled="!model.name || model.name==''" type="button" class="btn btn-default" ng-click="step='two'">Далее</button>
+        <button ng-disabled="!model.name || model.name==''" type="button" class="btn btn-default" ng-click="step='two'">
+            Далее
+        </button>
     </div>
 </div>
 
 <div ng-show="step=='two'">
-    <div class="col-md-12"
-         style="padding: 29px;    padding-bottom: 8px;    padding-top: 50px;background-color: #00bfa5;">
+    <div
+         style="height:11%;padding: 29px;    padding-bottom: 8px;    padding-top: 50px;background-color: #00bfa5;">
 
         <h4 style="color:#FFFFFF"><a ng-click="step='one'"
                                      style="    padding-right: 50px;color:#FFFFFF;cursor:pointer"><span
@@ -41,42 +41,47 @@
 
     </div>
 
-    <div class="col-md-12" style="padding: 30px;">
+    <div  style="height:89%;padding: 30px;">
 
-        <div class="form-group" ng-show="model.contacts.length>0">
+        <div class="form-group" style="overflow: auto;height: 40%;" ng-show="model.contacts.length>0">
             <div class="panel panel-default" style="border: 1px solid #f7f7f7">
                 <div class="panel-body">
                     <div class="list-group">
-                        <a ng-click="removeContact(contact,$index)" class="link list-group-item" ng-repeat="contact in model.contacts track by $index">
-                            <img ng-src="{{contact.AvatarSrc}}" class="img-circle" width="50" >
+                        <a ng-click="removeContact(contact,$index)" class="link list-group-item"
+                           ng-repeat="contact in model.contacts track by $index">
+                            <img ng-src="{{contact.AvatarSrc}}" class="img-circle" width="50">
 
                             {{contact.name}}
 
-                                <span style="top: 40%;right: 10%;position: absolute;" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            <span style="top: 40%;right: 10%;position: absolute;" class="glyphicon glyphicon-remove"
+                                  aria-hidden="true"></span>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="overflow: auto;height: 40%;">
             <div class="panel panel-default" style="border: 1px solid #f7f7f7">
                 <div class="panel-body" style="text-align: left; border-bottom: 1px solid #f7f7f7;color:#7c8b92">
                     Выберите Контакты
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
-                            <a ng-click="selectContact(contact,$index)" class="link list-group-item" ng-repeat="contact in env.contacts track by $index">
-                                <img ng-src="{{contact.AvatarSrc}}" class="img-circle" width="50" >
+                        <a ng-click="selectContact(contact,$index)" class="link list-group-item"
+                           ng-repeat="contact in env.contacts track by $index">
+                            <img ng-src="{{contact.AvatarSrc}}" class="img-circle" width="50">
 
-                                {{contact.name}}
-                            </a>
+                            {{contact.name}}
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <button ng-disabled="model.contacts.length==0" type="button" class="btn btn-default" ng-click="saveGroup(model)">Создать</button>
+        <button ng-disabled="model.contacts.length==0" type="button" class="btn btn-default"
+                ng-click="saveGroup(model)">Создать
+        </button>
 
     </div>
 

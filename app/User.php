@@ -262,6 +262,7 @@ class User extends Authenticatable
         self::userValidation($data);
         // $data['activated'] = 1;
         $data['password'] = \Hash::make($data['password']);
+        $data['name'] = empty($data['name']) ? $data['login']:$data['name'];
         $user = self::create($data);
         // event(new UserEvent($user, 'create'));
         return $user;
