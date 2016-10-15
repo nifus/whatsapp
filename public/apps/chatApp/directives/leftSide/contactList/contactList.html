@@ -8,7 +8,7 @@
 
     <div  style="padding:0px;height:89%" >
         <div class="left-contacts">
-            <div class="persona" ng-repeat="contact in user.contacts"  ng-click="createChat(contact)">
+            <div class="persona" ng-repeat="contact in user.contacts|orderBy:'-name':true"  ng-click="createChat(contact)">
                 <div class="foto"><img ng-src="{{contact.AvatarSrc}}"
                                        class="img-circle" width="50"></div>
                 <div class="detalle-contacto">

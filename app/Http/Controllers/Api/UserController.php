@@ -54,15 +54,28 @@ class UserController extends Controller
             }
 
             $chats = $user->Chats;
+            $members =  $user->Contacts->pluck('id')->toArray();
+            //dd($members);
             $result = [];
             foreach( $chats as $chat ){
-                array_push($result,array_merge($chat->toArray(),
-                    [
-                        'CountUnreadMessages'=>ChatPost::getCountUnreadPosts($chat->id, $user->id),
-                        'LastPost' => Chat::getLastPost($chat->id, $user->id),
-                        'ChatAvatar' => $chat->getAvatar($user->id)
-                    ]
-                ));
+                $chat_members = $chat->Members()->pluck('id')->toArray();
+                $access = true;
+                foreach( $chat_members as $member ){
+                    if ( !in_array($member, $members) &&  $member!=$user->id){
+                        $access = false;
+                        break;
+                    }
+                }
+                if ( $access ){
+                    array_push($result,array_merge($chat->toArray(),
+                        [
+                            'CountUnreadMessages'=>ChatPost::getCountUnreadPosts($chat->id, $user->id),
+                            'LastPost' => Chat::getLastPost($chat->id, $user->id),
+                            'ChatAvatar' => $chat->getAvatar($user->id)
+                        ]
+                    ));
+                }
+
             }
             return response()->json($result);
         }catch( \Exception $e ){
