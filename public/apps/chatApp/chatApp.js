@@ -40,7 +40,6 @@
 
     }).factory('socket', function (socketFactory) {
         var myIoSocket = io.connect(window.SERVER + ':3000', { query: "host="+window.location.host });
-        console.log(myIoSocket);
         var mySocket = socketFactory({
             ioSocket: myIoSocket
         });
