@@ -4,7 +4,6 @@
 
         window.SERVER = window.location.protocol+'//' + window.location.host;
 
-
         // $authProvider.httpInterceptor = false;
         $authProvider.loginUrl = window.SERVER + '/backend/user/authenticate';
         $authProvider.signupUrl = window.SERVER + '/backend/user/register';
@@ -40,11 +39,11 @@
 
 
     }).factory('socket', function (socketFactory) {
-        var myIoSocket = io.connect(window.SERVER + ':3000');
+        var myIoSocket = io.connect(window.SERVER + ':3000', { query: "host="+window.location.host });
+        console.log(myIoSocket);
         var mySocket = socketFactory({
             ioSocket: myIoSocket
         });
-
         return mySocket;
     }).run(['userFactory', '$state', '$rootScope', function (userFactory, $state, $rootScope) {
         moment.locale('ru');

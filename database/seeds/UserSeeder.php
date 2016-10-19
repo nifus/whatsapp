@@ -17,8 +17,8 @@ class UserTableSeeder extends Seeder
         Model::unguard();
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        \DB::table('users')->truncate();
-        \DB::table('users_contacts')->truncate();
+        //\DB::table('users')->truncate();
+       // \DB::table('users_contacts')->truncate();
 
 
         $users = array(
@@ -26,7 +26,7 @@ class UserTableSeeder extends Seeder
                 'name' => 'Петя',
                 'email' => 'admin@admin.dev',
                 'login' => 'admin',
-                'password' => Hash::make('u733kG9Y6k'),
+                'password' => Hash::make('7Ksd65yv'),
                 'group_id' => 1,
             ],
             [
