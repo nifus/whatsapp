@@ -11,16 +11,6 @@ io.use(function(socket, next) {
 });
 
 
-var rooms = [
-    'subriz.com',
-    'supportim.org',
-    'flowemt.com',
-    'dikom.org',
-    'bitcradle.com',
-    'chat.dev',
-    'chat.bunzya.ru'
-];
-
 
 var connected = {};
 
@@ -90,6 +80,6 @@ io.on('connection', function (socket) {
 
 });
 
-http.listen(3000, function () {
+http.listen(3020, function () {
     console.log('listening on *:3000');
 });
