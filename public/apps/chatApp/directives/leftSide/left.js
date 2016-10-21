@@ -20,6 +20,11 @@
         function leftController($scope, userFactory, chatFactory,  socket, $timeout) {
             $scope.dialog = 'contacts';
 
+            $scope.env = {
+                contacts: [],
+                source_contacts:[],
+                name: null
+            };
 
             $scope.openChat = function (chat, post_id) {
                 $scope.$parent.$parent.loadChat(chat, post_id);
@@ -65,7 +70,6 @@
             };
 
             $scope.createChat = function (contact) {
-
                 $scope.dialog = 'contacts';
                 chatFactory.createByContact($scope.user, contact).then(function (response) {
                     if (response.success != false) {
@@ -111,11 +115,45 @@
                             users.push( data.contacts[i].id )
                         }
                         socket.emit('chat', response.chat.id, users);
-
                     }
                 })
-
             };
+
+            $scope.$watch('env.name', function (value) {
+                if (value != undefined) {
+                    $scope.showContactList(value);
+                }
+            });
+
+            $scope.showContactList = function (value) {
+                if (value != undefined) {
+                    value = value.toLowerCase();
+
+                        $scope.env.contacts = $scope.env.source_contacts.filter(function (contact) {
+                            if (contact.name.toLowerCase().indexOf(value) != -1) {
+                                return true;
+                            }
+                            if (contact.login != undefined && contact.login.toLowerCase().indexOf(value) != -1) {
+                                return true;
+                            }
+                            return false;
+                        })
+
+                       // $scope.env.contacts = $scope.env.source_contacts;
+                    console.log($scope.env.contacts)
+
+                } else {
+                    $scope.env.contacts = $scope.env.source_contacts;
+                    $scope.env.chats = [];
+                }
+            };
+
+            $scope.$watch('user.contacts', function (value) {
+                if (value) {
+                    $scope.env.contacts = value;
+                    $scope.env.source_contacts = value;
+                }
+            });
         }
 
 

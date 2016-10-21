@@ -7,13 +7,18 @@
     </div>
 
     <div  style="padding:0px;height:89%" >
+        <div class="center-search">
+            <input type="text" class="form-control" ng-model="env.name" placeholder="Поиск контактов">
+        </div>
         <div class="left-contacts">
-            <div class="persona" ng-repeat="contact in user.contacts|orderBy:'-name':true"  ng-click="createChat(contact)">
-                <div class="foto"><img ng-src="{{contact.AvatarSrc}}"
-                                       class="img-circle" width="50"></div>
-                <div class="detalle-contacto">
-                    <div class="nombre-contacto">{{contact.name}}</div>
-                </div>
+            <div class="persona" ng-repeat="contact in env.contacts|orderBy:'-name':true"  ng-click="createChat(contact)">
+
+                <div class="status offline"></div>
+                <div class="item " style="top:30%">
+                    <div class="detalle-contacto">
+                        <div class="nombre-contacto">{{contact.name}} {{contact.login}}</div>
+                    </div>
+                    </div>
             </div>
         </div>
     </div>

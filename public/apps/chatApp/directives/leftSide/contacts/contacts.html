@@ -7,41 +7,45 @@
 
 <div class="left-contacts">
 
-    <div class="persona" ng-show="env.search_activated && env.chats.length>0"><h3>Чаты</h3></div>
+    <div class="persona header" ng-show="env.search_activated && env.chats.length>0"><h3>Чаты</h3></div>
 
     <div class="persona" ng-repeat="ch in env.chats|orderBy:'-updated_at'" ng-click="$parent.$parent.$parent.openChat(ch, null)"
          ng-class="{'selected':chat.id==ch.id}">
-        <div class="foto"><img ng-src="{{ch.ChatAvatar}}" class="img-circle" width="50"></div>
-        <div class="detalle-contacto">
-            <div class="nombre-contacto">{{ch.getChatName(user.id)}}</div>
-            <div class="mensaje-contacto" ng-show="!ch.LastPost.message && ch.LastPost.type=='image'"><span
-                    class="glyphicon glyphicon-camera" aria-hidden="true"></span> Фото
+
+        <div class="status offline"></div>
+        <div class="item">
+            <div class="detalle-contacto">
+                <div class="nombre-contacto">{{ch.getChatName(user.id)}} {{ ch.getChatLogin(user.id)==ch.getChatName(user.id) ? '' : ch.getChatLogin(user.id)}}</div>
+                <div class="mensaje-contacto" ng-show="!ch.LastPost.message && ch.LastPost.type=='image'"><span
+                        class="glyphicon glyphicon-camera" aria-hidden="true"></span> Фото
+                </div>
+                <div class="mensaje-contacto" ng-show="ch.LastPost.message"
+                     ng-bind-html="ch.LastPost.cut_message|to_trusted "></div>
+
             </div>
-            <div class="mensaje-contacto" ng-show="ch.LastPost.message"
-                 ng-bind-html="ch.LastPost.cut_message|to_trusted "></div>
 
-        </div>
-
-        <div class="additional">
-            {{ch.LastPost.Time}} <br>
-            <span class="badge" ng-show="ch.CountUnreadMessages>0">{{ch.CountUnreadMessages}}</span>
+            <div class="additional">
+                {{ch.LastPost.Time}} <br>
+                <span class="badge" ng-show="ch.CountUnreadMessages>0">{{ch.CountUnreadMessages}}</span>
+            </div>
         </div>
     </div>
 
-    <div class="persona" ng-show="env.search_activated && env.contacts.length>0 "><h3>Контакты</h3></div>
+    <div class="persona header" ng-show="env.search_activated && env.contacts.length>0 "><h3>Контакты</h3></div>
 
     <div class="persona" ng-repeat="contact in env.contacts" ng-show="env.search_activated"
          ng-click="createChat(contact)">
 
-        <div class="foto"><img ng-src="{{contact.AvatarSrc}}"
-                               class="img-circle" width="50"></div>
-        <div class="detalle-contacto">
-            <div class="nombre-contacto">{{contact.name}}</div>
-        </div>
+        <div class="status offline"></div>
+        <div class="item " style="top:30%">
+            <div class="detalle-contacto">
+                <div class="nombre-contacto">{{contact.name}}</div>
+            </div>
+            </div>
     </div>
 
 
-    <div class="persona" ng-show="env.search_activated && env.search_result.length>0 "><h3>Сообщения</h3></div>
+    <div class="persona header" ng-show="env.search_activated && env.search_result.length>0 "><h3>Сообщения</h3></div>
 
     <div class="persona" ng-repeat="post in env.search_result" ng-click="env.chat='';$parent.$parent.openChat( getChat(post.chat_id),post.id  )">
 

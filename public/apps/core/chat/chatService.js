@@ -106,6 +106,23 @@
                 return false;
             };
 
+
+            Object.getChatLogin = function (user_id) {
+                if (Object.is_group == 1) {
+                    return null;
+                }
+                var users = Object.members.filter(function (user) {
+                    if (user.id != user_id) {
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (users.length == 1) {
+                    return users[0].login;
+                }
+            };
+
             Object.getChatName = function (user_id) {
                 if (Object.name != '') {
                     return Object.name;

@@ -333,14 +333,44 @@ div.input div.textarea{
 	padding: 10px;
 }
 .persona{
+	height:60px;
+	clear:both;
 	border-top: 1px solid #f2f2f2;
-	padding: 10px 15px;
+	<!--padding: 10px 15px;-->
 	overflow: hidden;
 }
 .persona:hover{
 	background: #E9EBEB;
 	cursor: pointer;
 }
+
+.persona div.status{
+	width: 8px;
+	height: 60px;
+	float: left;
+
+}
+
+.persona div.offline{
+	background-color: red;
+}
+
+.persona div.item{
+	position: relative;
+	top: 15%;
+}
+
+.persona span.badge{
+	background-color: #00e676;
+}
+.persona h3{
+	font-size: 21px;
+}
+
+.left-contacts div.header{
+	text-align: center;
+}
+
 .selected{
 	background-color: lightblue;
 }
@@ -385,8 +415,8 @@ div.input div.textarea{
 .additional{
 	font-size: 10px;
 	float: left;
-	width: 8%;
-	text-align: center;margin:5px;padding:0px
+	width: 23%;
+	text-align: right;margin:5px;padding:0px
 }
 #chat{
 	height: 610px;

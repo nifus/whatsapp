@@ -115,8 +115,14 @@ class ChatPost extends Model
         }
     }
     public function getTimeAttribute(){
+        $now = new \DateTime();
         $date = new \DateTime($this->created_at);
-        return $date->format('d.m.y H:i');
+        if ( $now->format('d.m.y')==$date->format('d.m.y') ){
+            return $date->format('H:i');
+        }else{
+            return $date->format('d.m.y');
+        }
+
     }
 
     public function remove(){
