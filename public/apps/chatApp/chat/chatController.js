@@ -367,7 +367,9 @@
                         }
                         // $scope.env.chat.posts.push(response.post);
                         $scope.env.edit_post = null;
-                        alertify.success('Сообщение изменено')
+                        alertify.success('Сообщение изменено');
+                        $scope.$emit('submit_msg');
+
                     }
                 })
             }else{
@@ -381,6 +383,7 @@
                     } else {
                         $scope.env.selected_post = null;
                         $scope.$emit('messages:scroll_down');
+
                     }
                 })
             }
@@ -390,7 +393,9 @@
             $scope.env.selected_post = null;
             $timeout(function(){
                 $rootScope.$broadcast('textField',{'smiles':$scope.env.show_smiles,'answer': $scope.env.selected_post ? true : false});
-                $('#textarea').focus();
+                //$('#textarea').focus();;
+                $scope.$emit('submit_msg');
+
             },10)
 
         };

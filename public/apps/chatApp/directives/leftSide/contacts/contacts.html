@@ -36,7 +36,7 @@
     <div class="persona" ng-repeat="contact in env.contacts" ng-show="env.search_activated"
          ng-click="createChat(contact)">
 
-        <div class="status offline"></div>
+        <div class="status {'offline':env.who_is_online.indexOf( ch.getUser(user.id).id )==-1 && ch.is_group==0, 'online':env.who_is_online.indexOf(ch.getUser(user.id).id)!=-1 && ch.is_group==0 }"></div>
         <div class="item " style="top:30%">
             <div class="detalle-contacto">
                 <div class="nombre-contacto">{{contact.name}}</div>
