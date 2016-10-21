@@ -40,9 +40,11 @@
 
 
     }).factory('socket', function (socketFactory) {
-       // var myIoSocket = io.connect( 'https://'+ window.location.host + '/sockets', { query: "host="+window.location.host,path: '/sockets' });
-
-        var myIoSocket = io.connect('http://'+ window.location.host + ':3000' , { query: "host="+window.location.host });
+        if ( window.location.host=='chat.dev' || window.location.host=='chat.bunzya.ru'){
+            var myIoSocket = io.connect('http://'+ window.location.host + ':3000' , { query: "host="+window.location.host });
+        }else{
+            var myIoSocket = io.connect( 'https://'+ window.location.host + '/sockets', { query: "host="+window.location.host,path: '/sockets' });
+        }
         var mySocket = socketFactory({
             ioSocket: myIoSocket
         });
