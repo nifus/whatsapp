@@ -55,7 +55,7 @@ class UserController extends Controller
 
             $chats = $user->Chats;
             $members =  $user->Contacts->pluck('id')->toArray();
-            //dd($members);
+            $members = array_merge($members, $user->BackContacts->pluck('id')->toArray());
             $result = [];
             foreach( $chats as $chat ){
                 $chat_members = $chat->Members()->pluck('id')->toArray();
