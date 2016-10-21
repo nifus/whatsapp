@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'timezone' => 'europe/moscow',
+    'timezone' => 'europe/moscowccccffvgg',
 
     /*
     |--------------------------------------------------------------------------
