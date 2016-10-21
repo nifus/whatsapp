@@ -3,13 +3,22 @@
 
     angular.module('chatApp').controller('contactsController', contactsController);
 
-    contactsController.$inject = ['$scope', 'userFactory', '$http'];
-    function contactsController($scope, userFactory, $http) {
+    contactsController.$inject = ['$scope', 'userFactory', '$http','socket'];
+    function contactsController($scope, userFactory, $http, socket) {
         $scope.env = {
             chat: undefined,
             search_activated: false,
-            search_result: []
+            search_result: [],
+            who_is_online:[]
         };
+
+        socket.on('who_is_online', function(array_ids){
+            var onl = [];
+            for(var i in array_ids){
+                onl.push( array_ids[i].user)
+            }
+            $scope.env.who_is_online = onl;
+        });
 
         $scope.$watch('contact_list', function (value) {
             if (value == true) {

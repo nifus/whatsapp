@@ -28,8 +28,11 @@
             };
 
             socket.on('who_is_online', function(array_ids){
-                console.log(array_ids)
-                $scope.env.who_is_online = array_ids;
+                var onl = [];
+                for(var i in array_ids){
+                    onl.push( array_ids[i].user)
+                }
+                $scope.env.who_is_online = onl;
             });
 
             $scope.openChat = function (chat, post_id) {

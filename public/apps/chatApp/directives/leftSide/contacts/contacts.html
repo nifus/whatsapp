@@ -12,7 +12,7 @@
     <div class="persona" ng-repeat="ch in env.chats|orderBy:'-updated_at'" ng-click="$parent.$parent.$parent.openChat(ch, null)"
          ng-class="{'selected':chat.id==ch.id}">
 
-        <div class="status offline"></div>
+        <div class="status" ng-class="{'offline':env.who_is_online.indexOf( ch.getUser(user.id).id )==-1 && ch.is_group==0, 'online':env.who_is_online.indexOf(ch.getUser(user.id).id)!=-1 && ch.is_group==0 }"></div>
         <div class="item">
             <div class="detalle-contacto">
                 <div class="nombre-contacto">{{ch.getChatName(user.id)}} {{ ch.getChatLogin(user.id)==ch.getChatName(user.id) ? '' : ch.getChatLogin(user.id)}}</div>
