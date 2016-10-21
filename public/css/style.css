@@ -354,6 +354,9 @@ div.input div.textarea{
 .persona div.offline{
 	background-color: red;
 }
+.persona div.online{
+	background-color: green;
+}
 
 .persona div.item{
 	position: relative;

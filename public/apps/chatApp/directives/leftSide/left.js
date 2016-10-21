@@ -23,8 +23,14 @@
             $scope.env = {
                 contacts: [],
                 source_contacts:[],
-                name: null
+                name: null,
+                who_is_online:[]
             };
+
+            socket.on('who_is_online', function(array_ids){
+                console.log(array_ids)
+                $scope.env.who_is_online = array_ids;
+            });
 
             $scope.openChat = function (chat, post_id) {
                 $scope.$parent.$parent.loadChat(chat, post_id);
