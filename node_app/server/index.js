@@ -11,7 +11,7 @@ var connected = {};
 
 io.use(function(socket, next) {
     var handshakeData = socket.request;
-    client_host = handshakeData._query['host']
+    client_host = handshakeData._query['host'];
     next();
 });
 
@@ -24,7 +24,7 @@ function findUser(user) {
     }
     return false;
 }
-io.on('connection', function (socket) {
+io.of('/sockets').on('connection', function (socket) {
 
     console.log('a user connected '+client_host);
     socket.join(client_host);

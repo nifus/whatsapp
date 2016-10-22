@@ -40,7 +40,7 @@ class convert extends Command
      */
     public function handle()
     {
-        $users = \DB::table('users_old')->get();
+       /* $users = \DB::table('users_old')->get();
        // \DB::table('users')->truncate();
 
         $clears = [];
@@ -74,9 +74,9 @@ class convert extends Command
 
         \DB::table('chats')->truncate();
         \DB::table('chats_members')->truncate();
-        \DB::table('chats_posts')->truncate();
+        \DB::table('chats_posts')->truncate();*/
 
-        $messages = \DB::table('history')->orderBy('date','ASC')->get();
+        $messages = \DB::table('history')->where('id','>',459337)->orderBy('date','ASC')->get();
         try{
 
             foreach($messages as $message){
