@@ -17,6 +17,13 @@
             var savedSelection = null;
             var sel = null;
 
+            /*var editable = document.getElementById('textbox');
+            editable.addEventListener('DOMNodeInserted', onChange, false);
+            function onChange() {
+                //console.log('insert')
+                editable.innerHTML = editable.innerText;
+            }*/
+
             $rootScope.$on('open_chat', function(){
                 element.focus();
                 sel  = rangy.getSelection();
