@@ -4,7 +4,6 @@
 
         window.SERVER = window.location.protocol+'//' + window.location.host;
 
-
         // $authProvider.httpInterceptor = false;
         $authProvider.loginUrl = window.SERVER + '/backend/user/authenticate';
         $authProvider.signupUrl = window.SERVER + '/backend/user/register';
@@ -45,10 +44,10 @@
         }else{
             var myIoSocket = io.connect( 'https://'+ window.location.host , { query: "host="+window.location.host,path: '/sockets' });
         }
+
         var mySocket = socketFactory({
             ioSocket: myIoSocket
         });
-
         return mySocket;
     }).run(['userFactory', '$state', '$rootScope', function (userFactory, $state, $rootScope) {
         moment.locale('ru');

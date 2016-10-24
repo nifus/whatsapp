@@ -40,7 +40,7 @@ class convert extends Command
      */
     public function handle()
     {
-       /* $users = \DB::table('users_old')->get();
+        $users = \DB::table('users_old')->get();
        // \DB::table('users')->truncate();
 
         $clears = [];
@@ -72,9 +72,10 @@ class convert extends Command
         }
 
 
+
         \DB::table('chats')->truncate();
         \DB::table('chats_members')->truncate();
-        \DB::table('chats_posts')->truncate();*/
+        \DB::table('chats_posts')->truncate();
 
         $messages = \DB::table('history')->where('id','>',459337)->orderBy('date','ASC')->get();
         try{
@@ -87,6 +88,8 @@ class convert extends Command
                 if ( is_null($from) || is_null($to) ){
                     continue;
                 }
+
+
                 $chat = Chat::getChatWithUsers($from->id,$to->id);
 
                 if (is_null($chat)){
@@ -98,6 +101,7 @@ class convert extends Command
 
                     $to_login = $to->login;
                     $mems = [];
+
                     if ( isset($clears[$from->login]) && isset($clears[$from->login]->$to_login) ){
                         array_push($mems,['user_id'=>$from->id,'chat_id'=>$chat->id,'clear_date'=>date('Y-m-d H:i:s',$clears[$from->login]->$to_login)]);
                     }else{
@@ -112,17 +116,24 @@ class convert extends Command
 
                     $chat->Members()->sync($mems);
                     //\DB::table('chats_members')
-                    $chat->addPost([
-                        'type'=>'text',
-                        'message'=>$message->message,
-                        'created_at'=>$message->date,
-                    ],$from->id);
+                    if ( !empty($message->message)){
+                        $chat->addPost([
+                            'type'=>'text',
+                            'message'=>$message->message,
+                            'created_at'=>$message->date,
+                        ],$from->id);
+                    }
+
                 }else{
-                    $chat->addPost([
-                        'type'=>'text',
-                        'message'=>$message->message,
-                        'created_at'=>$message->date,
-                    ],$from->id);
+
+                    if ( !empty($message->message)) {
+
+                        $chat->addPost([
+                            'type' => 'text',
+                            'message' => $message->message,
+                            'created_at' => $message->date,
+                        ], $from->id);
+                    }
                 }
             }
 
@@ -131,6 +142,7 @@ class convert extends Command
             var_dump($from->id);
             var_dump($to->id);
             var_dump($chat);
+            var_dump($e->getLine() );
             dd($e->getMessage());
         }
 

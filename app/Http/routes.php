@@ -8,7 +8,7 @@ Route::get('signout', ['as' => 'signout', 'uses' => 'User\SignOutController@inde
 
 
     Route::group(['prefix' => 'backend/user'], function () {
-        Route::post('/authenticate', 'Api\UserController@authenticate')->middleware('updateLastAction');
+        Route::post('/authenticate', 'Api\UserController@authenticate');
         Route::get('/get-auth', 'Api\UserController@getAuth')->middleware('updateLastAction');
 
         Route::get('/get-all', 'Api\UserController@getAll');

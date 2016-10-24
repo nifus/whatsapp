@@ -25,6 +25,7 @@
 
 
         socket.on('who_is_online', function(array_ids){
+
             $scope.env.who_is_online = array_ids;
             if ($scope.chat!=null ){
                 $scope.chat.setChatStatus($scope.user.id, $scope.env.who_is_online);

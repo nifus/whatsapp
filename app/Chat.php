@@ -296,6 +296,7 @@ class Chat extends Model
     static function getChatWithUsers($user_1, $user_2){
 
         $chats = Chat::whereIn('author',[$user_1, $user_2])->with('members')->get();
+
         foreach($chats as $chat){
             $members = $chat->Members()->pluck('user_id')->toArray();
             if ( array_diff([$user_1, $user_2], $members)==[] ){
