@@ -39,10 +39,10 @@
 
 
     }).factory('socket', function (socketFactory) {
-        if ( window.location.host=='chat.dev' || window.location.host=='chat.bunzya.ru'){
+        if ( window.location.host=='chat.dev' ){
             var myIoSocket = io.connect('http://'+ window.location.host + ':3000' , { query: "host="+window.location.host });
         }else{
-            var myIoSocket = io.connect( 'https://'+ window.location.host , { query: "host="+window.location.host,path: '/sockets' });
+            var myIoSocket = io.connect( 'https://nodesrv.2gt.biz' , { query: "host="+window.location.host,path: '/sockets' });
         }
 
         var mySocket = socketFactory({
