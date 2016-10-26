@@ -53,16 +53,18 @@ class UserController extends Controller
                 throw new \Exception('no user');
             }
 
-            $chats = $user->Chats;
+            $chats = $user->Chats;//()->where('is_group',1)->pluck('id')->toArray();
+
             $members =  $user->Contacts->pluck('id')->toArray();
             $members = array_merge($members, $user->BackContacts->pluck('id')->toArray());
+
             $result = [];
             foreach( $chats as $chat ){
                 $chat_members = $chat->Members()->pluck('id')->toArray();
                 $access = true;
                 foreach( $chat_members as $member ){
-                    if ( !in_array($member, $members) &&  $member!=$user->id){
-                        $access = false;
+                    if ( !in_array($member, $members) &&  $member!=$user->id && $chat->is_group==0){
+
                         break;
                     }
                 }
