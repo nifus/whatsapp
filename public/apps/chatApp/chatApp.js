@@ -39,12 +39,22 @@
 
 
     }).factory('socket', function (socketFactory) {
+
+        var hosts = {
+            'dikom.org':3001,
+            'subriz.com':3002,
+            'finehill.org':3003,
+            'flowemt.com':3004,
+            'supportim.org':3005
+        };
         if ( window.location.host=='chat.dev' ){
             var myIoSocket = io.connect('http://'+ window.location.host + ':3000' , { query: "host="+window.location.host });
         }else{
-            var myIoSocket = io.connect( 'https://nodesrv.2gt.biz' , { query: "host="+window.location.host });
-
+            var port = hosts[window.location.host];
+            var myIoSocket = io.connect( 'https://nodesrv.2gt.biz:'+port , { query: "host="+window.location.host });
         }
+
+
         myIoSocket.on('debug', function(msg){
            console.log(msg)
         });
