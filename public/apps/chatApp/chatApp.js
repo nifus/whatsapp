@@ -45,7 +45,9 @@
             var myIoSocket = io.connect( 'https://nodesrv.2gt.biz' , { query: "host="+window.location.host });
 
         }
-
+        myIoSocket.on('debug', function(msg){
+           console.log(msg)
+        });
         var mySocket = socketFactory({
             ioSocket: myIoSocket
         });
