@@ -25,7 +25,7 @@
 
 
         socket.on('who_is_online', function(array_ids){
-
+            console.log('who_is_online',array_ids)
             $scope.env.who_is_online = array_ids;
             if ($scope.chat!=null ){
                 $scope.chat.setChatStatus($scope.user.id, $scope.env.who_is_online);
@@ -125,16 +125,17 @@
 
         socket.on('reload', function (obj) {
             var chat_id = obj.chat_id;
+            console.log('Новое сообщение в чате',chat_id);
+
             $scope.env.user.chats.filter(function (chat) {
                 if (chat.id == chat_id) {
+                    console.log('Этот чат нам доступен ',chat_id);
                     var current_chat = ($scope.chat && chat.id == $scope.chat.id) ? true : false;
                     chat.updateInformation(current_chat).then(function (response) {
                         $scope.$emit('messages:scroll_down', chat.last_post_id);
                         if (current_chat && $scope.user_off == false) {
                             chat.hasRead();
                         }
-
-
                     });
                     if (chat.needPlayMusic($scope.env.user.id)) {
                         $scope.env.sound.play();

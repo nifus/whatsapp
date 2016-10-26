@@ -34,7 +34,6 @@
                 element.focus();
                 node = element[0];
                 sel  = rangy.getSelection();
-                console.log(1)
                 parent = null;
             });
 
@@ -74,8 +73,7 @@
             });
 
             $rootScope.$on('insert_smiles', function (event, html) {
-                console.log(sel.focusNode)
-                console.log(sel.focusOffset)
+
                 setCaret(sel.focusNode,sel.focusOffset);
                // setCaret(node,position+1);
                // rangy.restoreSelection(sel);

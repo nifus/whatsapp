@@ -20,7 +20,6 @@
             var messages = element.find('div.messages');
 
             $rootScope.$on('textField', function (event, options) {
-                console.log('--textField--')
                 resize(options);
                 $timeout(function(){
                    // resize(options);
@@ -29,8 +28,6 @@
 
 
             $rootScope.$on('smiles', function (event, options) {
-                console.log('--smiles--')
-
                 resize(options);
                 $timeout(function(){
                     //resize(options);
@@ -38,8 +35,6 @@
             });
 
             $rootScope.$on('answer', function (event, options) {
-                console.log('--answer--')
-
                 resize(options);
                 $timeout(function(){
                     //resize(options);
@@ -55,8 +50,6 @@
                 var smiles_height = 146;
                 var input_height = $('#textbox')[0].offsetHeight+20;
 
-               // console.log('full_height-'+full_height);
-                //console.log('input_height-'+input_height);
 
                 input_element.height(textarea_height + 2);
                 around_element.height(textarea_height + 2);
@@ -68,22 +61,13 @@
                 var set_input = textarea_height + 2;
 
                 if (options.smiles == true) {
-                    console.log('smile');
                     set_message -= smiles_height;
                     set_input += smiles_height;
                 }
                 if (options.answer == true) {
-                    console.log('answer');
-
                     set_message -= (reply_height + 20);
                     set_input += (reply_height + 20);
                 }
-
-                //console.log('messages-'+set_message);
-                //console.log('input-'+set_input);
-                //console.log('=================-');
-                //console.log('=================-');
-                //console.log('=================-');
 
                 messages.height(set_message);
                 input_element.height(set_input);

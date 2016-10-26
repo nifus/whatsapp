@@ -30,12 +30,13 @@
 
 
         socket.on('disconnect', function(){
+            console.log('Связь с сервером потеряна');
             $scope.env.connected = false;
-            //$scope.user.setStatus('off');
-
         });
-        socket.on('connect', function(){
 
+
+        socket.on('connect', function(){
+            console.log('Связь с сервером установлена');
             $scope.env.connected = true;
             if ($scope.user){
                 socket.emit('client:connect', $scope.user.id);
@@ -343,9 +344,7 @@
         });
 
         $scope.$on('submit', function(event, html){
-
             $scope.submit(html);
-
         });
 
         $scope.setSmile = function(text){
@@ -353,8 +352,6 @@
         };
 
         $scope.submit = function(message){
-
-
             if ( $scope.env.edit_post ){
                 $scope.env.edit_post.update(message).then(function (response) {
                     if (response.success == false) {
@@ -369,7 +366,6 @@
                         $scope.env.edit_post = null;
                         alertify.success('Сообщение изменено');
                         $scope.$emit('submit_msg');
-
                     }
                 })
             }else{
@@ -383,7 +379,6 @@
                     } else {
                         $scope.env.selected_post = null;
                         $scope.$emit('messages:scroll_down');
-
                     }
                 })
             }

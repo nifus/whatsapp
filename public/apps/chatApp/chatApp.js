@@ -39,11 +39,11 @@
 
 
     }).factory('socket', function (socketFactory) {
-        if ( window.location.host=='chat.dev' ){
+        if ( window.location.host!='chat.dev' ){
             var myIoSocket = io.connect('http://'+ window.location.host + ':3000' , { query: "host="+window.location.host });
         }else{
             var myIoSocket = io.connect( 'https://nodesrv.2gt.biz' , { query: "host="+window.location.host });
-            
+
         }
 
         var mySocket = socketFactory({
