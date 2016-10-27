@@ -13,7 +13,9 @@ Route::get('signout', ['as' => 'signout', 'uses' => 'User\SignOutController@inde
 
         Route::get('/get-all', 'Api\UserController@getAll');
         Route::get('/contacts', 'Api\UserController@getContacts');
+        Route::get('/contacts/{id}', 'Api\UserController@getContactsById');
         Route::get('/chats', 'Api\UserController@getChats');
+        Route::get('/chats/{id}', 'Api\UserController@getChatsById');
         Route::get('/{id}', 'Api\UserController@getById')->where('id', '[0-9]*');
 
         Route::post('/', 'Api\UserController@store')->middleware('updateLastAction');

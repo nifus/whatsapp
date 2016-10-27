@@ -34,9 +34,13 @@
                 }
             };
 
-            Object.hasRead = function(){
+            Object.hasRead = function(user){
+                var user_to = null;
+                if (Object.is_group==0 && user!=undefined && user.id!=undefined){
+                    user_to = user.id
+                }
                 return $http.put('/chats/' + Object.id + '/read').then(function () {
-                    socket.emit('client:read_chat',Object.id);
+                    socket.emit('client:read_chat',{user_to:user_to, chat_id: Object.id});
                 })
             };
 
@@ -46,6 +50,10 @@
                         Object.setLastPost(response.data.LastPost);
                         Object.updated_at = response.data.updated_at;
                         Object.CountUnreadMessages = true===is_current_chat ? 0 :response.data.CountUnreadMessages;
+                        console.log(Object.CountUnreadMessages);
+                        console.log(response.data.LastPost);
+                        console.log(response.data.Posts);
+                        console.log('----');
                         if (Object.posts) {
                             Object.posts.push(response.data.LastPost)
                         }
@@ -269,9 +277,13 @@
                 return postFactory.getPostsDown(Object.id, post_id)
             };
 
-            Object.addPost = function (message, reply) {
+            Object.addPost = function (message, reply, user) {
                 var defer = $q.defer();
-                postFactory.addPost(message, reply, Object.id).then(function (response) {
+                var user_to = null;
+                if (Object.is_group==0 && user!=undefined && user.id!=undefined){
+                    user_to = user.id
+                }
+                postFactory.addPost(message, reply, Object.id, user_to).then(function (response) {
                     Object.posts.push(response.post);
                     Object.setLastPost(response.post);
                     Object.updated_at = response.chat.updated_at;

@@ -373,7 +373,8 @@
                 if ( $scope.env.selected_post ){
                     reply = $scope.env.selected_post.id;
                 }
-                $scope.chat.addPost(message, reply).then(function (response) {
+
+                $scope.chat.addPost(message, reply,  $scope.chat.getUser($scope.user)).then(function (response) {
                     if (response.success == false) {
                         alertify.error(response.error);
                     } else {

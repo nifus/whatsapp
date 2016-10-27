@@ -1,70 +1,230 @@
-
 <html>
 <head>
     <meta charset="utf-8">
     <script src="components/jquery/dist/jquery.min.js"></script>
 
     <script src="components/angular/angular.js"></script>
+    <script src="components/socket.io-client/socket.io.js"></script>
+    <script src="apps/core/core.js"></script>
+    <script src="components/satellizer/dist/satellizer.min.js"></script>
+    <script src="components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="components/angular-socket-io/socket.min.js"></script>
 
-    <script src="components/rangy/rangy-core.min.js"></script>
-    <script src="components/rangy/rangy-selectionsaverestore.min.js"></script>
-    </head>
+    <script src="apps/core/cacheService.js"></script>
+    <script src="apps/core/user/userFactory.js"></script>
+    <script src="apps/core/user/userService.js"></script>
+    <script src="apps/core/chat/chatFactory.js"></script>
+    <script src="apps/core/chat/chatService.js"></script>
+    <script src="apps/core/post/postService.js"></script>
+    <script src="apps/core/post/postFactory.js"></script>
+
+</head>
 <body ng-app="app" ng-controller="contrl">
 
-    <div contenteditable="true" style="height:50px;background-color:lightgrey" ng-bind-html="content|to_trusted"  ng-model="content" ></div>
+<input type="number" ng-model="env.limit">
+<button ng-click="load()">Load</button>
+<button ng-click="connect()">Connect</button>
+<button ng-click="disconnect()">Disconnect</button>
+<button ng-click="WhoisOnline()">Who is online</button>
+<button ng-click="loadContacts()">Load contacts</button>
 
+<br style="clear: both">
+<div style="width: 40%;float:left">
+
+    <ul style="height: 500px;
+    user-select: text;
+    overflow: scroll;">
+        <li ng-repeat="message in env.messages track by $index">{{message}}</li>
+    </ul>
+</div>
+
+<div style="width: 40%;float:left">
+
+    <table>
+        <tr ng-repeat="connect in env.connects">
+            <td>{{connect.user.id}}</td>
+            <td>{{connect.user.email}}</td>
+            <td>{{connect.socket.id}}</td>
+            <td>{{connect.socket.status }}</td>
+        </tr>
+    </table>
+</div>
 </body>
 
 <script>
-    angular.module('app',[]).filter('to_trusted', ['$sce', function ($sce) {
+    angular.module('app', ['core', 'satellizer', 'btford.socket-io']).filter('to_trusted', ['$sce', function ($sce) {
         return function (text) {
             return $sce.trustAsHtml(text);
         };
-    }]).directive('contenteditable', ['$sce','$filter','$timeout', function($sce,$filter,$timeout) {
-        return {
-            restrict: 'A', // only activate on element attribute
-            require: '?ngModel', // get a hold of NgModelController
-            link: function(scope, element, attrs, ngModel) {
-                if (!ngModel) return; // do nothing if no ng-model
+    }]).factory('socket', function (socketFactory) {
 
-                // Specify how UI should be updated
-                ngModel.$render = function() {
-                    element.html( $sce.getTrustedHtml(ngModel.$viewValue || ''));
+        var myIoSocket = io.connect('http://' + window.location.host + ':3000', {query: "host=" + window.location.host});
+
+        var mySocket = socketFactory({
+            ioSocket: myIoSocket
+        });
+        return mySocket;
+    }).config(function ($authProvider) {
+
+        window.SERVER = window.location.protocol + '//' + window.location.host;
+
+        // $authProvider.httpInterceptor = false;
+        $authProvider.loginUrl = window.SERVER + '/backend/user/authenticate';
+        $authProvider.signupUrl = window.SERVER + '/backend/user/register';
+
+    })
+            .controller('contrl', function ($scope, $http, userFactory, $interval, chatService) {
+
+                $scope.env = {
+                    limit: 10,
+                    messages: [],
+                    emails: [],
+                    users: [],
+                    connects: []
                 };
 
-                // Listen for change events to enable binding
-                element.on('blur keyup change', function() {
-                    scope.$evalAsync(read);
-                });
-                read(); // initialize
+                function set(msg) {
+                    $scope.env.messages.unshift(msg)
+                }
 
-                // Write data to the model
-                function read() {
-                    var html = element.html();
-                    // When we clear the content editable the browser leaves a <br> behind
-                    // If strip-br attribute is provided then we strip this out
-                    if ( attrs.stripBr && html == '<br>' ) {
-                        html = '';
-                    }
-                    var textbox = document.getElementById("textbox");
-                    var savedSelection = saveSelection(textbox);    //Rangy save selection
-                    ngModel.$setViewValue(html);
-                    //Timeout is necessary as it gives time for dom to refresh
-                    $timeout(function(){
-                        if(html.indexOf("<a href") > -1){
-                            //Check if savedSelection value exceeds than element text length
-                            var len = element.text().length;
-                            if(savedSelection.end > len){savedSelection.start = len; savedSelection.end = len}
-                            restoreSelection(textbox, savedSelection);  //Rangy restore selection
+
+                $scope.load = function () {
+                    $http.get('/uploads/tests/users.json').then(function (response) {
+                        $scope.env.emails = response.data;
+                        set('Emails loaded');
+                        for (var i in $scope.env.emails) {
+                            if (i > $scope.env.limit) {
+                                break;
+                            }
+                            var email = $scope.env.emails[i]
+                            userFactory.login({login: email, password: 'testpass'}, function (result) {
+                                if (result.success == true) {
+                                    result.user.token = result.token;
+                                    $scope.env.users.push(result.user);
+                                    set('User ' + result.user.login + ' is loaded');
+                                }
+                            })
                         }
-                    },0);
+
+                        /*angular.forEach($scope.env.emails, function (user) {
+                         userFactory.login({login: user, password: 'testpass'}, function (result) {
+                         if (result.success == true) {
+                         result.user.token = result.token;
+                         $scope.env.users.push(result.user);
+                         set('User ' + result.user.login + ' is loaded');
+                         }
+                         })
+                         })*/
+                    });
+                }
+
+                $scope.connect = function () {
+                    for (var i in $scope.env.users) {
+
+                        var socket = io.connect('chat.dev:3000', {query: "host=" + window.location.host});
+                        var user = $scope.env.users[i];
+
+                        $scope.env.connects.push({socket: socket, user: user, status: null});
+                        socket.user = user.id;
+                        socket.on('connect', function (e) {
+                            this.status = 'connect';
+                            //$scope.$apply()
+                            this.emit('client:connect', this.user);
+                            this.emit('client:signin', this.user);
+                        });
+
+                        socket.on('reconnecting', function (e) {
+                            console.log('reconnecting...')
+                            console.log(e)
+                        });
+                        socket.on('error', function (e) {
+                            console.log('error...')
+                            console.log(e)
+                        })
+                        socket.on('disconnect', function (e) {
+                            this.status = 'disconnect';
+                            //$scope.$apply()
+                        })
+                    }
+
+                };
+                $scope.disconnect = function () {
+                    angular.forEach($scope.env.connects, function (connect) {
+                        // var socket = io.connect( 'chat.dev:3000' , { query: "host="+window.location.host });
+                        // result.user.socket= socket;
+                        connect.socket.disconnect(true);
+                        connect.socket;
+
+                        console.log(connect.socket.user)
+                        connect.socket.emit('disconnect');
+                    })
+                };
+
+                $scope.WhoisOnline = function () {
+                    var socket = io.connect('chat.dev:3000', {query: "host=" + window.location.host});
+                    socket.on('who_is_online', function (result) {
+                        console.log(result);
+                    });
+                    socket.emit('client:connect', 10000);
+                    socket.emit('forceDisconnect');
+                }
+                //
+                //  var myIoSocket = io.connect( 'https://nodesrv.2gt.biz:4000' , { query: "host="+window.location.host });
+
+                var iterator = 0;
+                $scope.loadContacts = function () {
+                    return $http.get('/backend/user/chats/1').then(function (response) {
+                        var chats = response.data;
+                        iterator=0;
+
+
+                        getRandomMessage(chats);
+
+
+
+
+                        //console.log(chats)
+                    })
+
+
+
 
                 }
-            }
-        };
-    }]).controller('contrl', function($scope){
+                  function getRandomMessage (chats) {
+                      iterator++;
+                    var send = false;
+                    var chat_id = getRandomArbitary(0, chats.length - 1);
+                    var chat = new chatService(chats[chat_id]);
 
-        $scope.content = 'test';
-    })
+                    var user = chat.getUser(1);
+                    for (var j in  $scope.env.users) {
+                        if ($scope.env.users[j].id == user.id) {
+                            chat.addPost('test' + iterator).then( function () {
+                                if (iterator<20)
+                                getRandomMessage(chats)
+                            });
+                            send = true;
+                            break;
+                        }
+                    }
+                    if (send === false) {
+                        userFactory.login({login: user.email, password: 'testpass'}, function (result) {
+                            if (result.success == true) {
+                                $scope.env.users.push(user);
+                                chat.addPost('test' + iterator).then( function () {
+                                    if (iterator<20)
+                                        getRandomMessage(chats)
+                                });
+
+                            }
+                        })
+                    }
+                }
+            })
+    function getRandomArbitary(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+
+    }
+
 </script>
 </html>

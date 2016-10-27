@@ -17,14 +17,14 @@
             addDocumentPost: addDocumentPost
         };
 
-        function addPost(message, reply_to, chat_id) {
+        function addPost(message, reply_to, chat_id, user_to) {
             return $http.post('/chats/' + chat_id + '/add-post', {
                 message: message,
                 type: 'text',
                 reply_to: reply_to
             }).then(function (response) {
                 if (response.data.success == true) {
-                    socket.emit('message', {chat_id: chat_id, post_id: response.data.post.id});
+                    socket.emit('message', {chat_id: chat_id, post_id: response.data.post.id, user_to: user_to});
                     return {
                         success: response.data.success,
                         post: new postService(response.data.post),

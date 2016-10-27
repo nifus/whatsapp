@@ -48,6 +48,7 @@
             'supportim.org':3005,
             'testchat.2gt.biz':4000
         };
+
         if ( window.location.host=='chat.dev' ){
             var myIoSocket = io.connect('http://'+ window.location.host + ':3000' , { query: "host="+window.location.host });
         }else{

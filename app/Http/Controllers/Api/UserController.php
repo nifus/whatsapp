@@ -23,6 +23,16 @@ class UserController extends Controller
         $this->middleware('jwt.auth', ['except' => [ 'authenticate']]);
     }
 
+    public function getContactsById($id){
+        try{
+            $user = User::find($id);
+
+            $contacts = $user->getContacts();
+            return response()->json($contacts  );
+        }catch( \Exception $e ){
+            return response()->json( null );
+        }
+    }
     public function getContacts(){
         try{
             $user = JWTAuth::parseToken()->authenticate();
@@ -42,6 +52,43 @@ class UserController extends Controller
         }
     }
 
+
+    public function getChatsById($id){
+        try{
+            $user = User::find($id);
+            $chats = $user->Chats;//()->where('is_group',1)->pluck('id')->toArray();
+
+            $members =  $user->Contacts->pluck('id')->toArray();
+            $members = array_merge($members, $user->BackContacts->pluck('id')->toArray());
+
+            $result = [];
+            foreach( $chats as $chat ){
+                $chat_members = $chat->Members()->pluck('id')->toArray();
+                $access = true;
+                foreach( $chat_members as $member ){
+                    if ( !in_array($member, $members) &&  $member!=$user->id && $chat->is_group==0){
+
+                        break;
+                    }
+                }
+                if ( $access ){
+                    array_push($result,array_merge($chat->toArray(),
+                        [
+                            'CountUnreadMessages'=>ChatPost::getCountUnreadPosts($chat->id, $user->id),
+                            'LastPost' => Chat::getLastPost($chat->id, $user->id),
+                            'ChatAvatar' => $chat->getAvatar($user->id)
+                        ]
+                    ));
+                }
+
+            }
+            return response()->json($result);
+        }catch( \Exception $e ){
+
+            dd($e->getMessage());
+            return response()->json( null );
+        }
+    }
     public function getChats(){
         try{
             $user = JWTAuth::parseToken()->authenticate();
@@ -64,7 +111,6 @@ class UserController extends Controller
                 $access = true;
                 foreach( $chat_members as $member ){
                     if ( !in_array($member, $members) &&  $member!=$user->id && $chat->is_group==0){
-
                         break;
                     }
                 }
@@ -111,21 +157,21 @@ class UserController extends Controller
 
             $user = JWTAuth::parseToken()->authenticate();
             if ( is_null($user) ){
-                throw new \Exception('no user');
+                throw new \Exception('no user JWT');
             }
             $user->Group;
             if ( $user->is_delete=='1' ){
                 JWTAuth::invalidate(JWTAuth::getToken());
-                throw new \Exception('no user');
+                throw new \Exception('no token');
             }
 
             if ($user->remember_token!=$_COOKIE['session']){
-                throw new \Exception('no user');
+                throw new \Exception('no cookie');
             }
 
             return response()->json($user->toArray()  );
         }catch( \Exception $e ){
-            return response()->json( ['success'=>false] );
+            return response()->json( ['success'=>false,'error'=>$e->getMessage()] );
         }
     }
 
