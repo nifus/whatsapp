@@ -4,107 +4,102 @@
     function controlCaretDirective($rootScope) {
         return {
             restrict: 'A',
-            link: controlCaretLink,
+            link: controlCaretLink
 
         };
 
 
-        function controlCaretLink($scope,element) {
+        function controlCaretLink($scope, element) {
             var position = 0;
             var node = element[0];
             var parent = null;
-           // setCaret(node,position);
+            // setCaret(node,position);
             var savedSelection = null;
             var sel = null;
 
             /*var editable = document.getElementById('textbox');
-            editable.addEventListener('DOMNodeInserted', onChange, false);
-            function onChange() {
-                //console.log('insert')
-                editable.innerHTML = editable.innerText;
-            }*/
+             editable.addEventListener('DOMNodeInserted', onChange, false);
+             function onChange() {
+             //console.log('insert')
+             editable.innerHTML = editable.innerText;
+             }*/
 
-            $rootScope.$on('open_chat', function(){
+            $rootScope.$on('open_chat', function () {
                 element.focus();
-                sel  = rangy.getSelection();
+                sel = rangy.getSelection();
 
             });
 
-            $rootScope.$on('submit_msg', function(){
+            $rootScope.$on('submit_msg', function () {
                 element.focus();
                 node = element[0];
-                sel  = rangy.getSelection();
+                sel = rangy.getSelection();
                 parent = null;
             });
 
 
-            element.on('keydown', function(e){
-                if (e.shiftKey===false && e.keyCode==13){
-                    $rootScope.$broadcast('submit',element[0].innerHTML);
+            element.on('keydown', function (e) {
+                if (e.shiftKey === false && e.keyCode == 13) {
+                    $rootScope.$broadcast('submit', element[0].innerHTML);
                     element[0].innerHTML = '';
                     e.preventDefault();
                 }
             });
-            element.on('keyup', function(e){
-                sel  = rangy.getSelection();
-                if (e.shiftKey===true && e.keyCode==13){
+            element.on('keyup', function (e) {
+                sel = rangy.getSelection();
+                if (e.shiftKey === true && e.keyCode == 13) {
                     parent = getParentSelectedNode();
                     node = pastebrAtCaret('<br>');
-                    sel  = rangy.getSelection();
-                    setCaret(sel.focusNode,sel.focusOffset);
+                    sel = rangy.getSelection();
+                    setCaret(sel.focusNode, sel.focusOffset);
                     e.preventDefault();
                 }
             });
 
-            
-            element.on('mouseup', function(){
-                //savedSelection = rangy.saveSelection();
-                sel  = rangy.getSelection();
 
-               // node = getSelectedNode();
+            element.on('mouseup', function () {
+                //savedSelection = rangy.saveSelection();
+                sel = rangy.getSelection();
+
+                // node = getSelectedNode();
                 //parent = getParentSelectedNode();
                 //position = getCaretPosition(parent);
             });
 
             $rootScope.$on('insert_smiles', function (event, html) {
 
-                setCaret(sel.focusNode,sel.focusOffset);
-               // setCaret(node,position+1);
-               // rangy.restoreSelection(sel);
+                setCaret(sel.focusNode, sel.focusOffset);
+                // setCaret(node,position+1);
+                // rangy.restoreSelection(sel);
                 pasteHtmlAtCaret(html);
                 //setCaret(sel.focusNode,sel.focusOffset+1);
-                sel  = rangy.getSelection();
+                sel = rangy.getSelection();
 
-                setCaret(sel.focusNode,sel.focusOffset);
+                setCaret(sel.focusNode, sel.focusOffset);
                 sel.focusNode.focus();
 
             });
 
 
-
         }
-
 
 
     }
 
-    function getParentSelectedNode()
-    {
+    function getParentSelectedNode() {
         if (document.selection)
             return document.selection.createRange().parentElement();
-        else
-        {
+        else {
             var selection = window.getSelection();
             if (selection.rangeCount > 0)
                 return selection.getRangeAt(0).startContainer.parentNode;
         }
     }
-    function getSelectedNode()
-    {
+
+    function getSelectedNode() {
         if (document.selection)
             return document.selection.createRange();
-        else
-        {
+        else {
             var selection = window.getSelection();
             if (selection.rangeCount > 0)
                 return selection.getRangeAt(0).startContainer;
@@ -152,7 +147,7 @@
                 // non-standard and not supported in all browsers (IE9, for one)
                 var el = document.createElement("br");
                 var frag = document.createDocumentFragment(), node, lastNode;
-                while ( (node = el.firstChild) ) {
+                while ((node = el.firstChild)) {
                     lastNode = frag.appendChild(node);
                 }
                 range.insertNode(frag);
@@ -187,7 +182,7 @@
                 var el = document.createElement("div");
                 el.innerHTML = html;
                 var frag = document.createDocumentFragment(), node, lastNode;
-                while ( (node = el.firstChild) ) {
+                while ((node = el.firstChild)) {
                     lastNode = frag.appendChild(node);
                 }
                 range.insertNode(frag);
@@ -218,6 +213,7 @@
         sel.addRange(range);
         //el.focus();
     }
+
     angular.module('chatApp').directive('controlCaret', controlCaretDirective);
 
 
