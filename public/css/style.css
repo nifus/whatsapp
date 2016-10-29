@@ -99,7 +99,7 @@ body, html{
 #add-image{
 	position: absolute;
 	top: 0;
-	width: 75%;
+	width: 80%;
 	z-index: 33333;
 	background-color: lightgray;
 	height:100%
