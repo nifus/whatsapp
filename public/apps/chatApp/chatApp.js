@@ -41,20 +41,20 @@
     }).factory('socket', function (socketFactory) {
 
         var hosts = {
-            'dikom.org':3001,
-            'subriz.com':3002,
-            'finehill.org':3003,
-            'flowemt.com':3004,
-            'supportim.org':3005,
-            'testchat.2gt.biz':4000
+            'dikom.org': 'https://nodesrv.2gt.biz:3001',
+            'subriz.com': 'https://nodesrv.2gt.biz:3002',
+            'finehill.org': 'https://nodesrv.2gt.biz:3003',
+            'flowemt.com': 'https://nodesrv.2gt.biz:3004',
+            'supportim.org': 'https://nodesrv.2gt.biz:3005',
+            'testchat.2gt.biz': 'https://nodesrv.2gt.biz:4000',
+            'chat.dev': 'http://'+ window.location.host + ':3000',
+            'chat.bunzya.ru': 'http://'+ window.location.host + ':3000'
         };
 
-        if ( window.location.host=='chat.dev' ){
-            var myIoSocket = io.connect('http://'+ window.location.host + ':3000' , { query: "host="+window.location.host });
-        }else{
-            var port = hosts[window.location.host];
-            var myIoSocket = io.connect( 'https://nodesrv.2gt.biz:'+port , { query: "host="+window.location.host });
-        }
+
+            var host = hosts[window.location.host];
+            var myIoSocket = io.connect( host, { query: "host="+window.location.host });
+
 
 
         myIoSocket.on('debug', function(msg){
