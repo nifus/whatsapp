@@ -39,7 +39,7 @@
                                    class="link">Без звука</a></li>
                             <li><a ng-show="chat.IsDisabledSound(user.id)" ng-click="enableSound(chat, user.id)"
                                    class="link">Вкл. звук</a></li>
-                            <li><a ng-show="user.can_edit_myself=='1'" ng-click="clearChat(chat)" class="link">Очистить
+                            <li><a  ng-click="clearChat(chat)" class="link">Очистить
                                 чат</a></li>
                             <li><a ng-show="user.can_edit_myself=='1'" ng-click="deleteChat(chat)" class="link">Удалить
                                 чат</a></li>
