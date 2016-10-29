@@ -81,7 +81,6 @@
             });
 
             element.on('paste',function(e) {
-                console.log('111')
                 e.preventDefault();
 
                 var text = (e.originalEvent || e).clipboardData.getData('text/html') ;
@@ -91,9 +90,9 @@
 
 
                 // remove unnecesary tags (if paste from word)
-                $(this).children('style').remove();
-                $(this).children('meta').remove()
-                $(this).children('link').remove();
+               // $(this).children('style').remove();
+               // $(this).children('meta').remove()
+               // $(this).children('link').remove();
 
             });
 

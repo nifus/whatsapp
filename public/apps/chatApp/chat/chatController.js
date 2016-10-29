@@ -161,6 +161,7 @@
 
         $scope.$watch('upload_image', function(value){
             if ( value ){
+                console.log(value)
                 $scope.env.imageDialog = true;
                 $scope.env.upload.image = $scope.upload_image[0]
             }
