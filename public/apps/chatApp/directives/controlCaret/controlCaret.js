@@ -80,6 +80,23 @@
 
             });
 
+            element.on('paste',function(e) {
+                console.log('111')
+                e.preventDefault();
+
+                var text = (e.originalEvent || e).clipboardData.getData('text/html') ;
+                var $result = $('<div></div>').append($(text));
+
+                $(this).html($result.text());
+
+
+                // remove unnecesary tags (if paste from word)
+                $(this).children('style').remove();
+                $(this).children('meta').remove()
+                $(this).children('link').remove();
+
+            });
+
 
         }
 
