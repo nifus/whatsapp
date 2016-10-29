@@ -47,7 +47,11 @@
 
                     <div class="form-group">
                         <label>Логины пользователей через запятую</label>
+
                         <input type="text" ng-model="env.model.users" class="form-control">
+                        <span id="helpBlock" class="help-block">
+                            {{env.users.join(', ')}}
+                        </span>
                     </div>
 
 

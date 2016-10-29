@@ -18,10 +18,18 @@
             model: {},
             id: $state.params.id,
             deffers: [],
-            groups: []
+            groups: [],
+            users:[]
         };
 
 
+        var usersDeffer = userFactory.getAll().then(function(users){
+            for( var i in users){
+                $scope.env.users.push(  users[i].login )
+            }
+
+        });
+        $scope.env.deffers.push(usersDeffer);
 
 
         if ($scope.env.id != undefined) {
