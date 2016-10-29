@@ -37,32 +37,26 @@
                 parent = null;
             });
 
+
             element.on('keydown', function(e){
-                //savedSelection = rangy.saveSelection();
-                sel  = rangy.getSelection();
-
-                if (e.ctrlKey==true && e.keyCode==13){
-                    parent = getParentSelectedNode();
-                    node = pasteHtmlAtCaret('<br>&nbsp;');
-                    e.preventDefault();
-                }
-
-                if (e.ctrlKey==false && e.keyCode==13){
+                if (e.shiftKey===false && e.keyCode==13){
                     $rootScope.$broadcast('submit',element[0].innerHTML);
                     element[0].innerHTML = '';
                     e.preventDefault();
                 }
             });
-
-            element.on('keyup', function(){
-                //savedSelection = rangy.saveSelection();
+            element.on('keyup', function(e){
                 sel  = rangy.getSelection();
-
-                //node = getSelectedNode();
-                //parent = getParentSelectedNode();
-                //position = getCaretPosition(parent);
-
+                if (e.shiftKey===true && e.keyCode==13){
+                    parent = getParentSelectedNode();
+                    node = pastebrAtCaret('<br>');
+                    sel  = rangy.getSelection();
+                    setCaret(sel.focusNode,sel.focusOffset);
+                    e.preventDefault();
+                }
             });
+
+            
             element.on('mouseup', function(){
                 //savedSelection = rangy.saveSelection();
                 sel  = rangy.getSelection();
@@ -143,6 +137,40 @@
             }
         }
         return caretPos;
+    }
+
+    function pastebrAtCaret(html) {
+        var sel, range;
+        if (window.getSelection) {
+            // IE9 and non-IE
+            sel = window.getSelection();
+            if (sel.getRangeAt && sel.rangeCount) {
+                range = sel.getRangeAt(0);
+                range.deleteContents();
+
+                // Range.createContextualFragment() would be useful here but is
+                // non-standard and not supported in all browsers (IE9, for one)
+                var el = document.createElement("br");
+                var frag = document.createDocumentFragment(), node, lastNode;
+                while ( (node = el.firstChild) ) {
+                    lastNode = frag.appendChild(node);
+                }
+                range.insertNode(frag);
+
+                // Preserve the selection
+                if (lastNode) {
+                    range = range.cloneRange();
+                    range.setStartAfter(lastNode);
+                    range.collapse(true);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+                return el;
+            }
+        } else if (document.selection && document.selection.type != "Control") {
+            // IE < 9
+            document.selection.createRange().pasteHTML(html);
+        }
     }
 
     function pasteHtmlAtCaret(html) {
