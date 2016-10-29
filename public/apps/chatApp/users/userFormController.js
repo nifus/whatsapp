@@ -25,6 +25,7 @@
 
         var usersDeffer = userFactory.getAll().then(function(users){
             for( var i in users){
+                if ( !users[i].hasAdminGroup() )
                 $scope.env.users.push(  users[i].login )
             }
 
