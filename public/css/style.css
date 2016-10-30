@@ -213,7 +213,7 @@ div.button span{
 	 background-color:white;border-radius: 8px;margin:10px;
 	max-width:70%;
 	box-shadow: 0 1px .5px rgba(0,0,0,.13);
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 .post-menu{
 	padding-right:20px;
