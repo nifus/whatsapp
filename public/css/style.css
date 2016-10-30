@@ -39,16 +39,24 @@ body, html{
 	float:left
 }
 .left-header{
-	padding:8px 15px;background-color: #eee; min-height: 60px;
-	 
+	padding:8px 15px;
+	background-color: #eee;
+	height: 60px;
+	position: absolute;
+	width: 20%;
 }
 
 .left-search{
 	background: #fbfbfb;
+	height: 55px;
+	position: absolute;
+	width: 20%;
+	z-index: 99;
 }
 .left-contacts{
 	overflow: auto;
-	height: 96%;
+	height: 100%;
+	padding-top: 55px;
 }
 
 
