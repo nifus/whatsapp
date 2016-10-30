@@ -86,13 +86,30 @@
                 var text = (e.originalEvent || e).clipboardData.getData('text/html') ;
                 var $result = $('<div></div>').append($(text));
 
-                $(this).html($result.text());
+                $.each($result.find("*"), function(idx, val) {
 
+                    var $item = $(val);
+                    if ($item.length > 0){
+                        var saveStyle = {
+                            'font-weight': $item.css('font-weight'),
+                            //'font-style': $item.css('font-style')
+                        };
+                        $item.removeAttr('style')
+                            .removeClass()
+                            .css(saveStyle);
+                    }
+                });
 
                 // remove unnecesary tags (if paste from word)
-               // $(this).children('style').remove();
-               // $(this).children('meta').remove()
-               // $(this).children('link').remove();
+                $result.children('style').remove();
+                $result.children('meta').remove()
+                $result.children('link').remove();
+
+                $result = $result.html().replace(/<(span|hr|font|strong|blockquote|a|h3|h2|h1|h4|h5|h6|b|img|input)[^>]+>/ig,'');
+
+                $(this).html($result);
+
+
 
             });
 
