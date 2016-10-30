@@ -5,6 +5,8 @@ Route::get('/', ['as' => 'signin', 'uses' => 'SignInController@index']);
 //Route::get('signup', ['as' => 'signup', 'uses' => 'SignUpController@index']);
 Route::get('signout', ['as' => 'signout', 'uses' => 'User\SignOutController@index']);
 
+Route::get('/uploads/{name}', 'Api\ChatController@getOldDocument');
+Route::get('/uploads/{post_id}/{name}', 'Api\ChatController@getDocument');
 
 
     Route::group(['prefix' => 'backend/user'], function () {

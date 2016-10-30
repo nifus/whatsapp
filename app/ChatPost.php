@@ -10,7 +10,7 @@ class ChatPost extends Model
 
 
     protected
-        $fillable = ['chat_id', 'user_id','message','is_system','is_sent','is_read','type','created_at','updated_at','is_deleted','image','reply_to','document'],
+        $fillable = ['chat_id', 'user_id','message','is_system','is_sent','is_read','type','created_at','updated_at','is_deleted','image','reply_to','document','document_name'],
         $table = 'chats_posts';
 
     public function Chat()
@@ -43,12 +43,15 @@ class ChatPost extends Model
             $name = time() . rand(1, 10000) . '.' . pathinfo($value['filename'], PATHINFO_EXTENSION);
             file_put_contents(public_path('uploads/posts/' . $name), base64_decode($value['base64']));
             $result = $name;
+            $this->attributes['document_name'] = $value['filename'];
+
         }elseif (is_array($value)  && isset($value[0]) && is_string($value[0])) {
             $result = basename($value[0]);
         }else{
             $result = null;
         }
         $this->attributes['document'] = $result;
+
     }
 
     public function setImageAttribute($value){
@@ -109,7 +112,7 @@ class ChatPost extends Model
 
     public function getDocumentAttribute(){
         if ( isset($this->attributes['document']) && $this->attributes['document']!=''){
-            return '/uploads/posts/'.$this->attributes['document'];
+            return $this->attributes['document'];
         }else{
             return null;
         }
@@ -240,7 +243,6 @@ class ChatPost extends Model
     }
 
     static function getCountUnreadPosts($chat_id, $user_id){
-
         return self::where('chat_id', $chat_id)->where('user_id','!=',$user_id)->where('is_read','0')->where('is_deleted','0')->count();
     }
 
