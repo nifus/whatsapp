@@ -14,6 +14,7 @@
             var input_element = element.find('#input');
             var center_element = element.find('#input div.center');
             var around_element = element.find('#input div.around');
+            var smiles_element = element.find('#input div.smiles');
             var textarea_element = element.find('div.textarea');
 
             var reply_element = element.find('div.reply');
@@ -47,7 +48,7 @@
 
                 var textarea_height = textarea_element[0].offsetHeight;
                 var full_height = $('div.main-chatBg')[0].offsetHeight-60;
-                var smiles_height = 146;
+                var smiles_height = smiles_element[0].offsetHeight;
                 var input_height = $('#textbox')[0].offsetHeight+20;
 
 
