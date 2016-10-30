@@ -78,6 +78,22 @@
             };
             Object.setLastPost(data.LastPost);
 
+            Object.findLastPost = function(){
+                var length = Object.posts.length;
+                for( var i=length-1;i>0;i--){
+                    if ( Object.posts[i].is_deleted!='1' ){
+                        return Object.posts[i];
+                    }
+                }
+                return null;
+            };
+
+            Object.updateLastPost = function(){
+                var post = Object.findLastPost();
+                Object.setLastPost(post)
+                //console.log(Object.posts);
+            };
+
             Object.addMember = function (user) {
                 return $http.post('/chats/' + Object.id + '/' + user.id).then(function (response) {
                     if (response.data.success == true) {

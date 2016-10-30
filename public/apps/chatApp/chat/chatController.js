@@ -397,7 +397,7 @@
         };
 
         $scope.$on('delete', function(event, html){
-
+            $scope.chat.updateLastPost();
         });
     }
 })();
