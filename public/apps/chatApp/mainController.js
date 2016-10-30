@@ -2,9 +2,9 @@
     'use strict';
     angular.module('chatApp').controller('mainController', mainController);
 
-    mainController.$inject = ['$scope', '$q', 'userFactory', '$state', 'chatFactory', 'configFactory', 'socket', 'ngAudio', '$timeout', '$rootScope'];
+    mainController.$inject = ['$scope', '$q', 'userFactory', '$state', 'chatFactory', 'configFactory', 'socket', 'ngAudio', '$timeout', '$rootScope', '$auth' ,'$cookies'];
 
-    function mainController($scope, $q, userFactory, $state, chatFactory, configFactory, socket, ngAudio, $timeout, $rootScope) {
+    function mainController($scope, $q, userFactory, $state, chatFactory, configFactory, socket, ngAudio, $timeout, $rootScope, $auth, $cookies) {
         $scope.env = {
             config: [],
             sound: ngAudio.load("audio/im.mp3"),
@@ -25,7 +25,7 @@
 
 
         socket.on('who_is_online', function(array_ids){
-            console.log('who_is_online',array_ids)
+           // console.log('who_is_online',array_ids)
             $scope.env.who_is_online = array_ids;
             if ($scope.chat!=null ){
                 $scope.chat.setChatStatus($scope.user.id, $scope.env.who_is_online);
@@ -51,6 +51,8 @@
 
         var userPromise = userFactory.getAuthUser().then(function (user) {
             $scope.env.user = user;
+            user.token = $auth.getToken();
+            $cookies.put('token', user.token)
             $scope.user = user;
 
             if (!user) {

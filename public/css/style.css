@@ -125,6 +125,11 @@ div.image img{
 	width:200px
 }
 
+div.document img{
+	width:50px;
+	float:left;
+}
+
 #add-image div.image-preview{
 	text-align: center;
 	padding:20px;

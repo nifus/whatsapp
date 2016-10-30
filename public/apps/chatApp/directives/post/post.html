@@ -33,9 +33,10 @@
         </div>
 
 
-        <div class="image" ng-show="post.type=='document' &&  post.is_deleted=='0'">
-            <a target="_blank" ng-href="{{post.document}}"><img  src="/image/attachement.png" alt=""></a>
-            <div class="message" ng-bind-html="post.message|to_trusted"></div>
+        <div class="document" ng-show="post.type=='document' &&  post.is_deleted=='0'">
+            <a target="_blank" ng-href="/uploads/{{post.id}}/{{post.document_name==null ? post.document : post.document_name}}?token={{user.token}}">
+                <img  src="/image/attachement.png" alt="">
+                <div class="message" ng-bind-html="post.message|to_trusted"></div></a>
 
         </div>
 

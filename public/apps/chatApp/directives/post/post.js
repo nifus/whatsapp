@@ -21,7 +21,7 @@
         postDirective.$inject = ['$scope', '$state', 'userFactory', 'chatFactory','$q'];
 
         function postLink($scope,element) {
-
+            console.log($scope.user)
             var elements = element.find('ul.post-menu');
 
             if ($scope.chat.is_group==0 || $scope.post.user_id==$scope.user.id){

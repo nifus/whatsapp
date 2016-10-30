@@ -17,7 +17,44 @@ class ChatController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt.auth', []);
+        $this->middleware('jwt.auth', ['except' => [ 'getDocument','getOldDocument']]);
+    }
+
+
+    public function getOldDocument($name){
+        $count = ChatPost::where('document_name', $name)->count();
+        if ( $count>0 ){
+            abort(404);
+        }
+        $path = public_path('uploads/posts/'.$name);
+
+        if ( !file_exists($path) ){
+            abort(404);
+        }
+        return response()->file($path);
+
+    }
+
+    public function getDocument($post_id, $name, Request $request ){
+
+        $request->replace(array('token' => $_COOKIE['token']));
+
+        $user = JWTAuth::parseToken()->authenticate();
+        dd($user);
+        if ( is_null($user) || empty($post_id) ){
+            abort(404);
+        }
+        $post = ChatPost::where('id',$post_id)->first();
+
+        if ( is_null($post) ){
+            abort(404);
+        }
+        if ( false===$post->Chat->canAccess($user->id) ){
+            abort(404);
+        }
+        $path = public_path('uploads/posts/'.$post->document);
+        return response()->file($path);
+
     }
 
 
