@@ -40,7 +40,6 @@ class ChatController extends Controller
         $request->replace(array('token' => $_COOKIE['token']));
 
         $user = JWTAuth::parseToken()->authenticate();
-        dd($user);
         if ( is_null($user) || empty($post_id) ){
             abort(404);
         }
