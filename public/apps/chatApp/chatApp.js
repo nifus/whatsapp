@@ -1,6 +1,6 @@
 (function (angular, window) {
     'use strict';
-    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64', 'cfp.hotkeys', 'luegg.directives', 'ckeditor', 'ngSanitize', 'btford.socket-io', 'ngAudio', 'ngScrollbars', 'contenteditable']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
+    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64',  'ckeditor', 'ngSanitize', 'btford.socket-io', 'ngAudio', 'contenteditable']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
 
         window.SERVER = window.location.protocol + '//' + window.location.host;
 
@@ -110,6 +110,6 @@
 
 window.onload = function () {
     rangy.init();
-}
+};
 
 

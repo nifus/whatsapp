@@ -12,7 +12,7 @@ class Chat extends Model
     protected $table = 'chats';
 
 
-    protected $fillable = ['name', 'created_at', 'updated_at', 'avatar', 'author', 'last_post', 'is_group', 'is_deleted', 'can_upload_files'];
+    protected $fillable = ['name', 'created_at', 'updated_at', 'avatar', 'author', 'last_post', 'is_group', 'is_deleted', 'can_upload_files','unread'];
 
     public function Members()
     {
@@ -172,11 +172,32 @@ class Chat extends Model
         if ( $is_system == 0) {
             $this->updateLastPost($post->id);
         }
+        $this->updateUnreadMessages($user);
+        $this->updateLastPosts();
         return $post;
+    }
+
+    public function updateLastPosts(){
+        $members = $this->Members;
+        foreach($members as $member){
+            $posts = $this->getPosts(0,30,$member->id);
+            file_put_contents( storage_path('app/public/last_messages_'.$member->id.'_'.$this->id) , json_encode($posts->toArray()));
+        }
+    }
+
+    public function getFirstPosts($user_id){
+        $file = storage_path('app/public/last_messages_'.$user_id.'_'.$this->id) ;
+        if ( file_exists($file) ){
+            return json_decode(file_get_contents($file));
+        }else{
+
+            return [];//$this->getPosts(0,10,$user_id );
+        }
     }
 
     public function read4user($user_id){
         ChatPost::readPosts4User($this->id, $user_id);
+
     }
 
 
@@ -193,6 +214,7 @@ class Chat extends Model
         \DB::table('chats_members')
             ->where('chat_id', $this->id)
             ->where('user_id', $user_id)->update(['clear_date' => date("Y-m-d H:i:s")]);
+        $this->updateLastPosts();
     }
 
     public function remove()
@@ -204,6 +226,7 @@ class Chat extends Model
     public function readPosts4User($user_id)
     {
         ChatPost::readPosts4User($this->id, $user_id);
+        $this->updateUnreadMessages($user_id);
     }
 
     public function addMember($user_id)
@@ -241,6 +264,19 @@ class Chat extends Model
        // $user = User::find($user_id);
        // $post = $this->addPost(['message' => 'Пользователь ' . $user->name . ' удален из чата', 'type' => 'text', 'is_system' => 1], null);
         return null;
+    }
+
+
+    public function updateUnreadMessages(){
+
+        $users = $this->Members()->get();
+        foreach( $users as $user){
+            $unread = ChatPost::getCountUnreadPosts($this->id, $user->id, $user->pivot->clear_date);
+            \DB::table('chats_members')->where('chat_id',$this->id)->where('user_id',$user->id)->update(['unread'=>$unread]);
+        }
+        //var_dump($this->id);
+        //dd($user_id);
+        //$this->update(['unread'=>$count]);
     }
 
     static function createNewChat($user_id, $users_ids)
@@ -282,8 +318,6 @@ class Chat extends Model
 
     static function getLastPost($chat_id, $user_id)
     {
-
-
         $rec = \DB::table('chats_members')
             ->where('chat_id', $chat_id)
             ->where('user_id', $user_id)->first();

@@ -117,8 +117,8 @@ class UserController extends Controller
                 if ( $access ){
                     array_push($result,array_merge($chat->toArray(),
                         [
-                            'CountUnreadMessages'=>ChatPost::getCountUnreadPosts($chat->id, $user->id),
-                            'LastPost' => Chat::getLastPost($chat->id, $user->id),
+                            'CountUnreadMessages'=>\DB::table('chats_members')->where('user_id', $user->id)->where('chat_id', $chat->id)->first()->unread,
+                            'posts' => $chat->getFirstPosts($user->id),
                             'ChatAvatar' => $chat->getAvatar($user->id)
                         ]
                     ));

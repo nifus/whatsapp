@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
          Commands\convert::class,
+         Commands\create_cache::class,
+         Commands\update_unread_posts::class,
     ];
 
     /**

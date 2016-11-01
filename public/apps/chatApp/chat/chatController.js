@@ -166,37 +166,7 @@
             }
         },true);
 
-        /* $scope.$watch('chat', function (value) {
-            console.log(value)
-            if (!chat) {
-                return;
-            }
-            if (  $scope.user.history=='1' ){
-                var promise = chat.start_post ?  chat.getPostsAroundId(chat.start_post) : chat.getPosts();
-                promise.then(function (response) {
-                    response = $filter('orderBy')(response,'id');
-                    chat.posts = response;
-                    if (chat.posts.length>0){
-                        $scope.env.first_post_id = chat.posts[ chat.posts.length-1 ].id;
 
-                        $timeout(function(){
-                            if (chat.start_post ){
-                                $scope.env.download = true;
-                                $('div.messages').scrollTop( document.getElementById('post-'+chat.start_post).offsetTop );
-                            }else{
-                                $('div.messages').scrollTop( document.getElementById('post-'+$scope.env.first_post_id).offsetTop );
-                            }
-                        },100)
-
-                    }
-                });
-            }else{
-                chat.posts = [];
-                $scope.env.chat.setLastPost(null);
-
-            }
-            chat.getChatStatus($scope.user.id);
-        });*/
 
         $scope.addMember = function(member){
             $scope.model.selected_member = null;

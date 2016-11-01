@@ -2,9 +2,9 @@
     'use strict';
     angular.module('chatApp').controller('mainController', mainController);
 
-    mainController.$inject = ['$scope', '$q', 'userFactory', '$state', 'chatFactory', 'configFactory', 'socket', 'ngAudio', '$timeout', '$rootScope', '$auth' ,'$cookies'];
+    mainController.$inject = ['$scope', '$q', 'userFactory', '$state', 'chatFactory', 'configFactory', 'socket', 'ngAudio', '$timeout', '$rootScope', '$auth' ,'$cookies','$filter'];
 
-    function mainController($scope, $q, userFactory, $state, chatFactory, configFactory, socket, ngAudio, $timeout, $rootScope, $auth, $cookies) {
+    function mainController($scope, $q, userFactory, $state, chatFactory, configFactory, socket, ngAudio, $timeout, $rootScope, $auth, $cookies, $filter) {
         $scope.env = {
             config: [],
             sound: ngAudio.load("audio/im.mp3"),
@@ -51,8 +51,7 @@
 
         var userPromise = userFactory.getAuthUser().then(function (user) {
             $scope.env.user = user;
-            user.token = $auth.getToken();
-            $cookies.put('token', user.token)
+
             $scope.user = user;
 
             if (!user) {
@@ -63,6 +62,8 @@
                 $state.go('users');
                 return false;
             }
+            user.token = $auth.getToken();
+            $cookies.put('token', user.token);
 
             user.getAllContacts().then(function (contacts) {
                 user.contacts = contacts;
@@ -70,6 +71,12 @@
             if (user.history == '1') {
                 chatFactory.getByUser(user.id).then(function (chats) {
                     user.chats = chats;
+                    for( var i in user.chats ){
+                        user.chats[i].posts = $filter('orderBy')(user.chats[i].posts, 'id');
+
+                        user.chats[i].setLastPost( user.chats[i].posts[user.chats[i].posts.length-1] )
+
+                    }
                 });
             } else {
                 user.chats = [];
@@ -91,21 +98,18 @@
             $scope.chat = chat;
 
             if ($scope.user.history == '1') {
-                chat.loadPosts().then(function () {
-                    if (chat.posts.length > 0) {
-                        $timeout(function () {
-                            if (chat.start_post) {
-                                $scope.$emit('messages:scroll_to', chat.start_post);
-                                $scope.env.download = true;
-                            } else {
-                                $scope.$emit('messages:scroll_down', chat.last_post_id);
-                            }
-                        }, 10)
-                    }
-                    $scope.$emit('open_chat', {});
-
-                });
-                chat.hasRead()
+                if (chat.posts.length > 0) {
+                    $timeout(function () {
+                        if (chat.start_post) {
+                            $scope.$emit('messages:scroll_to', chat.start_post);
+                            $scope.env.download = true;
+                        } else {
+                            $scope.$emit('messages:scroll_down', chat.last_post_id);
+                        }
+                    }, 10)
+                }
+                $scope.$emit('open_chat', {});
+                chat.hasRead();
             } else {
                 chat.posts = [];
                 $scope.chat.setLastPost(null);
@@ -127,7 +131,6 @@
 
         socket.on('reload', function (obj) {
             var chat_id = obj.chat_id;
-            console.log('Новое сообщение в чате',chat_id);
             $scope.env.user.chats.filter(function (chat) {
                 if (chat.id == chat_id) {
                     var current_chat = ($scope.chat && chat.id == $scope.chat.id) ? true : false;
@@ -225,4 +228,3 @@
         }
     }
 })();
-

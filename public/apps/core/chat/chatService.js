@@ -12,9 +12,9 @@
             Object.last_post_id = null;    //  номер последнего ID
             Object.is_posts_loading = false; // флаг подгрузки сообщений в чат
             Object.is_posts_loaded = false; // все сообщения загружены в чат
-            Object.posts_start = 0; // точка на которой закончились грузиться сообщения
+            Object.posts_start = data.posts==undefined ? 0 : data.posts.length; // точка на которой закончились грузиться сообщения
             //Object.last_read_date = null; // время когда этот чат читали последний раз
-            Object.posts = [];
+            Object.posts = data.posts==undefined ? [] : data.posts;
             Object.current_user_id = user_id;
 
 

@@ -72,13 +72,8 @@
 
                 messages.height(set_message);
                 input_element.height(set_input);
-
             }
-
-
         }
-
-
     }
 
     angular.module('chatApp').directive('controlHeight', controlHeightDirective);
