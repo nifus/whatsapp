@@ -1,11 +1,11 @@
 (function (angular, window) {
     'use strict';
     angular.module('core').service('chatService', chatService);
-    chatService.$inject = ['postFactory', '$http', 'userFactory', '$filter', '$q', 'socket'];
+    chatService.$inject = ['postFactory', '$http', 'userFactory', '$filter', '$q', 'socket','postService'];
 
-    function chatService(postFactory, $http, userFactory, $filter, $q, socket) {
+    function chatService(postFactory, $http, userFactory, $filter, $q, socket, postService) {
         return function (data, user_id) {
-            var Object = data;
+            var Object = angular.copy(data);
             Object.waiting = false;
             Object.start_post = null;   // номер POST ID который должен открываться при загрузке чата
             Object.first_post_id = null;    //  номер первого ID
@@ -14,7 +14,14 @@
             Object.is_posts_loaded = false; // все сообщения загружены в чат
             Object.posts_start = data.posts==undefined ? 0 : data.posts.length; // точка на которой закончились грузиться сообщения
             //Object.last_read_date = null; // время когда этот чат читали последний раз
-            Object.posts = data.posts==undefined ? [] : data.posts;
+            Object.posts = [];
+
+            if ( data.posts.length>0 ){
+                for(var i in data.posts){
+                    Object.posts.push( new postService(data.posts[i]) )
+                }
+                console.log(Object.posts)
+            }
             Object.current_user_id = user_id;
 
 
