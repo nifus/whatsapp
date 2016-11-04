@@ -83,8 +83,9 @@ class ChatController extends Controller
         }
     }
 
-    public function chatStatus($chat_id){
+    public function chatStatus($chat_id, $post_id){
         try{
+
             $user = JWTAuth::parseToken()->authenticate();
             if ( is_null($user) ){
                 throw new \Exception('no user');
@@ -97,7 +98,7 @@ class ChatController extends Controller
             $data = $chat->toArray();
             $data['CountUnreadMessages'] = ChatPost::getCountUnreadPosts($chat->id, $user->id);
 
-            $data['LastPost'] = Chat::getLastPost($chat->id, $user->id);
+            $data['LastPost'] = ChatPost::find($post_id)->toArray();
             $data['success'] = true;
            // $data['Posts'] = ChatPost::getPosts($chat->id,0,$data['CountUnreadMessages']);
 

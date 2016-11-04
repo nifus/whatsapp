@@ -134,10 +134,9 @@
             $scope.env.user.chats.filter(function (chat) {
                 if (chat.id == chat_id) {
                     var current_chat = ($scope.chat && chat.id == $scope.chat.id) ? true : false;
-                    chat.updateInformation(current_chat).then(function (response) {
+                    chat.updateInformation(current_chat, obj.post_id).then(function (response) {
                         $scope.$emit('messages:scroll_down', chat.last_post_id);
                         if (current_chat && $scope.user_off == false) {
-
                             chat.hasRead( chat.getUser($scope.user.id) );
                         }
                     });

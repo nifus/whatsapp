@@ -20,7 +20,6 @@
                 for(var i in data.posts){
                     Object.posts.push( new postService(data.posts[i]) )
                 }
-                console.log(Object.posts)
             }
             Object.current_user_id = user_id;
 
@@ -51,18 +50,15 @@
                 })
             };
 
-            Object.updateInformation = function (is_current_chat) {
-                return $http.get('/chats/' + Object.id + '/status').then(function (response) {
+            Object.updateInformation = function (is_current_chat, post_id) {
+                return $http.get('/chats/' + Object.id + '/status/'+post_id).then(function (response) {
                     if (response.data.success == true) {
-                        Object.setLastPost(response.data.LastPost);
+                        var post =  new postService(response.data.LastPost);
+                        Object.setLastPost(post);
                         Object.updated_at = response.data.updated_at;
                         Object.CountUnreadMessages = true===is_current_chat ? 0 :response.data.CountUnreadMessages;
-                        console.log(Object.CountUnreadMessages);
-                        console.log(response.data.LastPost);
-                        console.log(response.data.Posts);
-                        console.log('----');
                         if (Object.posts) {
-                            Object.posts.push(response.data.LastPost)
+                            Object.posts.push(post)
                         }
                     }
                     //if( true===is_current_chat ){
