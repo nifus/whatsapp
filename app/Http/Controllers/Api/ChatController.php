@@ -486,9 +486,9 @@ class ChatController extends Controller
             if ( $user->is_delete=='1' ){
                 throw new \Exception('no user');
             }
-            if ( $user->can_edit_myself=='0' ){
-                throw new \Exception('Access Error');
-            }
+            //if ( $user->can_edit_myself=='0' ){
+            //    throw new \Exception('Access Error');
+            //}
             $chat = Chat::find($chat_id);
             if (is_null($chat) ){
                 throw new \Exception('no chat');
