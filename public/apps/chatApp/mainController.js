@@ -2,7 +2,7 @@
     'use strict';
     angular.module('chatApp').controller('mainController', mainController);
 
-    mainController.$inject = ['$scope', '$q', 'userFactory', '$state', 'chatFactory', 'configFactory', 'socket', 'ngAudio', '$timeout', '$rootScope', '$auth' ,'$cookies','$filter'];
+    mainController.$inject = ['$scope', '$q', 'userFactory', '$state', 'chatFactory', 'configFactory', 'socket', 'ngAudio', '$timeout', '$rootScope', '$auth', '$cookies', '$filter'];
 
     function mainController($scope, $q, userFactory, $state, chatFactory, configFactory, socket, ngAudio, $timeout, $rootScope, $auth, $cookies, $filter) {
         $scope.env = {
@@ -10,7 +10,7 @@
             sound: ngAudio.load("audio/im.mp3"),
             user: null,
             connected: false,
-            who_is_online:[]
+            who_is_online: []
 
         };
 
@@ -24,10 +24,10 @@
         $scope.user_off = false;
 
 
-        socket.on('who_is_online', function(array_ids){
-           // console.log('who_is_online',array_ids)
+        socket.on('who_is_online', function (array_ids) {
+            // console.log('who_is_online',array_ids)
             $scope.env.who_is_online = array_ids;
-            if ($scope.chat!=null ){
+            if ($scope.chat != null) {
                 $scope.chat.setChatStatus($scope.user.id, $scope.env.who_is_online);
             }
         });
@@ -71,10 +71,10 @@
             if (user.history == '1') {
                 chatFactory.getByUser(user.id).then(function (chats) {
                     user.chats = chats;
-                    for( var i in user.chats ){
+                    for (var i in user.chats) {
                         user.chats[i].posts = $filter('orderBy')(user.chats[i].posts, 'id');
 
-                        user.chats[i].setLastPost( user.chats[i].posts[user.chats[i].posts.length-1] )
+                        user.chats[i].setLastPost(user.chats[i].posts[user.chats[i].posts.length - 1])
 
                     }
                 });
@@ -137,16 +137,34 @@
                     chat.updateInformation(current_chat, obj.post_id).then(function (response) {
                         $scope.$emit('messages:scroll_down', chat.last_post_id);
                         if (current_chat && $scope.user_off == false) {
-                            chat.hasRead( chat.getUser($scope.user.id) );
+                            chat.hasRead(chat.getUser($scope.user.id));
                         }
                     });
                     if (chat.needPlayMusic($scope.env.user.id)) {
-                        if ( $scope.env.sound.canPlay ){
+                        if ($scope.env.sound.canPlay) {
                             $scope.env.sound.play();
                         }
                     }
                 }
             })
+        });
+
+        socket.on('message:delete', function (obj) {
+
+            angular.forEach($scope.env.user.chats, function (chat) {
+                if (chat.id != obj.chat_id) {
+                    return;
+                }
+
+                chat.posts = chat.posts.filter(function (post) {
+                    if (post.id != obj.post_id) {
+                        return true;
+                    }
+                    return false;
+                });
+
+                chat.setLastPost( chat.findLastPost() )
+            });
         });
 
 
@@ -157,7 +175,7 @@
         });
 
         socket.on('create_chat', function (response) {
-           // console.log('new chat');
+            // console.log('new chat');
             //console.log(response);
             for (var i in response.users) {
                 if (response.users[i] == $scope.env.user.id) {
