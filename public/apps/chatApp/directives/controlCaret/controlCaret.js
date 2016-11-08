@@ -105,7 +105,7 @@
                 $result.children('meta').remove()
                 $result.children('link').remove();
 
-                $result = $result.html().replace(/<(span|hr|font|strong|blockquote|a|h3|h2|h1|h4|h5|h6|b|img|input)[^>]+>/ig,'');
+                $result = $result.html().replace(/<(span|hr|font|strong|blockquote|a|h3|h2|h1|h4|h5|h6|b|img|input|i|u|sub|sup|strike|small|s|pre|font)[^>]+>/ig,'');
 
                 $(this).html($result);
 
