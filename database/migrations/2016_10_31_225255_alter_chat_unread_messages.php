@@ -15,7 +15,7 @@ class AlterChatUnreadMessages extends Migration
         Schema::table('chats_members', function (Blueprint $table) {
             $table->smallInteger('unread')->default(0);
         });
-        \DB::statements('ALTER TABLE `chats_posts` CHANGE `id` `id` BIGINT(10) UNSIGNED NOT NULL AUTO_INCREMENT;');
+        \DB::statement('ALTER TABLE `chats_posts` CHANGE `id` `id` BIGINT(10) UNSIGNED NOT NULL AUTO_INCREMENT;');
     }
 
     /**
