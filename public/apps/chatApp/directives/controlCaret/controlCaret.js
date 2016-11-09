@@ -74,7 +74,6 @@
                 pasteHtmlAtCaret(html);
                 //setCaret(sel.focusNode,sel.focusOffset+1);
                 sel = rangy.getSelection();
-
                 setCaret(sel.focusNode, sel.focusOffset);
                 sel.focusNode.focus();
 
@@ -82,10 +81,9 @@
 
             element.on('paste',function(e) {
                 e.preventDefault();
-
+                setCaret(sel.focusNode, sel.focusOffset);
                 var text = (e.originalEvent || e).clipboardData.getData('text/html') ;
-                var $result = $('<div></div>').append($(text));
-
+                var $result = $('<div></div>').append((text));
                 $.each($result.find("*"), function(idx, val) {
 
                     var $item = $(val);
@@ -105,11 +103,13 @@
                 $result.children('meta').remove()
                 $result.children('link').remove();
 
-                $result = $result.html().replace(/<(span|hr|font|strong|blockquote|a|h3|h2|h1|h4|h5|h6|b|img|input|i|u|sub|sup|strike|small|s|pre|font)[^>]+>/ig,'');
+                $result = $result.html().replace(/<(span|hr|font|strong|blockquote|a|h3|h2|h1|h4|h5|h6|b|img|input|i|u|sub|sup|strike|small|s|pre|font|li|ul)[^>]+>/ig,'');
 
-                $(this).html($result);
-
-
+                //$(this).html($result);
+                pasteHtmlAtCaret($result);
+                sel = rangy.getSelection();
+                setCaret(sel.focusNode, sel.focusOffset);
+                sel.focusNode.focus();
 
             });
 
