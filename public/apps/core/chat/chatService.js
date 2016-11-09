@@ -16,10 +16,12 @@
             //Object.last_read_date = null; // время когда этот чат читали последний раз
             Object.posts = [];
 
-            if ( data.posts.length>0 ){
+            if ( data.posts!=undefined && data.posts.length>0 ){
                 for(var i in data.posts){
                     Object.posts.push( new postService(data.posts[i]) )
                 }
+            }else{
+                Object.posts = [];
             }
             Object.current_user_id = user_id;
 
