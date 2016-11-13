@@ -210,7 +210,7 @@
 
                     if (users.length == 1) {
                         for( var i in who_is_online){
-                            if (who_is_online[i].user==users[0].id){
+                            if (who_is_online[i]==users[0].id){
                                 Object.status = 'online';
                                 break;
                             }

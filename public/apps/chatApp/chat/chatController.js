@@ -94,8 +94,12 @@
             });
         });
 
-        socket.on('who_is_online', function (array_ids) {
-            $scope.env.who_is_online = array_ids;
+        socket.on('who_is_online', function (users) {
+            var online = []
+            for( var i in users ){
+                online.push( users[i].user );
+            }
+            $scope.env.who_is_online = online;
             if ($scope.chat != null) {
                 $scope.chat.setChatStatus($scope.user.id, $scope.env.who_is_online);
             }

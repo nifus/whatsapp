@@ -358,7 +358,7 @@ div.input div.textarea{
 	height:60px
 }
 .center-search input{
-	position: fixed;
+	position: absolute;
 	width: 19%;
 	padding-left: 30px;
 }

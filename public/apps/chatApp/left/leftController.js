@@ -7,6 +7,7 @@
     function leftController($scope, chatFactory, socket) {
         console.log($scope.env);
 
+
         $scope.env = {
             step : 'one',
             waiting: false,
@@ -121,11 +122,9 @@
         };
 
 
-        /*$scope.$watch('vars.search_key', function(value){
-            if ( value==null ){
-                return;
-            }
-        })*/
+        $scope.$watchCollection('$parent.env.who_is_online', function(value){
+           $scope.env.who_is_online = value;
+        })
     }
 
 })();
