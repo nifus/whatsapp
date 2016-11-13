@@ -134,6 +134,10 @@
             }
         });
 
+        socket.on('refresh', function () {
+            $scope.logout();
+        });
+
         socket.on('server:chat-delete', function (chat_id) {
 
             $scope.user.chats = $scope.user.chats.filter(function (chat) {
@@ -196,6 +200,8 @@
         $scope.$on('submit', function (event, html) {
             $scope.submit(html);
         });
+
+
 
         $scope.$on('delete', function (event, html) {
             $scope.chat.updateLastPost();

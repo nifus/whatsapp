@@ -51,11 +51,11 @@
         };
 
         $scope.openChatsDialog = function () {
-            $scope.env.search_key = null;
+            $scope.env.search_key = undefined;
             $scope.dialog = 'chats';
         };
         $scope.openContacts = function () {
-            $scope.env.search_key = null;
+            $scope.env.search_key = undefined;
             $scope.dialog = 'contacts';
         };
 
