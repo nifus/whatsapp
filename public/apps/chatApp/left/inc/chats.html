@@ -2,11 +2,11 @@
     <div class="center-search">
         <input type="text" class="form-control" ng-model="env.search_key" placeholder="Поиск чатов">
         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-        <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-if="env.search_key" ng-click="env.search_key=null"></span>
+        <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-if="env.search_key" ng-click="env.search_key=undefined"></span>
 
     </div>
     <div class="left-contacts">
-        <div class="persona" ng-repeat="ch in user.chats|orderBy:'-updated_at'" ng-click="openChat(ch, null)"
+        <div class="persona" ng-repeat="ch in user.chats|orderBy:'-updated_at'|filter:{current_name:env.search_key}" ng-click="openChat(ch, null)"
              ng-class="{'selected':chat.id==ch.id}">
 
             <div class="status" ng-class="{'offline':env.who_is_online.indexOf( ch.getUser(user.id).id )==-1 && ch.is_group==0, 'online':env.who_is_online.indexOf(ch.getUser(user.id).id)!=-1 && ch.is_group==0 }"></div>
@@ -18,7 +18,7 @@
     padding-right: 5px;
     height: 25px;">
                     <strong>
-                        {{ch.getChatName(user.id) }} {{ch.getChatName(user.id)=='' ? ch.getChatLogin(user.id) : ''}}
+                        {{ch.current_name}}
                     </strong>
                 </div>
 

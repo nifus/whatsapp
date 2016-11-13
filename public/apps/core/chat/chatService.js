@@ -173,7 +173,7 @@
                     return names.join(', ');
                 }
             };
-            Object.current_name = Object.name=='' ? Object.getChatName(user_id) :Object.name ;
+            Object.current_name = Object.name=='' ? (Object.getChatName(user_id)!='' ? Object.getChatName(user_id) : Object.getChatLogin(user_id)) :Object.name ;
 
 
             Object.getChatAvatar = function (user_id) {
