@@ -228,7 +228,7 @@
             chat.CountUnreadMessages = 0;
             $scope.chat = chat;
 
-            if ($scope.user.history == '1') {
+            //if ($scope.user.history == '1') {
                 if (chat.posts.length > 0) {
                     $timeout(function () {
                         if (chat.start_post) {
@@ -241,10 +241,7 @@
                 }
                 $scope.$emit('open_chat', {});
                 chat.hasRead();
-            } else {
-                chat.posts = [];
-                $scope.chat.setLastPost(null);
-            }
+
 
             chat.setChatStatus($scope.user.id, $scope.env.who_is_online);
             $scope.$emit('load_chat', {chat: chat, post_id: post_id});

@@ -72,7 +72,14 @@
                     }
                 });
             } else {
-                user.chats = [];
+                chatFactory.getByUser(user.id).then(function (chats) {
+                    user.chats = chats;
+                    for (var i in user.chats) {
+                        user.chats[i].posts = [];
+                        user.chats[i].setLastPost(null);
+                        user.chats[i].CountUnreadMessages = 0;
+                    }
+                });
             }
         });
         $scope.promises.push(userPromise);

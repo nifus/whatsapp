@@ -23,7 +23,7 @@ body, html{
 #main {
 	margin-left:auto;
 	margin-right:auto;
-	margin-top:20px;
+	margin-top:2%;
 	background-color: #ffffff;border:1px solid darkgrey;
 	width: 100%;
 	height: 100%;
@@ -67,7 +67,7 @@ body, html{
 }
 .left-contacts{
 	overflow: auto;
-	height: 100%;
+	
 }
 
 
@@ -458,10 +458,17 @@ div.input div.textarea{
 }
 .additional{
 	font-size: 10px;
-	float: left;
-	width: 10%;
+	float: right;
+    width: 9%;
 	text-align: right;margin:5px;padding:0px
 }
+.time-send{float: left;width:15%}
+.name-person{overflow: hidden;
+    float: left;
+    width: 65%;
+    padding-left: 10px;
+    padding-right: 5px;
+    height: 25px;}
 #chat{
 	height: 610px;
 	width: 900px;
@@ -1068,3 +1075,22 @@ div.textarea img :focus {
 .from_me .dropdown-menu{    left: 0 !important; }
 .from_me.last .dropdown-menu{    left: 0 !important;   top: -100px;}
 .myself.last .dropdown-menu{top: -100px;}
+
+@media screen and (max-width:1240px) {
+.center-search input {  width: 18.5%;}	
+
+.item time{font-size: 11px;}
+.badge{    padding: 2px 4px;
+    font-size: 11px;
+    font-weight: 500;}
+} 
+@media screen and (max-width:991px) {
+
+.item time{font-size: 10px;}
+.badge{    padding: 2px 4px;
+    font-size: 10px;
+    font-weight: 500;}
+.center-search input {    width: 18%;}	
+.name-person .ng-binding{font-size: 12px;}
+
+} 
