@@ -353,10 +353,28 @@ div.input div.textarea{
 }
 
 .center-search{
-
 	margin: auto;
 	padding: 10px;
+	height:60px
 }
+.center-search input{
+	position: fixed;
+	width: 19%;
+	padding-left: 30px;
+}
+.center-search span.glyphicon-search{
+	margin-top: 10px;
+	color: lightgray;
+	margin-left: 10px;
+}
+
+.center-search span.glyphicon-remove{
+	float: right;
+	margin-top: 10px;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
 .persona{
 	height:40px;
 	clear:both;

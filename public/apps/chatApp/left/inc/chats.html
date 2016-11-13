@@ -1,6 +1,9 @@
 <div style="padding:0px;height:89%">
     <div class="center-search">
         <input type="text" class="form-control" ng-model="env.search_key" placeholder="Поиск чатов">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-if="env.search_key" ng-click="env.search_key=null"></span>
+
     </div>
     <div class="left-contacts">
         <div class="persona" ng-repeat="ch in user.chats|orderBy:'-updated_at'" ng-click="openChat(ch, null)"
