@@ -427,6 +427,14 @@
                     return response.data;
                 })
             };
+
+            Object.getUserIds = function(){
+                var result = [];
+                for( var i in Object.members ){
+                    result.push( Object.members[i].id )
+                }
+                return result;
+            }
             return Object;
         };
 

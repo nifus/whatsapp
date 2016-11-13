@@ -55,10 +55,6 @@
         var host = hosts[window.location.host];
         var myIoSocket = io.connect(host, {query: "host=" + window.location.host});
 
-
-        myIoSocket.on('debug', function (msg) {
-            console.log(msg)
-        });
         var mySocket = socketFactory({
             ioSocket: myIoSocket
         });
@@ -104,7 +100,23 @@
         return function (text) {
             return $sce.trustAsHtml(text);
         };
-    }])
+    }]).filter('user', function () {
+        return function (users, filterValues) {
+            if ( filterValues==undefined ){
+                return users;
+            }
+            var result = [];
+            filterValues = filterValues.toLowerCase();
+            for(var i in users ){
+                if ( users[i].name.toLowerCase().indexOf(filterValues)!==-1 ){
+                    result.push(users[i])
+                }else if ( users[i].login.toLowerCase().indexOf(filterValues)!==-1 ){
+                    result.push(users[i])
+                }
+            }
+            return result;
+        };
+    })
 
 })(angular, window);
 

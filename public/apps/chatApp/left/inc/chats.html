@@ -1,0 +1,29 @@
+<div style="padding:0px;height:89%">
+    <div class="center-search">
+        <input type="text" class="form-control" ng-model="env.search_key" placeholder="Поиск чатов">
+    </div>
+    <div class="left-contacts">
+        <div class="persona" ng-repeat="ch in user.chats|orderBy:'-updated_at'" ng-click="openChat(ch, null)"
+             ng-class="{'selected':chat.id==ch.id}">
+
+            <div class="status" ng-class="{'offline':env.who_is_online.indexOf( ch.getUser(user.id).id )==-1 && ch.is_group==0, 'online':env.who_is_online.indexOf(ch.getUser(user.id).id)!=-1 && ch.is_group==0 }"></div>
+            <div class="item">
+                <div style="float: left;width:50%;padding-left:10px">
+                    <strong>
+                        {{ch.getChatName(user.id) }} {{ch.getChatName(user.id)=='' ? ch.getChatLogin(user.id) : ''}}
+                    </strong>
+                </div>
+
+                <div style="float: left;width:25%">
+                    <time>{{ch.LastPost.Time}}</time>
+                </div>
+
+                <div class="additional" style="float: left;width:20%">
+                    <span class="badge" ng-show="ch.CountUnreadMessages>0">{{ch.CountUnreadMessages}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

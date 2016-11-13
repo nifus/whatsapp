@@ -7,9 +7,9 @@
 
 <div class="left-contacts">
 
-    <div class="persona header" ng-show="env.search_activated && env.chats.length>0"><h3>Чаты</h3></div>
+    <div class="persona header" ng-show="env.search_activated && user.chats.length>0"><h3>Чаты</h3></div>
 
-    <div class="persona" ng-repeat="ch in env.chats|orderBy:'-updated_at'" ng-click="$parent.$parent.$parent.openChat(ch, null)"
+    <div class="persona" ng-repeat="ch in user.chats|orderBy:'-updated_at'" ng-click="openChat(ch, null)"
          ng-class="{'selected':chat.id==ch.id}">
 
         <div class="status" ng-class="{'offline':env.who_is_online.indexOf( ch.getUser(user.id).id )==-1 && ch.is_group==0, 'online':env.who_is_online.indexOf(ch.getUser(user.id).id)!=-1 && ch.is_group==0 }"></div>
@@ -19,9 +19,6 @@
                 <div class="mensaje-contacto" ng-show="!ch.LastPost.message && ch.LastPost.type=='image'"><span
                         class="glyphicon glyphicon-camera" aria-hidden="true"></span> Фото
                 </div>
-                <div class="mensaje-contacto" ng-show="ch.LastPost.message"
-                     ng-bind-html="ch.LastPost.cut_message|to_trusted "></div>
-
             </div>
 
             <div class="additional">
@@ -31,9 +28,9 @@
         </div>
     </div>
 
-    <div class="persona header" ng-show="env.search_activated && env.contacts.length>0 "><h3>Контакты</h3></div>
+    <div class="persona header" ng-show="env.search_activated && user.contacts.length>0 "><h3>Контакты</h3></div>
 
-    <div class="persona" ng-repeat="contact in env.contacts" ng-show="env.search_activated"
+    <div class="persona" ng-repeat="contact in user.contacts" ng-show="env.search_activated"
          ng-click="createChat(contact)">
 
         <div class="status {'offline':env.who_is_online.indexOf( ch.getUser(user.id).id )==-1 && ch.is_group==0, 'online':env.who_is_online.indexOf(ch.getUser(user.id).id)!=-1 && ch.is_group==0 }"></div>
@@ -47,7 +44,7 @@
 
     <div class="persona header" ng-show="env.search_activated && env.search_result.length>0 "><h3>Сообщения</h3></div>
 
-    <div class="persona" ng-repeat="post in env.search_result" ng-click="env.chat='';$parent.$parent.openChat( getChat(post.chat_id),post.id  )">
+    <div class="persona" ng-repeat="post in env.search_result" ng-click="env.chat='';openChat( getChat(post.chat_id),post.id  )">
 
 
         <div class="detalle-contacto">

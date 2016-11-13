@@ -1,8 +1,8 @@
-<div ng-show="step=='one'">
+<div ng-show="env.step=='one'">
     <div class=""
          style="height:11%;padding: 29px;    padding-bottom: 8px;    padding-top: 50px;background-color: #00bfa5;">
 
-        <h4 style="color:#FFFFFF"><a ng-click="openContacts()"
+        <h4 style="color:#FFFFFF"><a ng-click="openChatsDialog()"
                                      style="    padding-right: 50px;color:#FFFFFF;cursor:pointer"> <span
                 class="glyphicon glyphicon-chevron-left" style="color:#FFFFFF"></span></a>
             Новая группа</h4>
@@ -10,8 +10,7 @@
 
     </div>
 
-    <div  style="height:89%;padding: 30px;">
-
+    <div style="height:89%;padding: 30px;">
 
         <div class="form-group">
 
@@ -24,25 +23,21 @@
             <input type="text" class="form-control" placeholder="Тема группы" ng-model="model.name">
         </div>
 
-        <button ng-disabled="!model.name || model.name==''" type="button" class="btn btn-default" ng-click="step='two'">
+        <button ng-disabled="!model.name || model.name==''" type="button" class="btn btn-default" ng-click="env.step='two'">
             Далее
         </button>
     </div>
 </div>
 
-<div ng-show="step=='two'">
-    <div
-         style="height:11%;padding: 29px;    padding-bottom: 8px;    padding-top: 50px;background-color: #00bfa5;">
-
-        <h4 style="color:#FFFFFF"><a ng-click="step='one'"
-                                     style="    padding-right: 50px;color:#FFFFFF;cursor:pointer"><span
+<div ng-show="env.step=='two'">
+    <div style="height:11%;padding: 29px;    padding-bottom: 8px;    padding-top: 50px;background-color: #00bfa5;">
+        <h4 style="color:#FFFFFF"><a ng-click="env.step='one'" style="    padding-right: 50px;color:#FFFFFF;cursor:pointer"><span
                 class="glyphicon glyphicon-chevron-left" style="color:#FFFFFF"></span></a>
             Добавить участников группы</h4>
 
     </div>
 
-    <div  style="height:89%;padding: 30px;">
-
+    <div style="height:89%;padding: 30px;">
         <div class="form-group" style="overflow: auto;height: 40%;" ng-show="model.contacts.length>0">
             <div class="panel panel-default" style="border: 1px solid #f7f7f7">
                 <div class="panel-body">
@@ -51,7 +46,7 @@
                            ng-repeat="contact in model.contacts track by $index">
                             <img ng-src="{{contact.AvatarSrc}}" class="img-circle" width="50">
 
-                            {{contact.name}}
+                            {{contact.name}} {{contact.login}}
 
                             <span style="top: 40%;right: 10%;position: absolute;" class="glyphicon glyphicon-remove"
                                   aria-hidden="true"></span>
@@ -72,14 +67,14 @@
                            ng-repeat="contact in env.contacts track by $index">
                             <img ng-src="{{contact.AvatarSrc}}" class="img-circle" width="50">
 
-                            {{contact.name}}
+                            {{contact.name}} {{contact.login}}
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <button ng-disabled="model.contacts.length==0" type="button" class="btn btn-default"
+        <button ng-disabled="model.contacts.length==0 || env.waiting==true" type="button" class="btn btn-default"
                 ng-click="saveGroup(model)">Создать
         </button>
 

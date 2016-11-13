@@ -1,0 +1,20 @@
+<div style="padding:0px;height:89%">
+    <div class="center-search">
+        <input type="text" class="form-control" ng-model="env.search_key" placeholder="Поиск контактов">
+    </div>
+    <div class="left-contacts">
+        <div class="persona" ng-repeat="contact in user.contacts|orderBy:'-name':true|user:env.search_key"
+             ng-click="createChat(contact)">
+
+            <div class="status"
+                 ng-class="{'offline':env.who_is_online.indexOf(contact.id)==-1, 'online':env.who_is_online.indexOf(contact.id)!=-1 }"></div>
+
+            <div class="item " style="top:30%">
+                <div class="detalle-contacto">
+                    <div class="nombre-contacto">{{contact.name}} {{contact.login}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

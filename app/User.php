@@ -155,23 +155,21 @@ class User extends Authenticatable
         return $this;
     }
 
+    public function updateUserProfile(array $data)
+    {
+        $this->update($data);
+    }
+
     public function updateUser(array $data)
     {
-
         self::userValidation($data, false, $this->id);
-
         if (isset($data['password'])) {
             $data['password'] = \Hash::make($data['password']);
         }
-        //$old = $this->toArray();
-        //$this->fill($data);
-       // $changed = $this->getDirty();
         $this->update($data);
         if ( isset($data['users'])){
             $this->sinxContacts($data['users']);
         }
-
-        //event(new UserEvent('change', $old, $changed));
     }
 
     public function updateLastLogin()

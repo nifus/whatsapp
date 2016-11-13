@@ -38,12 +38,24 @@ body, html{
 	width:20%;
 	float:left
 }
+
+#left ul.nav-tabs{
+	margin-top:62px;
+}
+#left ul.nav-tabs li{
+	width:50%;
+	cursor: pointer;
+}
+#left ul.nav-tabs li a{
+	text-align: center;
+}
 .left-header{
 	padding:8px 15px;
 	background-color: #eee;
 	height: 60px;
 	position: absolute;
 	width: 20%;
+	border-right: 1px solid darkgrey;
 }
 
 .left-search{
@@ -56,7 +68,6 @@ body, html{
 .left-contacts{
 	overflow: auto;
 	height: 100%;
-	padding-top: 55px;
 }
 
 
@@ -347,10 +358,9 @@ div.input div.textarea{
 	padding: 10px;
 }
 .persona{
-	height:60px;
+	height:40px;
 	clear:both;
 	border-top: 1px solid #f2f2f2;
-	<!--padding: 10px 15px;-->
 	overflow: hidden;
 }
 .persona:hover{
@@ -418,10 +428,9 @@ div.input div.textarea{
 	float: left;
 	width: 70%;
 }
-.nombre-contacto{
-	font-weight: 500;
-	font-size: 17px;
-	font-family: Roboto, sans-serif;
+
+.item time{
+	font-size: 13px;
 }
 .mensaje-contacto {
 	color: #a4a4a4;

@@ -47,6 +47,21 @@
                 )
             };
 
+            Object.updateProfile = function(data){
+                Object.waiting = true;
+                return $http.post(window.SERVER+'/backend/user/profile',data).then(
+                    function(response){
+                        Object.waiting = false;
+                        if ( response.data.success==true ){
+                            for( var i in response.data.user ){
+                                Object[i] = response.data.user[i]
+                            }
+                        }
+                        return response.data;
+                    }
+                )
+            };
+
             Object.getAllContacts = function(){
                 Object.waiting = true;
                 return $http.get(window.SERVER+'/backend/user/contacts').then(

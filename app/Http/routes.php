@@ -26,6 +26,7 @@ Route::get('/uploads/{post_id}/{name}', 'Api\ChatController@getDocument');
         Route::post('/{id}/restore', 'Api\UserController@restore')->where('id', '[0-9]*')->middleware('updateLastAction');
         Route::get('/logout', 'Api\UserController@logout')->middleware('updateLastAction');
         Route::post('/{id}', 'Api\UserController@update')->where('id', '[0-9]*')->middleware('updateLastAction');
+        Route::post('/profile', 'Api\UserController@updateProfile')->middleware('updateLastAction');
 
         Route::get('/update-token', 'Api\UserController@updateToken');
         Route::get('/get-last-action/{user_id}', 'Api\UserController@getLastAction')->where('user_id', '[0-9]*');

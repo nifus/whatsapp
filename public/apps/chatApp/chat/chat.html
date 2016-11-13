@@ -1,6 +1,90 @@
 <div id="main">
-    <div id="left">
-        <left user="user" chat="chat" style="height:100%"></left>
+    <div id="left" ng-controller="leftController">
+
+        <div class="left-header" ng-show="dialog=='chats' || dialog=='contacts'">
+            <a ng-click="openProfile()"><img ng-src="{{user.AvatarSrc}}" class="img-circle link"></a>
+
+            <ul class="nav navbar-nav navbar-right">
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" style="height:40px">
+                        <button class="icon i03"></button>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ng-show="user.can_mass_messages=='1'"><a ng-click="openGroupDialog()" class="link">Новая
+                            группа</a></li>
+                        <li><a ng-click="openProfile()" class="link">Профиль</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a class="link" ng-click="logout()">Выход</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <ul class="nav nav-tabs"  ng-show="dialog=='chats' || dialog=='contacts'">
+            <li role="presentation" ng-class="{'active': dialog=='chats'}" ng-click="dialog='chats'"><a  >Чаты</a></li>
+            <li role="presentation" ng-class="{'active': dialog=='contacts'}" ng-click="dialog='contacts'"><a  >Контакты</a></li>
+        </ul>
+
+
+        <div style="height:100%">
+            <ng-include ng-if="dialog=='chats'" src="'apps/chatApp/left/inc/chats.html'"></ng-include>
+            <ng-include ng-if="dialog=='contacts'" src="'apps/chatApp/left/inc/contacts.html'"></ng-include>
+            <ng-include ng-if="dialog=='group'" src="'apps/chatApp/left/inc/group.html'"></ng-include>
+            <ng-include ng-if="dialog=='profile'" src="'apps/chatApp/left/inc/profile.html'"></ng-include>
+        </div>
+        <!--<div class="left-header" ng-show="dialog=='contacts'">
+            <a ng-click="openProfile()"><img ng-src="{{user.AvatarSrc}}" class="img-circle link"></a>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a ng-click="openContactList()" class="link">
+                        <button class="icon i05"></button>
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" style="height:40px">
+                        <button class="icon i03"></button>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ng-show="user.can_mass_messages=='1'"><a ng-click="openGroupDialog()" class="link">Новая
+                            группа</a></li>
+                        <li><a ng-click="openProfile()" class="link">Профиль</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a class="link" ng-click="logout()">Выход</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+
+        <div
+                style="height:91%"
+                ng-if="dialog=='profile'"
+                ng-include="'apps/chatApp/left/inc/profile.html'">
+        </div>
+
+        <div
+                style="height:100%"
+                ng-if="dialog=='group'"
+                ng-include="'apps/chatApp/left/inc/group.html'">
+
+        </div>
+
+        <div
+                style="padding-top: 60px;height: 100%;"
+                ng-if="dialog=='contacts'"
+                ng-include="'apps/chatApp/left/inc/chats.html'">
+
+        </div>
+        <div
+                style="height:100%"
+                ng-if="dialog=='contactList'"
+                ng-include="'apps/chatApp/left/inc/contactList.html'">
+
+        </div>-->
+
+
     </div>
 
     <div id="center" ng-class="{'full-center':env.show_add_info==false}">
@@ -33,13 +117,15 @@
                             <button class="icon i03"></button>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="link" ng-click="openInfoBlock()" ng-hide="chat.is_group==1 && chat.author!=user.id">{{chat.is_group==1 ? 'Информация о группе' :
+                            <li><a class="link" ng-click="openInfoBlock()"
+                                   ng-hide="chat.is_group==1 && chat.author!=user.id">{{chat.is_group==1 ? 'Информация о
+                                группе' :
                                 'Информация о контакте'}}</a></li>
                             <li><a ng-show="chat.IsEnabledSound(user.id)" ng-click="disableSound(chat, user.id)"
                                    class="link">Без звука</a></li>
                             <li><a ng-show="chat.IsDisabledSound(user.id)" ng-click="enableSound(chat, user.id)"
                                    class="link">Вкл. звук</a></li>
-                            <li><a  ng-click="clearChat(chat)" class="link">Очистить
+                            <li><a ng-click="clearChat(chat)" class="link">Очистить
                                 чат</a></li>
                             <li><a ng-show="user.can_edit_myself=='1'" ng-click="deleteChat(chat)" class="link">Удалить
                                 чат</a></li>
@@ -56,7 +142,8 @@
     left: 55%;" alt="">
                 <div class="messages" scroll-load-messages>
 
-                    <post ng-repeat="post in chat.posts" post="post"  chat="chat" is-last-post="$index==chat.posts.length-1"
+                    <post ng-repeat="post in chat.posts" post="post" chat="chat"
+                          is-last-post="$index==chat.posts.length-1"
                           is-select-post="env.selected_post" is-edit-post="env.edit_post" user="user"></post>
                 </div>
 
@@ -233,9 +320,11 @@
 
                 <div class="image-preview">
                     <img ng-show="env.upload.image.filetype.indexOf('image')!==-1" onload="$('div.input input').focus()"
-                         ng-src="{{env.upload.image.filetype && env.upload.image.filetype.indexOf('image')!==-1 ? ('data:'+env.upload.image.filetype+';base64,'+env.upload.image.base64) : null }}" alt="">
+                         ng-src="{{env.upload.image.filetype && env.upload.image.filetype.indexOf('image')!==-1 ? ('data:'+env.upload.image.filetype+';base64,'+env.upload.image.base64) : null }}"
+                         alt="">
 
-                    <img ng-show="env.upload.image.filetype.indexOf('image')==-1" src="/image/attachement.png" alt="" onload="$('div.input input').focus()">
+                    <img ng-show="env.upload.image.filetype.indexOf('image')==-1" src="/image/attachement.png" alt=""
+                         onload="$('div.input input').focus()">
                 </div>
 
                 <div class="control">
@@ -245,9 +334,11 @@
 
                     <div class="button">
                         <button ng-show="env.upload.image.filetype.indexOf('image')!==-1"
-                                ng-click="addImagePost(env.upload)" class="icon i08" tabindex="2" ng-disabled="env.adding_file"></button>
+                                ng-click="addImagePost(env.upload)" class="icon i08" tabindex="2"
+                                ng-disabled="env.adding_file"></button>
                         <button ng-show="env.upload.image.filetype.indexOf('image')==-1"
-                                ng-click="addDocumentPost(env.upload)" class="icon i08" tabindex="2" ng-disabled="env.adding_file"></button>
+                                ng-click="addDocumentPost(env.upload)" class="icon i08" tabindex="2"
+                                ng-disabled="env.adding_file"></button>
                     </div>
 
                 </div>
@@ -285,7 +376,8 @@
                         <img src="/image/default.jpg" class="img-circle-upload"
                              style="margin-left:auto;margin-right:auto">
                     </upload>
-                    <img ng-src="{{chat.ChatAvatar}}" class="img-circle-upload" ng-show="chat.author!=user.id" style="margin-left:auto;margin-right:auto">
+                    <img ng-src="{{chat.ChatAvatar}}" class="img-circle-upload" ng-show="chat.author!=user.id"
+                         style="margin-left:auto;margin-right:auto">
 
 
                 </div>
@@ -305,7 +397,7 @@
         <button
                 ng-click="changeChatName(model.name)"
                 ng-disabled="model.name=='' " class="btn btn-default" type="button"><span class="glyphicon glyphicon-ok"
-                                                                                         aria-hidden="true"></span>&nbsp;</button>
+                                                                                          aria-hidden="true"></span>&nbsp;</button>
       </span>
 
                             </div>
@@ -381,9 +473,11 @@
     width: 20%;
     text-align: center;">
         <div style="color: red;
-    padding: 20px;">Нет связи с сервером</div>
+    padding: 20px;">Нет связи с сервером
+        </div>
         <div class="progress">
-            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45"
+                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                 <span class="sr-only">45% Complete</span>
             </div>
         </div>
