@@ -2,9 +2,9 @@
     'use strict';
     angular.module('chatApp').controller('chatController', chatController);
 
-    chatController.$inject = ['$scope', '$timeout', '$rootScope', 'socket','ngAudio','chatFactory'];
+    chatController.$inject = ['$scope', '$timeout', '$rootScope', 'socket', 'ngAudio', 'chatFactory'];
 
-    function chatController($scope, $timeout, $rootScope, socket, ngAudio,chatFactory) {
+    function chatController($scope, $timeout, $rootScope, socket, ngAudio, chatFactory) {
 
         $scope.more = false;
         $scope.env = {
@@ -26,13 +26,12 @@
             download: false,
             connected: true,
             sound: ngAudio.load("audio/im.mp3"),
-            who_is_online:[]
+            who_is_online: []
         };
 
         $scope.user = null;
         $scope.chat = null;
         $scope.config = null;
-
 
 
         function initPage(deferred) {
@@ -43,9 +42,8 @@
             socket.emit('client:connect', $scope.user.id);
             return deferred.promise;
         }
+
         $scope.$parent.init.push(initPage);
-
-
 
 
         socket.on('server:read_chat', function (chat_id) {
@@ -96,8 +94,8 @@
 
         socket.on('who_is_online', function (users) {
             var online = []
-            for( var i in users ){
-                online.push( users[i].user );
+            for (var i in users) {
+                online.push(users[i].user);
             }
             $scope.env.who_is_online = online;
             if ($scope.chat != null) {
@@ -106,19 +104,19 @@
         });
 
         socket.on('server:create-chat', function (chat) {
-           // for (var i in response.users) {
-           //     if (response.users[i] == $scope.user.id) {
-                    chatFactory.getById(chat).then(function (chat) {
-                        //console.log(chat)
-                        //console.log($scope.env.user.chats)
-                        $scope.user.chats.push(chat);
-                        $scope.env.sound.play();
-                   // }, function (error) {
-                        //console.log(error)
-                    });
-                   // break;
-               // }
-           // }
+            // for (var i in response.users) {
+            //     if (response.users[i] == $scope.user.id) {
+            chatFactory.getById(chat).then(function (chat) {
+                //console.log(chat)
+                //console.log($scope.env.user.chats)
+                $scope.user.chats.push(chat);
+                $scope.env.sound.play();
+                // }, function (error) {
+                //console.log(error)
+            });
+            // break;
+            // }
+            // }
         });
 
         socket.on('disconnect', function () {
@@ -146,7 +144,7 @@
                 }
                 return true;
             });
-            if ($scope.chat!=null && $scope.chat.id == chat_id) {
+            if ($scope.chat != null && $scope.chat.id == chat_id) {
                 $scope.chat = null;
             }
         })
@@ -202,7 +200,6 @@
         });
 
 
-
         $scope.$on('delete', function (event, html) {
             $scope.chat.updateLastPost();
         });
@@ -230,27 +227,34 @@
 
 
         $scope.loadChat = function (chat, post_id) {
-            chat.StartPost = post_id;
+
+            chat.start_post = post_id;
             chat.CountUnreadMessages = 0;
             $scope.chat = chat;
+            if ( post_id!=null ){
+                $scope.chat.loadPosts().then(function(posts){
 
-            //if ($scope.user.history == '1') {
+                    $scope.chat.posts = posts
+                        $scope.$emit('messages:scroll_to', chat.start_post);
+                       $scope.env.download = true;
+
+                })
+            }else{
                 if (chat.posts.length > 0) {
                     $timeout(function () {
-                        if (chat.start_post) {
-                            $scope.$emit('messages:scroll_to', chat.start_post);
-                            $scope.env.download = true;
-                        } else {
-                            $scope.$emit('messages:scroll_down', chat.last_post_id);
-                        }
+                       $scope.$emit('messages:scroll_down', chat.last_post_id);
                     }, 10)
                 }
-                $scope.$emit('open_chat', {});
-                chat.hasRead();
+            }
+
+            //if ($scope.user.history == '1') {
+
+            $scope.$emit('open_chat', {});
+            chat.hasRead();
 
 
             chat.setChatStatus($scope.user.id, $scope.env.who_is_online);
-            $scope.$emit('load_chat', {chat: chat, post_id: post_id});
+           // $scope.$emit('load_chat', {chat: chat, post_id: post_id});
         };
 
         $scope.cancelReply = function () {
@@ -461,6 +465,9 @@
         };
 
         $scope.submit = function (message) {
+            if (message==''){
+                return;
+            }
             if ($scope.env.edit_post) {
                 $scope.env.edit_post.update(message).then(function (response) {
                     if (response.success == false) {
@@ -509,16 +516,12 @@
         };
 
 
-
         $(window).resize(function () {
             $rootScope.$broadcast('textField', {
                 'smiles': $scope.env.show_smiles,
                 'answer': $scope.env.selected_post ? true : false
             });
         });
-
-
-
 
 
     }

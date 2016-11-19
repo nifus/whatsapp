@@ -2,18 +2,18 @@
     'use strict';
     angular.module('chatApp').controller('leftController', leftController);
 
-    leftController.$inject = ['$scope','chatFactory','socket'];
+    leftController.$inject = ['$scope', 'chatFactory', 'socket', '$http'];
 
-    function leftController($scope, chatFactory, socket) {
-        console.log($scope.env);
+    function leftController($scope, chatFactory, socket, $http) {
 
 
         $scope.env = {
-            step : 'one',
+            step: 'one',
             waiting: false,
             search_activated: false,
             search_key: undefined,
-            contacts:[]
+            contacts: [],
+            search_result: []
         };
 
         $scope.dialog = 'chats';
@@ -40,7 +40,7 @@
         $scope.openGroupDialog = function () {
             $scope.dialog = 'group';
             $scope.model = {
-                contacts:[]
+                contacts: []
             };
             $scope.env.step = 'one';
             $scope.env.contacts = angular.copy($scope.user.contacts)
@@ -59,14 +59,14 @@
             $scope.dialog = 'contacts';
         };
 
-        $scope.selectContact = function(contact, index){
+        $scope.selectContact = function (contact, index) {
             $scope.model.contacts.push(contact);
-            $scope.env.contacts.splice(index,1)
+            $scope.env.contacts.splice(index, 1)
         };
 
-        $scope.removeContact = function(contact, index){
+        $scope.removeContact = function (contact, index) {
             $scope.env.contacts.push(contact);
-            $scope.model.contacts.splice(index,1)
+            $scope.model.contacts.splice(index, 1)
         };
 
         $scope.saveGroup = function (data) {
@@ -122,9 +122,44 @@
         };
 
 
-        $scope.$watchCollection('$parent.env.who_is_online', function(value){
-           $scope.env.who_is_online = value;
-        })
+        $scope.$watchCollection('$parent.env.who_is_online', function (value) {
+            $scope.env.who_is_online = value;
+        });
+
+        $scope.$watch('env.search_key', function (value) {
+            if (!value || value.length < 2){
+                $scope.env.search_result = [];
+                return;
+            }
+
+            $http.get('/chats/search/' + value).success(function (result) {
+                $scope.env.search_result = result.post;
+                var reg = new RegExp('(.{0,50})' + "(" + value + ")" + '(.{0,50})');
+                for (var i in result.post) {
+                    var message = strip(result.post[i].message);
+                    message = message.match(reg);
+                    result.post[i].message = message[1] + '<strong>' + message[2] + '</strong>' + message[3]
+                }
+            });
+
+        });
+
+        function strip(html)
+        {
+            return html.replace(/<(?:.|\n)*?>/gm, '');
+        };
+
+        $scope.getChat = function (chat_id) {
+            var result = $scope.user.chats.filter(function (chat) {
+                if (chat_id == chat.id) {
+                    return true;
+                }
+                return false
+            });
+            if (result[0] != undefined) {
+                return result[0];
+            }
+        };
     }
 
 })();

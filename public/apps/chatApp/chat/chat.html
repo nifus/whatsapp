@@ -27,7 +27,7 @@
         </ul>
 
 
-        <div style="" >
+        <div>
             <ng-include ng-if="dialog=='chats'" src="'apps/chatApp/left/inc/chats.html'"></ng-include>
             <ng-include ng-if="dialog=='contacts'" src="'apps/chatApp/left/inc/contacts.html'"></ng-include>
             <ng-include ng-if="dialog=='group'" src="'apps/chatApp/left/inc/group.html'"></ng-include>
@@ -142,7 +142,7 @@
     left: 55%;" alt="">
                 <div class="messages" scroll-load-messages>
 
-                    <post ng-repeat="post in chat.posts" post="post" chat="chat"
+                    <post ng-repeat="post in chat.posts track by $index" post="post" chat="chat"
                           is-last-post="$index==chat.posts.length-1"
                           is-select-post="env.selected_post" is-edit-post="env.edit_post" user="user"></post>
                 </div>

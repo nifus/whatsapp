@@ -22,21 +22,21 @@
 
             //  нужно промотать в самый низ
             $rootScope.$on('messages:scroll_down', function (value, last_post_id) {
-                console.log('messages:scroll_down');
+                //console.log('messages:scroll_down');
                 if (can_set_down) {
                     $('#post-' + last_post_id).ready(function () {
-                        console.log('#post-' + last_post_id + ' is ready');
+                        //console.log('#post-' + last_post_id + ' is ready');
 
                         $('div.messages').scrollTo('#post-' + last_post_id);
 
-                        console.log(element[0].scrollHeight);
+                       // console.log(element[0].scrollHeight);
 
                         element.scrollTop(element[0].scrollHeight);
 
                         $timeout(function () {
-                            console.log('repeat')
-                            console.log(element[0].scrollHeight);
-                            console.log('----');
+                         //   console.log('repeat')
+                         //   console.log(element[0].scrollHeight);
+                         //   console.log('----');
 
 
                             $('div.messages').scrollTo('#post-' + last_post_id);

@@ -376,6 +376,12 @@ div.input div.textarea{
 	cursor: pointer;
 }
 
+
+div.search{
+	height: 60px!important;
+	padding-left:10px
+}
+
 .persona{
 	height:40px;
 	clear:both;
