@@ -267,6 +267,7 @@ class Chat extends Model
     }
 
 
+
     public function updateUnreadMessages(){
 
         $users = $this->Members()->get();
