@@ -247,7 +247,7 @@
         //el.focus();
     }
 
-    angular.module('chatApp').directive('controlCaret', controlCaretDirective);
+    angular.module('chatApp').directive('controlCaret', ['$rootScope',controlCaretDirective]);
 
 
 })(window.angular);

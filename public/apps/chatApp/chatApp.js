@@ -1,6 +1,7 @@
 (function (angular, window) {
     'use strict';
-    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64',  'ckeditor', 'ngSanitize', 'btford.socket-io', 'ngAudio', 'contenteditable']).config(function ($stateProvider, $urlRouterProvider, $authProvider) {
+    angular.module('chatApp', ['ui.router', 'satellizer', 'core', 'ngCookies', 'naif.base64', 'ngSanitize', 'btford.socket-io', 'ngAudio', 'contenteditable']).
+    config(['$stateProvider','$urlRouterProvider','$authProvider',function ($stateProvider, $urlRouterProvider, $authProvider) {
 
         window.SERVER = window.location.protocol + '//' + window.location.host;
 
@@ -38,7 +39,7 @@
         })
 
 
-    }).factory('socket', function (socketFactory) {
+    }]).factory('socket', ['socketFactory', function (socketFactory) {
 
         var hosts = {
             'dikom.org': 'https://nodesrv.2gt.biz:3001',
@@ -59,10 +60,8 @@
             ioSocket: myIoSocket
         });
         return mySocket;
-    }).run(['userFactory', '$state', '$rootScope', function (userFactory, $state, $rootScope) {
+    }]).run(['userFactory', '$state', '$rootScope', function (userFactory, $state, $rootScope) {
         moment.locale('ru');
-
-
         $rootScope.$watch(function () {
             return $state.current
         }, function (value) {
@@ -102,15 +101,15 @@
         };
     }]).filter('user', function () {
         return function (users, filterValues) {
-            if ( filterValues==undefined ){
+            if (filterValues == undefined) {
                 return users;
             }
             var result = [];
             filterValues = filterValues.toLowerCase();
-            for(var i in users ){
-                if ( users[i].name.toLowerCase().indexOf(filterValues)!==-1 ){
+            for (var i in users) {
+                if (users[i].name.toLowerCase().indexOf(filterValues) !== -1) {
                     result.push(users[i])
-                }else if ( users[i].login.toLowerCase().indexOf(filterValues)!==-1 ){
+                } else if (users[i].login.toLowerCase().indexOf(filterValues) !== -1) {
                     result.push(users[i])
                 }
             }

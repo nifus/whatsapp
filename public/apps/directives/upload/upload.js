@@ -51,7 +51,6 @@
 
         }
 
-        uploadController.$inject = ['$scope'];
 
         function uploadController($scope) {
 
@@ -77,7 +76,6 @@
                 }
 
                 if (angular.isArray($scope.ngModel) && angular.isArray(value)) {
-                    console.log(1)
                     for (var i in value) {
                         if ($scope.ngModel.length < max)
                             $scope.ngModel.push(value[i])
@@ -128,5 +126,5 @@
 
     }
 
-    angular.module('core').directive('upload', uploadDirective);
+    angular.module('core').directive('upload', ['$compile',uploadDirective]);
 })(window.angular);

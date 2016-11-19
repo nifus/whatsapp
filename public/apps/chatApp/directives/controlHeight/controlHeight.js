@@ -8,7 +8,7 @@
 
         };
 
-        controlHeightDirective.$inject = ['$scope','$timeout'];
+        //controlHeightDirective.$inject = ['$scope','$timeout'];
 
         function controlHeightLink($scope, element) {
             var input_element = element.find('#input');
@@ -76,7 +76,7 @@
         }
     }
 
-    angular.module('chatApp').directive('controlHeight', controlHeightDirective);
+    angular.module('chatApp').directive('controlHeight', ['$rootScope','$timeout',controlHeightDirective]);
 
 
 })(window.angular);

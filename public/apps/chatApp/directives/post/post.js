@@ -73,7 +73,7 @@
 
     }
 
-    angular.module('chatApp').directive('post', postDirective);
+    angular.module('chatApp').directive('post', ['$rootScope',postDirective]);
 
 
 })(window.angular);

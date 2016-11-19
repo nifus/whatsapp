@@ -82,6 +82,6 @@
 
     }
 
-    angular.module('chatApp').directive('scrollLoadMessages', scrollLoadMessagesDirective);
+    angular.module('chatApp').directive('scrollLoadMessages', ['$rootScope','$timeout',scrollLoadMessagesDirective] );
 
 })(window.angular);
