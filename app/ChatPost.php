@@ -201,6 +201,20 @@ class ChatPost extends Model
         return $sql->get()->reverse()->toArray();
     }
 
+    static function getPostsUp($chat_id, $post_id, $limit, $date = null)
+    {
+        $sql = self::where('chat_id', $chat_id)
+            ->where('is_deleted', '0')
+            ->where('id', '<', $post_id)
+            ->orderBy('id', 'DESC')
+            ->skip(0)
+            ->take($limit);
+        if (!is_null($date)) {
+            $sql = $sql->where('created_at', '>', $date);
+        }
+        return $sql->get()->toArray();
+    }
+
     static function addTextPost($chat, $message, $reply_to, $user, $is_system = 0)
     {
         $message = trim($message);

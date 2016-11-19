@@ -42,6 +42,8 @@ Route::get('/uploads/{post_id}/{name}', 'Api\ChatController@getDocument');
         Route::put('/{id}/read', 'Api\ChatController@chatRead')->where('id', '[0-9]*')->middleware('updateLastAction');
         Route::post('/{id}/around/{post_id}', 'Api\ChatController@loadChatAroundId')->where('id', '[0-9]*')->where('post_id','[0-9]*')->middleware('updateLastAction');
         Route::post('/{id}/down/{post_id}', 'Api\ChatController@loadChatDown')->where('id', '[0-9]*')->where('post_id','[0-9]*')->middleware('updateLastAction');
+        Route::post('/{id}/up/{post_id}', 'Api\ChatController@loadChatUp')->where('id', '[0-9]*')->where('post_id','[0-9]*')->middleware('updateLastAction');
+
         Route::put('/{id}', 'Api\ChatController@updateChat')->where('id', '[0-9]*')->middleware('updateLastAction');
         Route::get('/search/{key}', 'Api\ChatController@search');
 

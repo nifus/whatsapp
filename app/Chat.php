@@ -142,6 +142,15 @@ class Chat extends Model
         return ChatPost::getPostsDown($this->id, $post_id, $limit, $rec->clear_date);
     }
 
+    public function getPostsUp($post_id, $limit, $user_id)
+    {
+        $rec = \DB::table('chats_members')
+            ->where('chat_id', $this->id)
+            ->where('user_id', $user_id)->first();
+
+        return ChatPost::getPostsUp($this->id, $post_id, $limit, $rec->clear_date);
+    }
+
     public function updateLastPost($post_id = null)
     {
         if (is_null($post_id)) {

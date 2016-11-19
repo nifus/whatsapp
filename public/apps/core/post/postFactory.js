@@ -12,6 +12,7 @@
             getPosts: getPosts,
             getPostsAroundId: getPostsAroundId,
             getPostsDown: getPostsDown,
+            getPostsUp: getPostsUp,
             addPost: addPost,
             addImagePost: addImagePost,
             addDocumentPost: addDocumentPost
@@ -101,6 +102,15 @@
 
         function getPostsDown(id, post_id) {
             return $http.post('/chats/' + id + '/down/' + post_id, {count: 30}).then(function (response) {
+                var result = [];
+                for (var i in response.data.posts) {
+                    result.push(new postService(response.data.posts[i]));
+                }
+                return result;
+            })
+        }
+        function getPostsUp(id, post_id) {
+            return $http.post('/chats/' + id + '/up/' + post_id, {count: 30}).then(function (response) {
                 var result = [];
                 for (var i in response.data.posts) {
                     result.push(new postService(response.data.posts[i]));

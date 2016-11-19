@@ -1,30 +1,35 @@
 (function (angular, window) {
     'use strict';
     angular.module('core').service('chatService', chatService);
-    chatService.$inject = ['postFactory', '$http', 'userFactory', '$filter', '$q', 'socket','postService'];
+    chatService.$inject = ['postFactory', '$http', 'userFactory', '$filter', '$q', 'socket', 'postService'];
 
     function chatService(postFactory, $http, userFactory, $filter, $q, socket, postService) {
         return function (data, user_id) {
             var Object = angular.copy(data);
             Object.waiting = false;
             Object.start_post = null;   // номер POST ID который должен открываться при загрузке чата
-            Object.first_post_id = null;    //  номер первого ID
+
+            //Object.down_post_id = null;    //  номер первого ID
+            //Object.up_post_id = null;    //  номер последнего ID
+
             Object.last_post_id = null;    //  номер последнего ID
             Object.is_posts_loading = false; // флаг подгрузки сообщений в чат
             Object.is_posts_loaded = false; // все сообщения загружены в чат
-            Object.posts_start = data.posts==undefined ? 0 : data.posts.length; // точка на которой закончились грузиться сообщения
+            Object.is_down_posts_loaded = false; // все сообщения загружены в чат
+            Object.is_up_posts_loaded = false; // все сообщения загружены в чат
+
+            Object.posts_start = data.posts == undefined ? 0 : data.posts.length; // точка на которой закончились грузиться сообщения
             //Object.last_read_date = null; // время когда этот чат читали последний раз
             Object.posts = [];
 
-            if ( data.posts!=undefined && data.posts.length>0 ){
-                for(var i in data.posts){
-                    Object.posts.push( new postService(data.posts[i]) )
+            if (data.posts != undefined && data.posts.length > 0) {
+                for (var i in data.posts) {
+                    Object.posts.push(new postService(data.posts[i]))
                 }
-            }else{
+            } else {
                 Object.posts = [];
             }
             Object.current_user_id = user_id;
-
 
 
             Object.needPlayMusic = function (user_id) {
@@ -36,29 +41,29 @@
                 return false;
             };
 
-            Object.readChat = function(){
-                for( var i in Object.posts ){
+            Object.readChat = function () {
+                for (var i in Object.posts) {
                     Object.posts[i].is_read = 1;
                 }
             };
 
-            Object.hasRead = function(user){
+            Object.hasRead = function (user) {
                 var user_to = null;
-                if (Object.is_group==0 && user!=undefined && user.id!=undefined){
+                if (Object.is_group == 0 && user != undefined && user.id != undefined) {
                     user_to = user.id
                 }
                 return $http.put('/chats/' + Object.id + '/read').then(function () {
-                    socket.emit('client:read_chat',{user_to:user_to, chat_id: Object.id});
+                    socket.emit('client:read_chat', {user_to: user_to, chat_id: Object.id});
                 })
             };
 
             Object.updateInformation = function (is_current_chat, post_id) {
-                return $http.get('/chats/' + Object.id + '/status/'+post_id).then(function (response) {
+                return $http.get('/chats/' + Object.id + '/status/' + post_id).then(function (response) {
                     if (response.data.success == true) {
-                        var post =  new postService(response.data.LastPost);
+                        var post = new postService(response.data.LastPost);
                         Object.setLastPost(post);
                         Object.updated_at = response.data.updated_at;
-                        Object.CountUnreadMessages = true===is_current_chat ? 0 :response.data.CountUnreadMessages;
+                        Object.CountUnreadMessages = true === is_current_chat ? 0 : response.data.CountUnreadMessages;
                         if (Object.posts) {
                             Object.posts.push(post)
                         }
@@ -66,7 +71,7 @@
                     //if( true===is_current_chat ){
 
                     //    Object.hasRead();
-                   // }
+                    // }
 
                     return response.data;
                 })
@@ -83,17 +88,17 @@
             };
             Object.setLastPost(data.LastPost);
 
-            Object.findLastPost = function(){
+            Object.findLastPost = function () {
                 var length = Object.posts.length;
-                for( var i=length-1;i>0;i--){
-                    if ( Object.posts[i].is_deleted!='1' ){
+                for (var i = length - 1; i > 0; i--) {
+                    if (Object.posts[i].is_deleted != '1') {
                         return Object.posts[i];
                     }
                 }
                 return null;
             };
 
-            Object.updateLastPost = function(){
+            Object.updateLastPost = function () {
                 var post = Object.findLastPost();
                 Object.setLastPost(post)
                 //console.log(Object.posts);
@@ -173,7 +178,7 @@
                     return names.join(', ');
                 }
             };
-            Object.current_name = Object.name=='' ? (Object.getChatName(user_id)!='' ? Object.getChatName(user_id) : Object.getChatLogin(user_id)) :Object.name ;
+            Object.current_name = Object.name == '' ? (Object.getChatName(user_id) != '' ? Object.getChatName(user_id) : Object.getChatLogin(user_id)) : Object.name;
 
 
             Object.getChatAvatar = function (user_id) {
@@ -209,14 +214,14 @@
                     });
 
                     if (users.length == 1) {
-                        for( var i in who_is_online){
-                            if (who_is_online[i]==users[0].id){
+                        for (var i in who_is_online) {
+                            if (who_is_online[i] == users[0].id) {
                                 Object.status = 'online';
                                 break;
                             }
                         }
 
-                        if ( Object.status!='online' ){
+                        if (Object.status != 'online') {
                             userFactory.getLastActionDate(users[0].id).then(function (response) {
                                 Object.status = response.data.last_active;
                             })
@@ -251,13 +256,21 @@
             };
 
             Object.loadPosts = function () {
+                Object.is_posts_loading = true;
+
                 var defer = $q.defer();
                 var promise = Object.start_post ? Object.getPostsAroundId(Object.start_post) : Object.getFirstPosts();
                 promise.then(function (response) {
-                    var length = Object.posts.length;
-                    Object.first_post_id = length > 0 ? Object.posts[Object.posts.length - 1].id : null;
-                    Object.last_post_id = length > 0 ? Object.posts[Object.posts.length - 1].id : null;
-                    Object.is_posts_loaded = length < 30 ? true : false;
+                    Object.posts = $filter('orderBy')(response, 'id');
+
+                    Object.first_post_id = response.length > 0 ? Object.posts[Object.posts.length - 1].id : null;
+                    Object.last_post_id = response.length > 0 ? Object.posts[Object.posts.length - 1].id : null;
+
+                    //Object.is_down_posts_loaded = response.length < 30 ? true : false;
+                    Object.is_posts_loading = false;
+
+
+
                     defer.resolve(response);
                 });
                 return defer.promise
@@ -269,20 +282,20 @@
                 Object.posts_start = 0;
                 var defer = $q.defer();
                 postFactory.getPosts(Object.id, Object.posts_start).then(function (response) {
-                    Object.is_posts_loaded = response.length < 30 ? true : false;
                     Object.posts = $filter('orderBy')(response, 'id');
                     Object.is_posts_loading = false;
                     defer.resolve(response);
+
                 });
                 return defer.promise
             };
 
             Object.getUpPosts = function () {
                 Object.is_posts_loading = true;
-                Object.posts_start += 30;
                 var defer = $q.defer();
-                postFactory.getPosts(Object.id, Object.posts_start).then(function (response) {
-                    Object.is_posts_loaded = response.length < 30 ? true : false;
+                var begin = Object.posts.length>0 ? Object.posts[0].id : 0;
+                postFactory.getPostsUp(Object.id, begin).then(function (response) {
+                    Object.is_up_posts_loaded = response.length < 30 ? true : false;
                     for (var i in response) {
                         Object.posts.unshift(response[i])
                     }
@@ -294,14 +307,26 @@
             Object.getPostsAroundId = function (post_id) {
                 return postFactory.getPostsAroundId(Object.id, post_id)
             };
-            Object.getPostsDown = function (post_id) {
-                return postFactory.getPostsDown(Object.id, post_id)
+            Object.getPostsDown = function () {
+                var defer = $q.defer();
+                var end = Object.posts.length > 0 ? Object.posts[Object.posts.length - 1].id : 0;
+                postFactory.getPostsDown(Object.id, end).then(function (response) {
+                    for (var i in response) {
+                        Object.posts.push(response[i])
+                    }
+
+                    Object.is_down_posts_loaded = response.length < 30 ? true : false;
+                    Object.is_posts_loading = false;
+
+                    defer.resolve(response);
+                });
+                return defer.promise
             };
 
             Object.addPost = function (message, reply, user) {
                 var defer = $q.defer();
                 var user_to = null;
-                if (Object.is_group==0 && user!=undefined && user.id!=undefined){
+                if (Object.is_group == 0 && user != undefined && user.id != undefined) {
                     user_to = user.id
                 }
                 postFactory.addPost(message, reply, Object.id, user_to).then(function (response) {
@@ -316,18 +341,18 @@
 
             Object.addImagePost = function (image, message, reply) {
                 var defer = $q.defer();
-                 postFactory.addImagePost(image, message, reply, Object.id).then(function (response) {
-                     Object.posts.push(response.post);
-                     Object.setLastPost(response.post);
-                     Object.updated_at = response.chat.updated_at;
-                     defer.resolve(response);
-                 });
+                postFactory.addImagePost(image, message, reply, Object.id).then(function (response) {
+                    Object.posts.push(response.post);
+                    Object.setLastPost(response.post);
+                    Object.updated_at = response.chat.updated_at;
+                    defer.resolve(response);
+                });
                 return defer.promise
             };
 
             Object.addDocumentPost = function (document, message, reply) {
                 var defer = $q.defer();
-                 postFactory.addDocumentPost(document, message, reply, Object.id).then(function (response) {
+                postFactory.addDocumentPost(document, message, reply, Object.id).then(function (response) {
                     Object.posts.push(response.post);
                     Object.setLastPost(response.post);
                     Object.updated_at = response.chat.updated_at;
@@ -428,10 +453,10 @@
                 })
             };
 
-            Object.getUserIds = function(){
+            Object.getUserIds = function () {
                 var result = [];
-                for( var i in Object.members ){
-                    result.push( Object.members[i].id )
+                for (var i in Object.members) {
+                    result.push(Object.members[i].id)
                 }
                 return result;
             }

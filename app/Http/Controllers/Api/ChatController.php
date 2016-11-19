@@ -373,6 +373,28 @@ class ChatController extends Controller
         return response()->json(['success'=>true,'posts'=>$posts]);
     }
 
+    public function loadChatUp($chat_id, $post_id, Request $request){
+        $data = $request->all();
+        // $data['start'] = $request['start'];
+        $data['count'] = $request['count'];;
+        $user = JWTAuth::parseToken()->authenticate();
+        if ( is_null($user) ){
+            throw new \Exception('no user');
+        }
+        if ( $user->is_delete=='1' ){
+            JWTAuth::invalidate(JWTAuth::getToken());
+            throw new \Exception('no user');
+        }
+
+        $chat = Chat::find($chat_id);
+        if ( !$chat->canAccess($user->id) ){
+            throw new \Exception('no cht');
+        }
+        $posts = $chat->getPostsUp($post_id,$data['count'], $user->id);
+        // $chat->readPosts4User($user->id);
+        return response()->json(['success'=>true,'posts'=>$posts]);
+    }
+
 
     public function addPost($chat_id, Request $request){
 

@@ -21,7 +21,6 @@
             edit_post: null,
             loading: false,
             start: 0,
-            first_post_id: null,
             show_smiles: false,
             download: false,
             connected: true,
@@ -152,8 +151,7 @@
 
         //  в верхней позиции
         $rootScope.$on('messages:scroll_top', function () {
-            if ($scope.chat.is_posts_loading != false || $scope.chat.is_posts_loaded == true) {
-                // сообщения уже грузятся или загрузились все
+            if ($scope.chat.is_posts_loading != false || $scope.chat.is_up_posts_loaded == true) {
                 return false;
             }
             $scope.chat.is_posts_loading = true;
@@ -161,31 +159,19 @@
             $scope.chat.getUpPosts().then(function (response) {
                 if (response.length > 0) {
                     $scope.$emit('messages:scroll_to', response[0].id);
-
                 }
             });
 
         });
 
         $rootScope.$on('scroll_down', function () {
-            // console.log('event: scroll_down')
-            if ($scope.env.loading == false && $scope.env.download == true) {
-                //   console.log('loading down')
-                $scope.env.loading = true;
-
-                //$scope.env.start +=30;
-                $scope.env.chat.getPostsDown($scope.env.first_post_id).then(function (response) {
-
-                    for (var i in response) {
-                        $scope.env.chat.posts.push(response[i])
-                    }
-                    if (response.length > 0) {
-                        $('div.messages').scrollTop(document.getElementById('post-' + $scope.env.first_post_id).offsetTop);
-                        $scope.env.first_post_id = response[response.length - 1].id;
-                    }
-                    $scope.env.loading = false;
-                });
+            if ($scope.chat.is_posts_loading != false || $scope.chat.is_down_posts_loaded == true) {
+                return false;
             }
+            $scope.chat.getPostsDown().then(function (response) {
+
+            });
+
         });
 
         $scope.$on('reply', function (event, post) {
@@ -230,19 +216,20 @@
 
             chat.start_post = post_id;
             chat.CountUnreadMessages = 0;
-            $scope.chat = chat;
-            if ( post_id!=null ){
-                $scope.chat.loadPosts().then(function(posts){
+            chat.is_down_posts_loaded = false;
+            chat.is_up_posts_loaded = false;
 
-                    $scope.chat.posts = posts
-                        $scope.$emit('messages:scroll_to', chat.start_post);
-                       $scope.env.download = true;
+            $scope.chat = chat;
+            if (post_id != null) {
+                $scope.chat.loadPosts().then(function (posts) {
+                    $scope.$emit('messages:scroll_to', chat.start_post);
+                    $scope.env.download = true;
 
                 })
-            }else{
+            } else {
                 if (chat.posts.length > 0) {
                     $timeout(function () {
-                       $scope.$emit('messages:scroll_down', chat.last_post_id);
+                        $scope.$emit('messages:scroll_down', chat.last_post_id);
                     }, 10)
                 }
             }
@@ -254,7 +241,7 @@
 
 
             chat.setChatStatus($scope.user.id, $scope.env.who_is_online);
-           // $scope.$emit('load_chat', {chat: chat, post_id: post_id});
+            // $scope.$emit('load_chat', {chat: chat, post_id: post_id});
         };
 
         $scope.cancelReply = function () {
@@ -465,7 +452,7 @@
         };
 
         $scope.submit = function (message) {
-            if (message==''){
+            if (message == '') {
                 return;
             }
             if ($scope.env.edit_post) {
