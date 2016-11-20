@@ -6,12 +6,11 @@
     <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap-theme.min.css">
 
 
-    <link rel="stylesheet" href="components/alertify.js/themes/alertify.bootstrap.css"/>
-    <link rel="stylesheet" href="components/alertify.js/themes/alertify.core.css"/>
-    <link rel="stylesheet" href="components/alertify.js/themes/alertify.default.css"/>
+    <link rel="stylesheet" href="components/alertify.js/themes/alertify.bootstrap.css" />
+    <link rel="stylesheet" href="components/alertify.js/themes/alertify.core.css" />
+    <link rel="stylesheet" href="components/alertify.js/themes/alertify.default.css" />
 
-    <link rel="stylesheet" href="components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
-          type="text/css"/>
+    <link rel="stylesheet" href="components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" type="text/css"/>
 
     <link rel="stylesheet" href="css/style.css">
 
@@ -19,18 +18,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="shortcut icon" href="image/favicon.png" type="image/png">
+    <script src="components/jquery/dist/jquery.min.js"></script>
+    <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="components/ckeditor/ckeditor.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
-
-    <script src="apps/build/app.js?v=1"></script>
 </head>
 
 
-<body ng-app="chatApp" ng-controller="mainController">
+
+
+<body ng-app="chatApp" ng-controller="mainController" >
 <div id="background" ui-sref-active="chat"></div>
-<div ui-view></div>
+<div   ui-view ></div>
+
+<script src="components/angular/angular.js"></script>
+<script src="components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="components/moment/min/moment-with-locales.min.js"></script>
+<script src="components/angular-cookies/angular-cookies.min.js"></script>
+<script src="components/satellizer/dist/satellizer.min.js"></script>
+<script src="components/angular-sanitize/angular-sanitize.min.js"></script>
+<script src="components/socket.io-client/socket.io.js"></script>
+<script src="components/angular-socket-io/socket.min.js"></script>
+<script src="components/angular-audio/app/angular.audio.js"></script>
+<script src="components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="components/ng-scrollbars/dist/scrollbars.min.js"></script>
+
+<script src="components/angular-base64-upload/src/angular-base64-upload.js"></script>
+<script src="components/alertify.js/lib/alertify.min.js"></script>
+<script src="components/angular-hotkeys/build/hotkeys.min.js"></script>
+<script src="components/angular-scroll-glue/src/scrollglue.js"></script>
+<script src="components/rangy/rangy-core.min.js"></script>
+<script src="components/rangy/rangy-selectionsaverestore.min.js"></script>
+<script src="components/angular-ckeditor/angular-ckeditor.min.js"></script>
+<script src="components/jquery.scrollTo/jquery.scrollTo.min.js"></script>
+<script src="components/angular-contenteditable/angular-contenteditable.js"></script>
+
+
+<script src="apps/core/core.js"></script>
+<script src="apps/core/cacheService.js"></script>
+
+<script src="apps/core/chat/chatFactory.js"></script>
+<script src="apps/core/chat/chatService.js"></script>
+
+<script src="apps/core/post/postFactory.js"></script>
+<script src="apps/core/post/postService.js"></script>
+
+<script src="apps/core/user/userFactory.js"></script>
+<script src="apps/core/user/userService.js"></script>
+<script src="apps/core/config/configFactory.js"></script>
+
+
+<script src="apps/chatApp/chatApp.js"></script>
+<script src="apps/chatApp/mainController.js"></script>
+<script src="apps/chatApp/left/leftController.js"></script>
+<script src="apps/chatApp/signIn/signInController.js"></script>
+
+<script src="apps/chatApp/chat/chatController.js"></script>
+
+<script src="apps/chatApp/directives/post/post.js"></script>
+<script src="apps/chatApp/directives/scrollLoadMessages/scrollLoadMessages.js"></script>
+<script src="apps/chatApp/directives/topMenu/topMenu.js"></script>
+
+<script src="apps/chatApp/users/userListController.js"></script>
+<script src="apps/chatApp/users/userFormController.js"></script>
+<script src="apps/chatApp/config/configController.js"></script>
 
 
 <script src="apps/directives/upload/upload.js"></script>
+<script src="apps/chatApp/directives/controlHeight/controlHeight.js"></script>
+<script src="apps/chatApp/directives/controlCaret/controlCaret.js"></script>
 
 </body>
 </html>
