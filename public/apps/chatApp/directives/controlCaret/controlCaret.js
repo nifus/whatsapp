@@ -17,12 +17,7 @@
             var savedSelection = null;
             var sel = null;
 
-            /*var editable = document.getElementById('textbox');
-             editable.addEventListener('DOMNodeInserted', onChange, false);
-             function onChange() {
-             //console.log('insert')
-             editable.innerHTML = editable.innerText;
-             }*/
+
 
             $rootScope.$on('open_chat', function () {
                 element.focus();
@@ -79,38 +74,39 @@
 
             });
 
-            element.on('paste',function(e) {
-                e.preventDefault();
+            element.on('paste', function (e) {
+
                 setCaret(sel.focusNode, sel.focusOffset);
-                var text = (e.originalEvent || e).clipboardData.getData('text/plain') ;
-               /* var $result = $('<div></div>').append((text));
-                $.each($result.find("*"), function(idx, val) {
+                var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                /* var $result = $('<div></div>').append((text));
+                 $.each($result.find("*"), function(idx, val) {
 
-                    var $item = $(val);
-                    if ($item.length > 0){
-                        var saveStyle = {
-                            'font-weight': $item.css('font-weight'),
-                            //'font-style': $item.css('font-style')
-                        };
-                        $item.removeAttr('style')
-                            .removeClass()
-                            .css(saveStyle);
-                    }
-                });
+                 var $item = $(val);
+                 if ($item.length > 0){
+                 var saveStyle = {
+                 'font-weight': $item.css('font-weight'),
+                 //'font-style': $item.css('font-style')
+                 };
+                 $item.removeAttr('style')
+                 .removeClass()
+                 .css(saveStyle);
+                 }
+                 });
 
-                // remove unnecesary tags (if paste from word)
-                $result.children('style').remove();
-                $result.children('meta').remove()
-                $result.children('link').remove();
+                 // remove unnecesary tags (if paste from word)
+                 $result.children('style').remove();
+                 $result.children('meta').remove()
+                 $result.children('link').remove();
 
-                $result = $result.html().replace(/<(span|hr|font|strong|blockquote|a|h3|h2|h1|h4|h5|h6|b|img|input|i|u|sub|sup|strike|small|s|pre|font|li|ul)[^>]+>/ig,'');
+                 $result = $result.html().replace(/<(span|hr|font|strong|blockquote|a|h3|h2|h1|h4|h5|h6|b|img|input|i|u|sub|sup|strike|small|s|pre|font|li|ul)[^>]+>/ig,'');
 
-                //$(this).html($result);*/
+                 //$(this).html($result);*/
                 pasteHtmlAtCaret(text);
                 sel = rangy.getSelection();
                 setCaret(sel.focusNode, sel.focusOffset);
                 sel.focusNode.focus();
-
+                $rootScope.$emit('update_msg');
+                element[0].innerHTML = element[0].innerHTML+'';
             });
 
 
