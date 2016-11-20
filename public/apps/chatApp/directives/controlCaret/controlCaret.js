@@ -75,7 +75,7 @@
             });
 
             element.on('paste', function (e) {
-
+                e.preventDefault();
                 setCaret(sel.focusNode, sel.focusOffset);
                 var text = (e.originalEvent || e).clipboardData.getData('text/plain');
                 /* var $result = $('<div></div>').append((text));
@@ -105,7 +105,7 @@
                 sel = rangy.getSelection();
                 setCaret(sel.focusNode, sel.focusOffset);
                 sel.focusNode.focus();
-                $rootScope.$emit('update_msg');
+                //$rootScope.$emit('update_msg');
                 element[0].innerHTML = element[0].innerHTML+'';
             });
 
