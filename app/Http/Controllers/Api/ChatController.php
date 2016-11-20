@@ -148,11 +148,11 @@ class ChatController extends Controller
             foreach($chats as $chat){
                 array_push($ids, $chat->id);
             }
-            $posts = ChatPost::whereIn('chat_id', $ids)
-                ->where('message','like','%'.$key.'%')
+            $posts = ChatPost::where('message','like','%'.$key.'%')->whereIn('chat_id', $ids)
                 ->where('is_deleted','0')
                 ->where('is_system',0)
                 ->get();
+
 
             $result = [];
             $clear_chats = [];
@@ -164,9 +164,17 @@ class ChatController extends Controller
                     $clear_chats[$post->chat_id] = $link->clear_date;
                     $time = $link->clear_date;
                 }
-                $clear_date = new \DateTime($time);
-                $date_post = new \DateTime($post->created_at);
-                if ( $clear_date<$date_post ){
+                if (!is_null($time)){
+                    $clear_date = new \DateTime($time);
+                    $date_post = new \DateTime($post->created_at);
+
+                    if ( $clear_date<$date_post ){
+                        array_push($result, $post->toArray());
+                        if (sizeof($result)==100){
+                            return response()->json(['success'=>true, 'post'=>$result]);
+                        }
+                    }
+                }else{
                     array_push($result, $post->toArray());
                     if (sizeof($result)==100){
                         return response()->json(['success'=>true, 'post'=>$result]);
@@ -174,8 +182,9 @@ class ChatController extends Controller
                 }
 
 
-            }
 
+            }
+            dd($result);
             return response()->json(['success'=>true, 'post'=>$result]);
 
         }catch( \Exception $e ){
