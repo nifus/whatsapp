@@ -180,11 +180,7 @@ class ChatController extends Controller
                         return response()->json(['success'=>true, 'post'=>$result]);
                     }
                 }
-
-
-
             }
-            dd($result);
             return response()->json(['success'=>true, 'post'=>$result]);
 
         }catch( \Exception $e ){
