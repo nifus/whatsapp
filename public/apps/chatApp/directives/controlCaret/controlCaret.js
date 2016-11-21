@@ -4,8 +4,10 @@
     function controlCaretDirective($rootScope) {
         return {
             restrict: 'A',
-            link: controlCaretLink
-
+            link: controlCaretLink,
+            scope: {
+                ngModel:'='
+            }
         };
 
 
@@ -107,6 +109,8 @@
                 sel.focusNode.focus();
                 //$rootScope.$emit('update_msg');
                 element[0].innerHTML = element[0].innerHTML+'';
+                $scope.ngModel = element[0].innerHTML;
+                $scope.$apply();
             });
 
 
