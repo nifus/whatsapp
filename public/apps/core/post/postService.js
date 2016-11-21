@@ -23,6 +23,8 @@
             };
             Object.update = function(msg){
                 return $http.put( '/posts/'+Object.id,{'message':msg}).then(function (response) {
+                    socket.emit('message-edit', {chat_id:Object.chat_id, post_id: Object.id});
+
                     return response.data;
                 })
             };

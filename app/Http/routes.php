@@ -48,6 +48,7 @@ Route::get('/uploads/{post_id}/{name}', 'Api\ChatController@getDocument');
         Route::get('/search/{key}', 'Api\ChatController@search');
 
         Route::post('/group', 'Api\ChatController@addGroup');
+        Route::get('/post/{id}', 'Api\ChatController@getPost')->where('id', '[0-9]*');
         Route::post('/{id}/add-post', 'Api\ChatController@addPost')->where('id', '[0-9]*');
         Route::post('/{id}/sound', 'Api\ChatController@sound')->where('id', '[0-9]*');
         Route::post('/{id}/clear', 'Api\ChatController@clear')->where('id', '[0-9]*');

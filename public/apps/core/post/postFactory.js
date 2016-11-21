@@ -9,6 +9,7 @@
     function postFactory(postService, $http, socket) {
 
         return {
+            getPostById: getPostById,
             getPosts: getPosts,
             getPostsAroundId: getPostsAroundId,
             getPostsDown: getPostsDown,
@@ -77,6 +78,12 @@
             })
         }
 
+        function getPostById(id) {
+            return $http.get('/chats/post/' + id).then(function (response) {
+                return new postService(response.data);
+            })
+        }
+
         function getPosts(id, start) {
             if (start == undefined) {
                 start = 0
@@ -109,6 +116,7 @@
                 return result;
             })
         }
+
         function getPostsUp(id, post_id) {
             return $http.post('/chats/' + id + '/up/' + post_id, {count: 30}).then(function (response) {
                 var result = [];

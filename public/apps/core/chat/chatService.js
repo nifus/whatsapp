@@ -439,19 +439,24 @@
                 return $http.put('/chats/' + Object.id, {name: name}).then(function (response) {
                     if (response.data.success == true) {
                         Object.name = name;
+                        Object.current_name = name;
                     }
+                    socket.emit('client:chat-update',Object.id,Object.getUserIds());
                     return response.data;
                 })
             };
             Object.updateAvatar = function (value) {
                 return $http.put('/chats/' + Object.id, {avatar: value}).then(function (response) {
                     if (response.data.success == true) {
-                        Object.avatar = response.data.chat.AvatarSrc;
-                        Object.AvatarSrc = response.data.chat.AvatarSrc;
+                        Object.avatar = response.data.chat.avatar;
+                        Object.AvatarSrc = response.data.chat.avatar;
+                        Object.ChatAvatar = response.data.chat.avatar==null ? '/image/default.jpg' : response.data.chat.avatar;
                     }
+                    socket.emit('client:chat-update', Object.id, Object.getUserIds());
                     return response.data;
                 })
             };
+
 
             Object.getUserIds = function () {
                 var result = [];

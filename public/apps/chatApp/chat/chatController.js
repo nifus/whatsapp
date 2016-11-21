@@ -2,9 +2,9 @@
     'use strict';
     angular.module('chatApp').controller('chatController', chatController);
 
-    chatController.$inject = ['$scope', '$timeout', '$rootScope', 'socket', 'ngAudio', 'chatFactory'];
+    chatController.$inject = ['$scope', '$timeout', '$rootScope', 'socket', 'ngAudio', 'chatFactory','postFactory'];
 
-    function chatController($scope, $timeout, $rootScope, socket, ngAudio, chatFactory) {
+    function chatController($scope, $timeout, $rootScope, socket, ngAudio, chatFactory, postFactory) {
 
         $scope.more = false;
         $scope.env = {
@@ -74,20 +74,34 @@
         });
 
         socket.on('message:delete', function (obj) {
-
             angular.forEach($scope.user.chats, function (chat) {
                 if (chat.id != obj.chat_id) {
                     return;
                 }
-
                 chat.posts = chat.posts.filter(function (post) {
                     if (post.id != obj.post_id) {
                         return true;
                     }
                     return false;
                 });
-
                 chat.setLastPost(chat.findLastPost())
+            });
+        });
+
+        socket.on('message:edit', function (obj) {
+            angular.forEach($scope.user.chats, function (chat) {
+                if (chat.id != obj.chat_id) {
+                    return;
+                }
+                for( var i in chat.posts){
+                    if (chat.posts[i].id==obj.post_id){
+                        var change_post = i;
+                        postFactory.getPostById(obj.post_id).then(function (response) {
+                            chat.posts[change_post] = response;
+                        });
+                        break
+                    }
+                }
             });
         });
 
@@ -103,6 +117,8 @@
         });
 
         socket.on('server:create-chat', function (chat) {
+            console.log('server:create-chat')
+            console.log(chat)
             // for (var i in response.users) {
             //     if (response.users[i] == $scope.user.id) {
             chatFactory.getById(chat).then(function (chat) {
@@ -136,7 +152,6 @@
         });
 
         socket.on('server:chat-delete', function (chat_id) {
-
             $scope.user.chats = $scope.user.chats.filter(function (chat) {
                 if (chat_id == chat.id) {
                     return false;
@@ -146,7 +161,21 @@
             if ($scope.chat != null && $scope.chat.id == chat_id) {
                 $scope.chat = null;
             }
-        })
+        });
+
+        socket.on('server:chat-update', function (chat_id) {
+            for( var i in $scope.user.chats ){
+                if ($scope.user.chats[i].id==chat_id){
+                    var saved_i = i;
+                    chatFactory.getById($scope.user.chats[i].id).then(function (chat) {
+                        $scope.user.chats[saved_i].ChatAvatar = chat.avatar==null ? '/image/default.jpg' : chat.avatar;
+                        $scope.user.chats[saved_i].current_name = chat.name;
+                        $scope.user.chats[saved_i].name = chat.name;
+                    });
+                }
+            }
+
+        });
 
 
         //  в верхней позиции
@@ -317,7 +346,10 @@
             $scope.chat.addMember(member).then(function (response) {
                 if (response.success == true) {
                     alertify.success('Пользователь добавлен');
-                    // $scope.chat.posts.push( new postService(response.post) );
+                    socket.emit('client:create-chat',
+                        $scope.chat.id,
+                        [member.id]
+                    );
 
                 } else {
                     alertify.error(response.error);
@@ -346,12 +378,17 @@
         };
 
         $scope.changeChatAvatar = function (value) {
-            $scope.chat.updateAvatar(value)
-        }
+            $scope.chat.updateAvatar(value).then(function () {
+                alertify.success('Изображение изменено');
+            })
+        };
 
         $scope.changeChatName = function (value) {
             if (value != '') {
-                $scope.chat.updateName(value)
+                $scope.chat.updateName(value).then(function () {
+                    alertify.success('Название изменено');
+
+                })
             }
         };
 
@@ -429,7 +466,10 @@
             $scope.chat.removeMember(user.id).then(function (response) {
                 if (response.success == true) {
                     alertify.success('Пользователь удален');
-                    //$scope.chat.posts.push( new postService(response.post) )
+                    socket.emit('client:chat-delete', {
+                        chat: $scope.chat.id,
+                        users: [user.id]
+                    });
                 } else {
                     alertify.error(response.error);
                 }

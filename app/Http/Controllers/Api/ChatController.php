@@ -488,7 +488,7 @@ class ChatController extends Controller
             }
             $post->remove();
 
-            $post->Chat->updateLastPost();
+            $post->Chat->updateLastPosts();
             return response()->json(['success'=>true]);
 
         }catch( \Exception $e ){
@@ -519,8 +519,32 @@ class ChatController extends Controller
             }
             $post->update(['message'=>$data['message']]);
 
-           // $post->Chat->updateLastPost();
+            $post->Chat->updateLastPosts();
             return response()->json(['success'=>true,'post'=>$post->toArray()]);
+
+        }catch( \Exception $e ){
+            return response()->json(['success'=>false,'error'=>$e->getMessage()]);
+
+        }
+    }
+
+    public function getPost($id){
+        try{
+            $user = JWTAuth::parseToken()->authenticate();
+            if ( is_null($user) ){
+                throw new \Exception('no user');
+            }
+            if ( $user->is_delete=='1' ){
+                JWTAuth::invalidate(JWTAuth::getToken());
+                throw new \Exception('no user');
+            }
+
+            $post = ChatPost::find($id);
+            if (is_null($post) ){
+                throw new \Exception('no post');
+            }
+
+            return response()->json($post->toArray());
 
         }catch( \Exception $e ){
             return response()->json(['success'=>false,'error'=>$e->getMessage()]);
