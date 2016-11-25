@@ -106,7 +106,11 @@
                 pasteHtmlAtCaret(text);
                 sel = rangy.getSelection();
                 setCaret(sel.focusNode, sel.focusOffset);
-                sel.focusNode.focus();
+                if (sel.focusNode){
+                    console.log(sel.focusNode)
+                   // sel.focusNode.focus();
+                }
+
                 //$rootScope.$emit('update_msg');
                 element[0].innerHTML = element[0].innerHTML+'';
                 $scope.ngModel = element[0].innerHTML;
