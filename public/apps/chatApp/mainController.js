@@ -20,13 +20,13 @@
         $scope.user_off = false;
 
 
-        socket.on('server:signin', function (user_id) {
+        /*socket.on('server:signin', function (user_id) {
             if ($scope.user!=null){
                 if (user_id == $scope.user.id) {
                     window.location.href='/'
                 }
             }
-        });
+        });*/
 
 
 

@@ -165,9 +165,9 @@ class UserController extends Controller
                 throw new \Exception('no token');
             }
 
-            if ($user->remember_token!=$_COOKIE['session']){
-                throw new \Exception('no cookie');
-            }
+            //if ($user->remember_token!=$_COOKIE['session']){
+             //   throw new \Exception('no cookie');
+            //}
 
             return response()->json($user->toArray()  );
         }catch( \Exception $e ){

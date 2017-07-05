@@ -49,7 +49,7 @@
             'supportim.org': 'https://nodesrv.2gt.biz:3005',
             'capitalasst.com': 'https://nodesrv.2gt.biz:3006',
             'testchat.2gt.biz': 'https://nodesrv.2gt.biz:4000',
-            'chat.dev': 'http://' + window.location.host + ':3000',
+            'chat.dev':  'http://' + window.location.host + ':3000',
             'chat.bunzya.ru': 'http://' + window.location.host + ':3000'
         };
 

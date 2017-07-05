@@ -106,12 +106,20 @@ class Chat extends Model
 
     public function canAccess($user_id)
     {
+        $is_group_chat = $this->is_group;
+
         $members = $this->Members()->get();
         foreach ($members as $member) {
-            if ($member->id == $user_id) {
-                return true;
+            if ( $member->id == $user_id ){
+                if ( $is_group_chat==0  ) {
+                    return true;
+                }
+                if ( $is_group_chat==1 &&  $member->pivot->is_admin==1 ) {
+                    return true;
+                }
             }
         }
+
         return false;
     }
 

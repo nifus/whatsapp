@@ -289,7 +289,6 @@ class ChatController extends Controller
 
         }catch( \Exception $e ){
             return response()->json(['success'=>false,'error'=>$e->getMessage()]);
-
         }
 
     }
@@ -417,9 +416,13 @@ class ChatController extends Controller
             if (is_null($chat) ){
                 throw new \Exception('no chat');
             }
+
+            if ( !$chat->canAccess($user->id) ){
+                throw new \Exception('no chat');
+            }
             $data = $request->all();
 
-                $post = $chat->addPost($data, $user->id);
+            $post = $chat->addPost($data, $user->id);
 
 
             if ( is_null($post) ){
