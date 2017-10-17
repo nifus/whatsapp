@@ -104,6 +104,17 @@ class Chat extends Model
         }
     }
 
+    public function canReadAccess($user_id)
+    {
+        $members = $this->Members()->get();
+        foreach ($members as $member) {
+            if ( $member->id == $user_id ){
+                    return true;
+            }
+        }
+
+        return false;
+    }
     public function canAccess($user_id)
     {
         $is_group_chat = $this->is_group;

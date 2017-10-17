@@ -48,7 +48,7 @@ class ChatController extends Controller
         if ( is_null($post) ){
             abort(404);
         }
-        if ( false===$post->Chat->canAccess($user->id) ){
+        if ( false===$post->Chat->canReadAccess($user->id) ){
             abort(404);
         }
         $path = public_path('uploads/posts/'.$post->document);
